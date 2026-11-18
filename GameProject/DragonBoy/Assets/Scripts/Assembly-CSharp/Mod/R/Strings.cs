@@ -49,6 +49,8 @@ namespace Mod.R
         internal static string notifyBossDescription = "";
         internal static string pickMobTitle = "";
         internal static string pickMobDescription = "";
+        internal static string autoKillBossTitle = "";
+        internal static string autoKillBossDescription = "";
         internal static string functionShouldBeDisabled = "";
         internal static string functionShouldBeEnabled = "";
         internal static string pickMobAvoidSuperMobTitle = "";
@@ -563,6 +565,8 @@ namespace Mod.R
             xmapUseAStarDescription = "Sử dụng thuật toán A* để tìm đường đi thay vì dịch chuyển";
             pickMobTitle = "Tàn sát";
             pickMobDescription = "Tự động đánh quái";
+            autoKillBossTitle = "Tự động đánh boss";
+            autoKillBossDescription = "Tự động tìm và đánh boss trong map hiện tại";
             pickMobAvoidSuperMobTitle = "Né siêu quái khi tàn sát";
             avoidSuperMobDescription = "Không đánh siêu quái khi tàn sát";
             pickMobVDHTitle = "Vượt địa hình khi tàn sát";
@@ -903,6 +907,8 @@ namespace Mod.R
             xmapUseAStarDescription = "Use A* algorithm to find the path instead of teleporting to the destination";
             pickMobTitle = "Slaughter";
             pickMobDescription = "Auto attack monsters";
+            autoKillBossTitle = "Auto kill boss";
+            autoKillBossDescription = "Automatically find and attack bosses in the current map";
             pickMobAvoidSuperMobTitle = "Avoid super monsters";
             avoidSuperMobDescription = "Don't attack super monsters when slaughtering";
             pickMobVDHTitle = "Cross terrain while slaughtering";

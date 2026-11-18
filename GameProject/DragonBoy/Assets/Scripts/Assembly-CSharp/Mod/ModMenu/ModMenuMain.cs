@@ -118,6 +118,14 @@ namespace Mod.ModMenu
                 }),
                 new ModMenuItemBoolean(new ModMenuItemBooleanConfig()
                 {
+                    ID = "AutoKillBoss_Toggle",
+                    Title = Strings.autoKillBossTitle,
+                    Description = Strings.autoKillBossDescription,
+                    GetValueFunc = () => AutoKillBoss.gI.IsActing,
+                    SetValueAction = value => AutoKillBoss.gI.Toggle(value),
+                }),
+                new ModMenuItemBoolean(new ModMenuItemBooleanConfig()
+                {
                     ID = "PickMob_AutoPickItem_Toggle",
                     Title = Strings.autoPickItemTitle,
                     Description = Strings.autoPickItemDescription,
