@@ -49,9 +49,13 @@ public class Skill
 	public string strCurExp()
 	{
 		if (curExp / 10 >= 100)
+		{
 			return "MAX";
+		}
 		if (curExp % 10 == 0)
+		{
 			return curExp / 10 + "%";
+		}
 		int num = curExp % 10;
 		return curExp / 10 + "." + num % 10 + "%";
 	}
@@ -59,7 +63,9 @@ public class Skill
 	public string strTimeReplay()
 	{
 		if (coolDown % 1000 == 0)
+		{
 			return coolDown / 1000 + string.Empty;
+		}
 		int num = coolDown % 1000;
 		return coolDown / 1000 + "." + ((num % 100 != 0) ? (num / 10) : (num / 100));
 	}
@@ -67,16 +73,21 @@ public class Skill
 	public void paint(int x, int y, mGraphics g)
 	{
 		SmallImage.drawSmallImage(g, template.iconId, x, y, 0, StaticObj.VCENTER_HCENTER);
-		long num = mSystem.currentTimeMillis() - lastTimeUseThisSkill;
-		if (num < coolDown)
+		long num = mSystem.currentTimeMillis();
+		long num2 = num - lastTimeUseThisSkill;
+		if (num2 < coolDown)
 		{
 			g.setColor(2721889, 0.7f);
 			if (paintCanNotUseSkill && GameCanvas.gameTick % 6 > 2)
+			{
 				g.setColor(876862);
-			int num2 = (int)(num * 20 / coolDown);
-			g.fillRect(x - 10, y - 10 + num2, 20, 20 - num2);
+			}
+			int num3 = (int)(num2 * 20 / coolDown);
+			g.fillRect(x - 10, y - 10 + num3, 20, 20 - num3);
 		}
 		else
+		{
 			paintCanNotUseSkill = false;
+		}
 	}
 }

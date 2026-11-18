@@ -30,7 +30,9 @@ public class MoneyCharge : mScreen, IActionListener
 	{
 		w = GameCanvas.w - 20;
 		if (w > 320)
+		{
 			w = 320;
+		}
 		strPaint = mFont.tahoma_7b_green2.splitFontArray(mResources.pay_card, w - 20);
 		x = (GameCanvas.w - w) / 2;
 		y = GameCanvas.h - 150 - (strPaint.Length - 1) * 20;
@@ -44,16 +46,26 @@ public class MoneyCharge : mScreen, IActionListener
 		tfSerial.width = w - 20;
 		tfSerial.height = mScreen.ITEM_HEIGHT + 2;
 		if (GameCanvas.isTouch)
+		{
 			tfSerial.isFocus = false;
+		}
 		else
+		{
 			tfSerial.isFocus = true;
+		}
 		tfSerial.setIputType(TField.INPUT_TYPE_ANY);
 		if (Main.isWindowsPhone)
+		{
 			tfSerial.showSubTextField = false;
+		}
 		if (Main.isIPhone)
+		{
 			tfSerial.isPaintMouse = false;
+		}
 		if (!GameCanvas.isTouch)
+		{
 			right = tfSerial.cmdClear;
+		}
 		tfCode = new TField();
 		tfCode.name = mResources.CARD_CODE;
 		tfCode.x = x + 10;
@@ -63,9 +75,13 @@ public class MoneyCharge : mScreen, IActionListener
 		tfCode.isFocus = false;
 		tfCode.setIputType(TField.INPUT_TYPE_ANY);
 		if (Main.isWindowsPhone)
+		{
 			tfCode.showSubTextField = false;
+		}
 		if (Main.isIPhone)
+		{
 			tfCode.isPaintMouse = false;
+		}
 		left = new Command(mResources.CLOSE, this, 1, null);
 		center = new Command(mResources.pay_card2, this, 2, null);
 		if (GameCanvas.isTouch)
@@ -81,7 +97,9 @@ public class MoneyCharge : mScreen, IActionListener
 	public static MoneyCharge gI()
 	{
 		if (instance == null)
+		{
 			instance = new MoneyCharge();
+		}
 		return instance;
 	}
 
@@ -114,13 +132,17 @@ public class MoneyCharge : mScreen, IActionListener
 		tfSerial.update();
 		tfCode.update();
 		if (Main.isWindowsPhone)
+		{
 			updateTfWhenOpenKb();
+		}
 	}
 
 	public override void keyPress(int keyCode)
 	{
 		if (tfSerial.isFocus)
+		{
 			tfSerial.keyPressed(keyCode);
+		}
 		else if (tfCode.isFocus)
 		{
 			tfCode.keyPressed(keyCode);
@@ -134,13 +156,17 @@ public class MoneyCharge : mScreen, IActionListener
 		{
 			focus--;
 			if (focus < 0)
+			{
 				focus = 1;
+			}
 		}
 		else if (GameCanvas.keyPressed[(!Main.isPC) ? 8 : 22])
 		{
 			focus++;
 			if (focus > 1)
+			{
 				focus = 1;
+			}
 		}
 		if (GameCanvas.keyPressed[(!Main.isPC) ? 2 : 21] || GameCanvas.keyPressed[(!Main.isPC) ? 8 : 22])
 		{
@@ -150,14 +176,18 @@ public class MoneyCharge : mScreen, IActionListener
 				tfSerial.isFocus = false;
 				tfCode.isFocus = true;
 				if (!GameCanvas.isTouch)
+				{
 					right = tfCode.cmdClear;
+				}
 			}
 			else if (focus == 0)
 			{
 				tfSerial.isFocus = true;
 				tfCode.isFocus = false;
 				if (!GameCanvas.isTouch)
+				{
 					right = tfSerial.cmdClear;
+				}
 			}
 			else
 			{
@@ -168,7 +198,9 @@ public class MoneyCharge : mScreen, IActionListener
 		if (GameCanvas.isPointerJustRelease)
 		{
 			if (GameCanvas.isPointerHoldIn(tfSerial.x, tfSerial.y, tfSerial.width, tfSerial.height))
+			{
 				focus = 0;
+			}
 			else if (GameCanvas.isPointerHoldIn(tfCode.x, tfCode.y, tfCode.width, tfCode.height))
 			{
 				focus = 1;

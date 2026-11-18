@@ -25,7 +25,9 @@ public class EffectData
 		for (int i = 0; i < imgInfo.Length; i++)
 		{
 			if (imgInfo[i].ID == id)
+			{
 				return imgInfo[i];
+			}
 		}
 		return null;
 	}
@@ -38,9 +40,13 @@ public class EffectData
 	public short[] get(int index)
 	{
 		if (index >= anim_data.Length)
+		{
 			index = 0;
+		}
 		if (anim_data[index] == null)
+		{
 			return new short[1];
+		}
 		return anim_data[index];
 	}
 
@@ -92,7 +98,8 @@ public class EffectData
 				imgInfo[i].w = msg.readUnsignedByte();
 				imgInfo[i].h = msg.readUnsignedByte();
 			}
-			frame = new Frame[msg.readShort()];
+			short num5 = msg.readShort();
+			frame = new Frame[num5];
 			for (int j = 0; j < frame.Length; j++)
 			{
 				frame[j] = new Frame();
@@ -108,13 +115,21 @@ public class EffectData
 					if (j == 0)
 					{
 						if (num > frame[j].dx[k])
+						{
 							num = frame[j].dx[k];
+						}
 						if (num2 > frame[j].dy[k])
+						{
 							num2 = frame[j].dy[k];
+						}
 						if (num3 < frame[j].dx[k] + imgInfo[frame[j].idImg[k]].w)
+						{
 							num3 = frame[j].dx[k] + imgInfo[frame[j].idImg[k]].w;
+						}
 						if (num4 < frame[j].dy[k] + imgInfo[frame[j].idImg[k]].h)
+						{
 							num4 = frame[j].dy[k] + imgInfo[frame[j].idImg[k]].h;
+						}
 						width = num3 - num;
 						height = num4 - num2;
 					}
@@ -169,13 +184,21 @@ public class EffectData
 					if (j == 0)
 					{
 						if (num > frame[j].dx[k])
+						{
 							num = frame[j].dx[k];
+						}
 						if (num2 > frame[j].dy[k])
+						{
 							num2 = frame[j].dy[k];
+						}
 						if (num3 < frame[j].dx[k] + imgInfo[frame[j].idImg[k]].w)
+						{
 							num3 = frame[j].dx[k] + imgInfo[frame[j].idImg[k]].w;
+						}
 						if (num4 < frame[j].dy[k] + imgInfo[frame[j].idImg[k]].h)
+						{
 							num4 = frame[j].dy[k] + imgInfo[frame[j].idImg[k]].h;
+						}
 						width = num3 - num;
 						height = num4 - num2;
 					}
@@ -189,7 +212,7 @@ public class EffectData
 				short num7 = 0;
 				short[] array = new short[num6];
 				int num8 = 0;
-				string text = string.Empty;
+				string text = ID + ":id  " + num6 + ":nFrameCount  ";
 				bool flag = false;
 				for (int l = 0; l < num6; l++)
 				{
@@ -216,7 +239,9 @@ public class EffectData
 				for (int m = 0; m < 16; m++)
 				{
 					if (anim_data[m] == null)
+					{
 						anim_data[m] = anim_data[2];
+					}
 				}
 			}
 			else
@@ -235,37 +260,42 @@ public class EffectData
 
 	public void readData(sbyte[] data)
 	{
-		readData(new myReader(data));
+		myReader iss = new myReader(data);
+		readData(iss);
 	}
 
 	public void readDataNewBoss(sbyte[] data, sbyte typeread)
 	{
-		readMobNew(new myReader(data), typeread);
+		myReader msg = new myReader(data);
+		readMobNew(msg, typeread);
 	}
 
 	public void paintFrame(mGraphics g, int f, int x, int y, int trans, int layer)
 	{
 		if (this.frame == null || this.frame.Length == 0)
+		{
 			return;
+		}
 		Frame frame = this.frame[f];
 		for (int i = 0; i < frame.dx.Length; i++)
 		{
 			ImageInfo imageInfo = getImageInfo(frame.idImg[i]);
 			try
 			{
-				if (trans == -1)
+				switch (trans)
+				{
+				case -1:
 					g.drawRegion(img, imageInfo.x0, imageInfo.y0, imageInfo.w, imageInfo.h, 0, x + frame.dx[i], y + frame.dy[i], 0);
-				else if (trans == 0)
-				{
+					break;
+				case 0:
 					g.drawRegion(img, imageInfo.x0, imageInfo.y0, imageInfo.w, imageInfo.h, 0, x + frame.dx[i], y + frame.dy[i] - ((layer < 4 && layer > 0) ? GameCanvas.transY : 0), 0);
-				}
-				else if (trans == 1)
-				{
+					break;
+				case 1:
 					g.drawRegion(img, imageInfo.x0, imageInfo.y0, imageInfo.w, imageInfo.h, 2, x - frame.dx[i], y + frame.dy[i] - ((layer < 4 && layer > 0) ? GameCanvas.transY : 0), StaticObj.TOP_RIGHT);
-				}
-				else if (trans == 2)
-				{
+					break;
+				case 2:
 					g.drawRegion(img, imageInfo.x0, imageInfo.y0, imageInfo.w, imageInfo.h, 7, x - frame.dx[i], y + frame.dy[i] - ((layer < 4 && layer > 0) ? GameCanvas.transY : 0), StaticObj.VCENTER_HCENTER);
+					break;
 				}
 			}
 			catch (Exception)
@@ -301,7 +331,8 @@ public class EffectData
 				imgInfo[i].w = msg.readUnsignedByte();
 				imgInfo[i].h = msg.readUnsignedByte();
 			}
-			frame = new Frame[msg.readShort()];
+			short num5 = msg.readShort();
+			frame = new Frame[num5];
 			for (int j = 0; j < frame.Length; j++)
 			{
 				frame[j] = new Frame();
@@ -317,13 +348,21 @@ public class EffectData
 					if (j == 0)
 					{
 						if (num > frame[j].dx[k])
+						{
 							num = frame[j].dx[k];
+						}
 						if (num2 > frame[j].dy[k])
+						{
 							num2 = frame[j].dy[k];
+						}
 						if (num3 < frame[j].dx[k] + imgInfo[frame[j].idImg[k]].w)
+						{
 							num3 = frame[j].dx[k] + imgInfo[frame[j].idImg[k]].w;
+						}
 						if (num4 < frame[j].dy[k] + imgInfo[frame[j].idImg[k]].h)
+						{
 							num4 = frame[j].dy[k] + imgInfo[frame[j].idImg[k]].h;
+						}
 						width = num3 - num;
 						height = num4 - num2;
 					}

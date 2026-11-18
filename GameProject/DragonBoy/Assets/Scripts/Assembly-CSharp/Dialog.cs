@@ -20,35 +20,28 @@ public abstract class Dialog
 	{
 		switch (keyCode)
 		{
-		default:
-			if (keyCode == -39)
-				goto case -2;
-			if (keyCode == -38)
-				goto case -1;
-			if (keyCode == -22)
-				goto case -7;
-			if (keyCode == -21)
-				goto case -6;
-			if (keyCode == -27 || keyCode != 10)
-				break;
-			goto case -5;
+		case -38:
 		case -1:
 			GameCanvas.keyHold[(!Main.isPC) ? 2 : 21] = true;
 			GameCanvas.keyPressed[(!Main.isPC) ? 2 : 21] = true;
 			break;
+		case -39:
 		case -2:
 			GameCanvas.keyHold[(!Main.isPC) ? 8 : 22] = true;
 			GameCanvas.keyPressed[(!Main.isPC) ? 8 : 22] = true;
 			break;
+		case -21:
 		case -6:
 			GameCanvas.keyHold[12] = true;
 			GameCanvas.keyPressed[12] = true;
 			break;
+		case -22:
 		case -7:
 			GameCanvas.keyHold[13] = true;
 			GameCanvas.keyPressed[13] = true;
 			break;
 		case -5:
+		case 10:
 			GameCanvas.keyHold[(!Main.isPC) ? 5 : 25] = true;
 			GameCanvas.keyPressed[(!Main.isPC) ? 5 : 25] = true;
 			break;
@@ -64,7 +57,9 @@ public abstract class Dialog
 			mScreen.keyTouch = -1;
 			GameCanvas.isPointerJustRelease = false;
 			if (center != null)
+			{
 				center.performAction();
+			}
 			mScreen.keyTouch = -1;
 		}
 		if (left != null && (GameCanvas.keyPressed[12] || mScreen.getCmdPointerLast(left)))
@@ -74,7 +69,9 @@ public abstract class Dialog
 			mScreen.keyTouch = -1;
 			GameCanvas.isPointerJustRelease = false;
 			if (left != null)
+			{
 				left.performAction();
+			}
 			mScreen.keyTouch = -1;
 		}
 		if (right != null && (GameCanvas.keyPressed[13] || mScreen.getCmdPointerLast(right)))
@@ -84,7 +81,9 @@ public abstract class Dialog
 			GameCanvas.isPointerJustRelease = false;
 			mScreen.keyTouch = -1;
 			if (right != null)
+			{
 				right.performAction();
+			}
 			mScreen.keyTouch = -1;
 		}
 		GameCanvas.clearKeyPressed();

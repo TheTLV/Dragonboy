@@ -1,4 +1,4 @@
-﻿using System.Net.NetworkInformation;
+using System.Net.NetworkInformation;
 using System.Threading;
 using Mod;
 using UnityEngine;
@@ -35,17 +35,7 @@ public class Main : MonoBehaviour
 
 	public static int numberQuit = 1;
 
-	public static int typeClient = 4;
-
-	public const sbyte PC_VERSION = 4;
-
-	public const sbyte IP_APPSTORE = 5;
-
-	public const sbyte WINDOWSPHONE = 6;
-
 	internal int level;
-
-	public const sbyte IP_JB = 3;
 
 	internal int updateCount;
 
@@ -85,21 +75,30 @@ public class Main : MonoBehaviour
 
 	internal void Start()
 	{
+		//Application.targetFrameRate = 60;
 		if (started)
+		{
 			return;
+		}
 		if (Thread.CurrentThread.Name != "Main")
+		{
 			Thread.CurrentThread.Name = "Main";
+		}
 		mainThreadName = Thread.CurrentThread.Name;
 		isPC = true;
 		started = true;
-  //      if (isPC)
+		//if (isPC)
 		//{
 		//	level = Rms.loadRMSInt("levelScreenKN");
 		//	if (level == 1)
+		//	{
 		//		Screen.SetResolution(720, 320, false);
+		//	}
 		//	else
+		//	{
 		//		Screen.SetResolution(1024, 600, false);
-  //      }
+		//	}
+		//}
 	}
 
 	internal void SetInit()
@@ -110,9 +109,13 @@ public class Main : MonoBehaviour
 	internal void OnHideUnity(bool isGameShown)
 	{
 		if (!isGameShown)
+		{
 			Time.timeScale = 0f;
+		}
 		else
+		{
 			Time.timeScale = 1f;
+		}
 	}
 
 	internal void OnGUI()
@@ -120,7 +123,9 @@ public class Main : MonoBehaviour
 		if (count >= 10)
 		{
 			if (fps == 0)
+			{
 				timefps = mSystem.currentTimeMillis();
+			}
 			else if (mSystem.currentTimeMillis() - timefps > 1000)
 			{
 				max = fps;
@@ -150,26 +155,32 @@ public class Main : MonoBehaviour
 			base.useGUILayout = false;
 			isCompactDevice = detectCompactDevice();
 			if (main == null)
+			{
 				main = this;
+			}
 			isRun = true;
 			ScaleGUI.initScaleGUI();
 			if (isPC)
+			{
 				IMEI = SystemInfo.deviceUniqueIdentifier;
+			}
 			else
+			{
 				IMEI = GetMacAddress();
+			}
 			isPC = true;
 			//if (isPC)
+			//{
 			//	Screen.fullScreen = false;
-			if (isWindowsPhone)
-				typeClient = 6;
-			if (isPC)
-				typeClient = 4;
-			if (IphoneVersionApp)
-				typeClient = 5;
+			//}
 			if (iPhoneSettings.generation == iPhoneGeneration.iPodTouch4Gen)
+			{
 				isIpod = true;
+			}
 			if (iPhoneSettings.generation == iPhoneGeneration.iPhone4)
+			{
 				isIphone4 = true;
+			}
 			g = new mGraphics();
 			midlet = new GameMidlet();
 			TileMap.loadBg();
@@ -197,18 +208,24 @@ public class Main : MonoBehaviour
 		{
 			PhysicalAddress physicalAddress = allNetworkInterfaces[i].GetPhysicalAddress();
 			if (physicalAddress.ToString() != string.Empty)
+			{
 				return physicalAddress.ToString();
+			}
 		}
 		return string.Empty;
 	}
 
 	public void doClearRMS()
 	{
-		if (isPC && Rms.loadRMSInt("lastZoomlevel") != mGraphics.zoomLevel)
+		if (isPC)
 		{
-			Rms.clearAll();
-			Rms.saveRMSInt("lastZoomlevel", mGraphics.zoomLevel);
-			Rms.saveRMSInt("levelScreenKN", level);
+			int num = Rms.loadRMSInt(Rms.RMS_lastZoomlevel);
+			if (num != mGraphics.zoomLevel)
+			{
+				Rms.clearAll();
+				Rms.saveRMSInt(Rms.RMS_lastZoomlevel, mGraphics.zoomLevel);
+				Rms.saveRMSInt("levelScreenKN", level);
+			}
 		}
 	}
 
@@ -228,7 +245,9 @@ public class Main : MonoBehaviour
 		if (count >= 10)
 		{
 			if (up == 0)
+			{
 				timeup = mSystem.currentTimeMillis();
+			}
 			else if (mSystem.currentTimeMillis() - timeup > 1000)
 			{
 				upmax = up;
@@ -242,10 +261,13 @@ public class Main : MonoBehaviour
 			GameMidlet.gameCanvas.update();
 			Image.update();
 			DataInputStream.update();
+			SMS.update();
 			Net.update();
-            f++;
+			f++;
 			if (f > 8)
+			{
 				f = 0;
+			}
 			if (!isPC)
 			{
 				int num = 1 / a;
@@ -256,7 +278,7 @@ public class Main : MonoBehaviour
 	internal void Update()
 	{
 		Res.outz("Some dummy code here");
-    }
+	}
 
 	internal void checkInput()
 	{
@@ -281,34 +303,38 @@ public class Main : MonoBehaviour
 			lastMousePos.y = mousePosition3.y / (float)mGraphics.zoomLevel + (float)mGraphics.addYWhenOpenKeyBoard;
 			GameMidlet.gameCanvas.pointerReleased((int)(mousePosition3.x / (float)mGraphics.zoomLevel), (int)(((float)Screen.height - mousePosition3.y) / (float)mGraphics.zoomLevel) + mGraphics.addYWhenOpenKeyBoard);
 		}
+		if (TField.currentTField != null && TField.currentTField.isFocus)
+			TField.currentTField.HandleInputText();
 
-        if (TField.currentTField != null && TField.currentTField.isFocus)
-            TField.currentTField.HandleInputText();
-
-        if (Input.anyKeyDown && Event.current.type == EventType.KeyDown)
+		if (Input.anyKeyDown && Event.current.type == EventType.KeyDown)
 		{
 			int num = MyKeyMap.map(Event.current.keyCode);
-            //if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-            //{
-            //	KeyCode keyCode = Event.current.keyCode;
-            //	if (keyCode != KeyCode.Alpha2)
-            //	{
-            //		if (keyCode == KeyCode.Minus)
-            //			num = 95;
-            //	}
-            //	else
-            //		num = 64;
-            //}
-            if (num == -30)
-                Utils.CheckBackButtonPress();
-            if (num != 0)
+			//if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+			//{
+			//	switch (Event.current.keyCode)
+			//	{
+			//	case KeyCode.Alpha2:
+			//		num = 64;
+			//		break;
+			//	case KeyCode.Minus:
+			//		num = 95;
+			//		break;
+			//	}
+			//}
+			if (num == -30)
+				Utils.CheckBackButtonPress();
+			if (num != 0)
+			{
 				GameMidlet.gameCanvas.keyPressedz(num);
+			}
 		}
 		if (Event.current.type == EventType.KeyUp)
 		{
 			int num2 = MyKeyMap.map(Event.current.keyCode);
 			if (num2 != 0)
+			{
 				GameMidlet.gameCanvas.keyReleasedz(num2);
+			}
 		}
 		//if (isPC)
 		//{
@@ -323,7 +349,7 @@ public class Main : MonoBehaviour
 
 	internal void OnApplicationQuit()
 	{
-        //Debug.LogWarning("APP QUIT");
+		//Debug.LogWarning("APP QUIT");
 		GameCanvas.bRun = false;
 		Session_ME.gI().close();
 		Session_ME2.gI().close();
@@ -339,42 +365,56 @@ public class Main : MonoBehaviour
 
 	internal void OnApplicationPause(bool paused)
 	{
-        isResume = false;
+		isResume = false;
 		if (paused)
 		{
 			//if (GameCanvas.isWaiting())
-				//isQuitApp = true;
+			//{
+			//	isQuitApp = true;
+			//}
 		}
 		else
+		{
 			isResume = true;
+		}
 		if (TouchScreenKeyboard.visible)
 		{
 			TField.kb.active = false;
 			TField.kb = null;
 		}
 		//if (isQuitApp)
-			//Application.Quit();
+		//{
+		//	Application.Quit();
+		//}
 	}
 
 	public static void exit()
 	{
 		//if (isPC)
+		//{
 			main.OnApplicationQuit();
+		//}
 		//else
-			//a = 0;
+		//{
+		//	a = 0;
+		//}
 	}
 
 	public static bool detectCompactDevice()
 	{
 		if (iPhoneSettings.generation == iPhoneGeneration.iPhone || iPhoneSettings.generation == iPhoneGeneration.iPhone3G || iPhoneSettings.generation == iPhoneGeneration.iPodTouch1Gen || iPhoneSettings.generation == iPhoneGeneration.iPodTouch2Gen)
+		{
 			return false;
+		}
 		return true;
 	}
 
 	public static bool checkCanSendSMS()
 	{
 		if (iPhoneSettings.generation == iPhoneGeneration.iPhone3GS || iPhoneSettings.generation == iPhoneGeneration.iPhone4 || iPhoneSettings.generation > iPhoneGeneration.iPodTouch4Gen)
+		{
 			return true;
+		}
 		return false;
 	}
 }

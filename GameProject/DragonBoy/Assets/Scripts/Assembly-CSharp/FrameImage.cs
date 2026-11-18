@@ -38,7 +38,9 @@ public class FrameImage
 			frameHeight = height;
 			nFrame = img.getHeight() / height;
 			if (nFrame < 1)
+			{
 				nFrame = 1;
+			}
 		}
 	}
 
@@ -62,10 +64,14 @@ public class FrameImage
 			if (imgFrame != null)
 			{
 				if (idx > nFrame)
+				{
 					idx = nFrame;
+				}
 				int num = idx * frameHeight;
 				if (num > frameHeight * (nFrame - 1) || num < 0)
+				{
 					num = frameHeight * (nFrame - 1);
+				}
 				g.drawRegion(imgFrame, 0, num, frameWidth, frameHeight, trans, x, y, anchor);
 			}
 		}

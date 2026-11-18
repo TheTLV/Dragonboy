@@ -20,25 +20,25 @@ public class BigBoss2 : Mob, IMapObject
 
 	public new int ySd;
 
-	internal new bool isOutMap;
+	internal bool isOutMap;
 
-	internal new int wCount;
+	internal int wCount;
 
 	public new bool isShadown = true;
 
-	internal new int tick;
+	internal int tick;
 
-	internal new int frame;
+	internal int frame;
 
 	public new static Image imgHP = GameCanvas.loadImage("/mainImage/myTexture2dmobHP.png");
 
-	internal new bool wy;
+	internal bool wy;
 
-	internal new int wt;
+	internal int wt;
 
-	internal new int fy;
+	internal int fy;
 
-	internal new int ty;
+	internal int ty;
 
 	public new int typeSuperEff;
 
@@ -62,7 +62,7 @@ public class BigBoss2 : Mob, IMapObject
 
 	internal Char[] charAttack;
 
-	internal int[] dameHP;
+	internal long[] dameHP;
 
 	internal sbyte type;
 
@@ -114,7 +114,7 @@ public class BigBoss2 : Mob, IMapObject
 
 	internal bool shock;
 
-	internal new sbyte[] cou = new sbyte[2] { -1, 1 };
+	internal sbyte[] cou = new sbyte[2] { -1, 1 };
 
 	public new Char injureBy;
 
@@ -128,10 +128,12 @@ public class BigBoss2 : Mob, IMapObject
 
 	public new bool sleepEff;
 
-	public BigBoss2(int id, short px, short py, int templateID, int hp, int maxHp, int s)
+	public BigBoss2(int id, short px, short py, int templateID, long hp, long maxHp, int s)
 	{
 		if (shadowBig == null)
+		{
 			shadowBig = GameCanvas.loadImage("/mainImage/shadowBig.png");
+		}
 		mobId = id;
 		xTo = (x = px + 20);
 		yTo = (y = py);
@@ -180,8 +182,11 @@ public class BigBoss2 : Mob, IMapObject
 	{
 		for (int i = 0; i < Mob.newMob.size(); i++)
 		{
-			if (((string)Mob.newMob.elementAt(i)).Equals(id))
+			string text = (string)Mob.newMob.elementAt(i);
+			if (text.Equals(id))
+			{
 				return true;
+			}
 		}
 		return false;
 	}
@@ -190,19 +195,25 @@ public class BigBoss2 : Mob, IMapObject
 	{
 		tick++;
 		if (tick > array.Length - 1)
+		{
 			tick = 0;
+		}
 		frame = array[tick];
 	}
 
-	internal new void updateShadown()
+	internal void updateShadown()
 	{
 		int num = TileMap.size;
 		xSd = x;
 		wCount = 0;
 		if (ySd <= 0 || TileMap.tileTypeAt(xSd, ySd, 2))
+		{
 			return;
+		}
 		if (TileMap.tileTypeAt(xSd / num, ySd / num) == 0)
+		{
 			isOutMap = true;
+		}
 		else if (TileMap.tileTypeAt(xSd / num, ySd / num) != 0 && !TileMap.tileTypeAt(xSd, ySd, 2))
 		{
 			xSd = x;
@@ -216,13 +227,15 @@ public class BigBoss2 : Mob, IMapObject
 			if (TileMap.tileTypeAt(xSd, ySd, 2))
 			{
 				if (ySd % 24 != 0)
+				{
 					ySd -= ySd % 24;
+				}
 				break;
 			}
 		}
 	}
 
-	internal new void paintShadow(mGraphics g)
+	internal void paintShadow(mGraphics g)
 	{
 		int num = TileMap.size;
 		g.drawImage(shadowBig, xSd, yFirst, 3);
@@ -236,7 +249,9 @@ public class BigBoss2 : Mob, IMapObject
 	public override void update()
 	{
 		if (!isUpdate())
+		{
 			return;
+		}
 		updateShadown();
 		switch (status)
 		{
@@ -279,7 +294,9 @@ public class BigBoss2 : Mob, IMapObject
 	{
 		checkFrameTick(stand);
 		if (GameCanvas.gameTick % 5 == 0)
+		{
 			ServerEffect.addServerEffect(167, Res.random(x - getW() / 2, x + getW() / 2), Res.random(getY() + getH() / 2, getY() + getH()), 1);
+		}
 		if (x != xTo || y != yTo)
 		{
 			x += (xTo - x) / 4;
@@ -338,27 +355,35 @@ public class BigBoss2 : Mob, IMapObject
 		if (Res.abs(cx - x) < w * 2 && Res.abs(cy - y) < h * 2)
 		{
 			if (x < cx)
+			{
 				x = cx - w;
+			}
 			else
+			{
 				x = cx + w;
+			}
 			p3 = 0;
 		}
 		else
+		{
 			p3 = 1;
+		}
 	}
 
-	internal new bool isSpecial()
+	internal bool isSpecial()
 	{
 		if ((templateId >= 58 && templateId <= 65) || templateId == 67 || templateId == 68)
+		{
 			return true;
+		}
 		return false;
 	}
 
-	internal new void updateInjure()
+	internal void updateInjure()
 	{
 	}
 
-	internal new void updateMobStandWait()
+	internal void updateMobStandWait()
 	{
 		checkFrameTick(stand);
 		if (x != xTo || y != yTo)
@@ -374,7 +399,7 @@ public class BigBoss2 : Mob, IMapObject
 		flyUp = true;
 	}
 
-	public void setAttack(Char[] cAttack, int[] dame, sbyte type)
+	public void setAttack(Char[] cAttack, long[] dame, sbyte type)
 	{
 		status = 3;
 		charAttack = cAttack;
@@ -388,7 +413,9 @@ public class BigBoss2 : Mob, IMapObject
 		if (type == 0)
 		{
 			if (tick == attack1.Length - 1)
+			{
 				status = 2;
+			}
 			dir = ((x < charAttack[0].cx) ? 1 : (-1));
 			checkFrameTick(attack1);
 			x += (charAttack[0].cx - x) / 4;
@@ -398,7 +425,7 @@ public class BigBoss2 : Mob, IMapObject
 			{
 				for (int i = 0; i < charAttack.Length; i++)
 				{
-					charAttack[i].doInjure(dameHP[i], 0, false, false);
+					charAttack[i].doInjure(dameHP[i], 0L, false, false);
 					ServerEffect.addServerEffect(102, charAttack[i].cx, charAttack[i].cy, 1);
 				}
 			}
@@ -406,21 +433,27 @@ public class BigBoss2 : Mob, IMapObject
 		if (type == 1)
 		{
 			if (tick == attack2.Length - 1)
+			{
 				status = 2;
+			}
 			dir = ((x < charAttack[0].cx) ? 1 : (-1));
 			checkFrameTick(attack2);
 			if (tick == 8)
 			{
 				for (int j = 0; j < charAttack.Length; j++)
 				{
-					MonsterDart.addMonsterDart(x + ((dir != 1) ? (-45) : 45), y - 25, true, dameHP[j], 0, charAttack[j], 24);
+					MonsterDart.addMonsterDart(x + ((dir != 1) ? (-45) : 45), y - 25, true, dameHP[j], 0L, charAttack[j], 24);
 				}
 			}
 		}
 		if (type != 2)
+		{
 			return;
+		}
 		if (tick == fly.Length - 1)
+		{
 			status = 2;
+		}
 		dir = ((x < charAttack[0].cx) ? 1 : (-1));
 		checkFrameTick(fly);
 		x += (charAttack[0].cx - x) / 4;
@@ -430,7 +463,7 @@ public class BigBoss2 : Mob, IMapObject
 		{
 			for (int k = 0; k < charAttack.Length; k++)
 			{
-				charAttack[k].doInjure(dameHP[k], 0, false, false);
+				charAttack[k].doInjure(dameHP[k], 0L, false, false);
 				ServerEffect.addServerEffect(102, charAttack[k].cx, charAttack[k].cy, 1);
 			}
 		}
@@ -443,51 +476,77 @@ public class BigBoss2 : Mob, IMapObject
 	public new bool isPaint()
 	{
 		if (x < GameScr.cmx)
+		{
 			return false;
+		}
 		if (x > GameScr.cmx + GameScr.gW)
+		{
 			return false;
+		}
 		if (y < GameScr.cmy)
+		{
 			return false;
+		}
 		if (y > GameScr.cmy + GameScr.gH + 30)
+		{
 			return false;
+		}
 		if (status == 0)
+		{
 			return false;
+		}
 		return true;
 	}
 
 	public new bool isUpdate()
 	{
 		if (status == 0)
+		{
 			return false;
+		}
 		return true;
 	}
 
 	public new bool checkIsBoss()
 	{
 		if (isBoss || levelBoss > 0)
+		{
 			return true;
+		}
 		return false;
 	}
 
 	public override void paint(mGraphics g)
 	{
 		if (data == null || isHide)
+		{
 			return;
+		}
 		if (isMafuba)
 		{
 			if (!changBody)
+			{
 				data.paintFrame(g, frame, xMFB, yMFB, (dir != 1) ? 1 : 0, 2);
+			}
 			else
+			{
 				SmallImage.drawSmallImage(g, smallBody, xMFB, yMFB, (dir != 1) ? 2 : 0, mGraphics.BOTTOM | mGraphics.HCENTER);
+			}
 			return;
 		}
 		if (isShadown && status != 0)
+		{
 			paintShadow(g);
+		}
 		g.translate(0, GameCanvas.transY);
 		if (!changBody)
+		{
 			data.paintFrame(g, frame, x, y + fy, (dir != 1) ? 1 : 0, 2);
+		}
 		else
+		{
 			SmallImage.drawSmallImage(g, smallBody, x, y + fy - 9, (dir != 1) ? 2 : 0, mGraphics.BOTTOM | mGraphics.HCENTER);
+		}
 		g.translate(0, -GameCanvas.transY);
 		int imageWidth = mGraphics.getImageWidth(imgHPtem);
 		int imageHeight = mGraphics.getImageHeight(imgHPtem);
@@ -500,7 +559,9 @@ public class BigBoss2 : Mob, IMapObject
 		{
 			num2 = num5 - num;
 			if (num2 <= 0)
+			{
 				num2 = 0;
+			}
 		}
 		else
 		{
@@ -514,8 +575,10 @@ public class BigBoss2 : Mob, IMapObject
 		if (shock)
 		{
 			tShock++;
-			EffecMn.addEff(new Effect((type != 2) ? 22 : 19, x + tShock * 50, y + 25, 2, 1, -1));
-			EffecMn.addEff(new Effect((type != 2) ? 22 : 19, x - tShock * 50, y + 25, 2, 1, -1));
+			Effect me = new Effect((type != 2) ? 22 : 19, x + tShock * 50, y + 25, 2, 1, -1);
+			EffecMn.addEff(me);
+			Effect me2 = new Effect((type != 2) ? 22 : 19, x - tShock * 50, y + 25, 2, 1, -1);
+			EffecMn.addEff(me2);
 			if (tShock == 50)
 			{
 				tShock = 0;
@@ -531,9 +594,9 @@ public class BigBoss2 : Mob, IMapObject
 
 	public new void startDie()
 	{
-		hp = 0;
+		hp = 0L;
 		injureThenDie = true;
-		hp = 0;
+		hp = 0L;
 		status = 1;
 		p1 = -3;
 		p2 = -dir;
@@ -555,13 +618,19 @@ public class BigBoss2 : Mob, IMapObject
 		if (Res.abs(num - x) < w * 2 && Res.abs(num2 - y) < h * 2)
 		{
 			if (x < num)
+			{
 				x = num - w;
+			}
 			else
+			{
 				x = num + w;
+			}
 			p3 = 0;
 		}
 		else
+		{
 			p3 = 1;
+		}
 	}
 
 	public new int getX()
@@ -602,7 +671,9 @@ public class BigBoss2 : Mob, IMapObject
 	public new void removeHoldEff()
 	{
 		if (holdEffID != 0)
+		{
 			holdEffID = 0;
+		}
 	}
 
 	public new void removeBlindEff()

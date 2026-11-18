@@ -17,7 +17,9 @@ public class EffectManager : MyVector
 			{
 				effect_End.update();
 				if (effect_End.isRemove)
+				{
 					removeElementAt(num);
+				}
 			}
 		}
 	}
@@ -36,7 +38,9 @@ public class EffectManager : MyVector
 		{
 			Effect_End effect_End = (Effect_End)elementAt(i);
 			if (effect_End != null && !effect_End.isRemove)
+			{
 				((Effect_End)elementAt(i)).paint(g);
+			}
 		}
 	}
 

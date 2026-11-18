@@ -43,13 +43,19 @@ public class ChooseCharScr : mScreen, IActionListener
 	public override void update()
 	{
 		if (GameCanvas.gameTick % 10 > 2)
+		{
 			cf = 1;
+		}
 		else
+		{
 			cf = 0;
+		}
 		for (int i = 0; i < vc_players.Length; i++)
 		{
 			if (vc_players[i].isPointerPressInside())
+			{
 				vc_players[i].performAction();
+			}
 		}
 		for (int j = 0; j < cx.Length; j++)
 		{
@@ -61,7 +67,8 @@ public class ChooseCharScr : mScreen, IActionListener
 					break;
 				}
 				if (GameCanvas.isPointerJustRelease && !GameCanvas.isPointerClick)
-					;
+				{
+				}
 			}
 		}
 		base.update();
@@ -127,15 +134,18 @@ public class ChooseCharScr : mScreen, IActionListener
 
 	public void perform(int idAction, object p)
 	{
-		if (idAction != 1)
+		switch (idAction)
 		{
-			if (idAction == 2)
-				GameCanvas.instance.doResetToLoginScr(GameCanvas.serverScreen);
-		}
-		else if (focus != -1)
-		{
-			GameCanvas.startWaitDlg();
-			Service.gI().finishUpdate(playerData[focus].playerID);
+		case 1:
+			if (focus != -1)
+			{
+				GameCanvas.startWaitDlg();
+				Service.gI().finishUpdate(playerData[focus].playerID);
+			}
+			break;
+		case 2:
+			GameCanvas.instance.doResetToLoginScr(GameCanvas.serverScreen);
+			break;
 		}
 	}
 }

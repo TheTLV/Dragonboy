@@ -45,14 +45,17 @@ public class ImgByName
 		sbyte[] array = null;
 		array = Rms.loadRMS(text);
 		if (array == null)
+		{
 			return result;
+		}
 		try
 		{
 			result = new MainImage();
 			result.nFrame = array[0];
 			result.img = Image.createImage(array, 1, array.Length - 1);
 			if (result.img != null)
-				;
+			{
+			}
 		}
 		catch (Exception)
 		{
@@ -96,7 +99,10 @@ public class ImgByName
 		{
 			MainImage mainImage = (MainImage)enumerator.Value;
 			if (GameCanvas.timeNow / 1000 - mainImage.count > minute * 60)
-				myVector.addElement((string)enumerator.Key);
+			{
+				string o = (string)enumerator.Key;
+				myVector.addElement(o);
+			}
 		}
 		for (int i = 0; i < myVector.size(); i++)
 		{

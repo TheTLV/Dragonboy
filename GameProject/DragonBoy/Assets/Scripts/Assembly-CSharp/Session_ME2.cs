@@ -32,7 +32,8 @@ public class Session_ME2 : ISession
 					{
 						while (sendingMessage.Count > 0)
 						{
-							doSendMessage(sendingMessage[0]);
+							Message m = sendingMessage[0];
+							doSendMessage(m);
 							sendingMessage.RemoveAt(0);
 						}
 					}
@@ -53,7 +54,7 @@ public class Session_ME2 : ISession
 		}
 	}
 
-	private class MessageCollector
+	internal class MessageCollector
 	{
 		public void run()
 		{
@@ -63,13 +64,19 @@ public class Session_ME2 : ISession
 				{
 					Message message = readMessage();
 					if (message == null)
+					{
 						break;
+					}
 					try
 					{
 						if (message.command == -27)
+						{
 							getKey(message);
+						}
 						else
+						{
 							onRecieveMsg(message);
+						}
 					}
 					catch (Exception)
 					{
@@ -91,16 +98,24 @@ public class Session_ME2 : ISession
 				Debug.Log(ex3.Message.ToString());
 			}
 			if (!connected)
+			{
 				return;
+			}
 			if (messageHandler != null)
 			{
 				if (currentTimeMillis() - timeConnected > 500)
+				{
 					messageHandler.onDisconnected(isMainSession);
+				}
 				else
+				{
 					messageHandler.onConnectionFail(isMainSession);
+				}
 			}
 			if (sc != null)
+			{
 				cleanNetwork();
+			}
 		}
 
 		internal void getKey(Message message)
@@ -108,22 +123,25 @@ public class Session_ME2 : ISession
 			try
 			{
 				sbyte b = message.reader().readSByte();
-				key = new sbyte[b];
+				Session_ME2.key = new sbyte[b];
 				for (int i = 0; i < b; i++)
 				{
-					key[i] = message.reader().readSByte();
+					Session_ME2.key[i] = message.reader().readSByte();
 				}
-				for (int j = 0; j < key.Length - 1; j++)
+				for (int j = 0; j < Session_ME2.key.Length - 1; j++)
 				{
-					ref sbyte reference = ref key[j + 1];
-					reference ^= key[j];
+					sbyte[] key = Session_ME2.key;
+					int num = j + 1;
+					key[num] ^= Session_ME2.key[j];
 				}
 				getKeyComplete = true;
 				GameMidlet.IP2 = message.reader().readUTF();
 				GameMidlet.PORT2 = message.reader().readInt();
 				GameMidlet.isConnect2 = ((message.reader().readByte() != 0) ? true : false);
 				if (isMainSession && GameMidlet.isConnect2)
+				{
 					GameCanvas.connect2();
+				}
 			}
 			catch (Exception)
 			{
@@ -134,14 +152,16 @@ public class Session_ME2 : ISession
 		{
 			int num = readKey(dis.ReadSByte()) + 128;
 			int num2 = readKey(dis.ReadSByte()) + 128;
-			int num3 = ((readKey(dis.ReadSByte()) + 128) * 256 + num2) * 256 + num;
-			Cout.LogError("SIZE = " + num3);
-			sbyte[] array = new sbyte[num3];
-			int num4 = 0;
-			Buffer.BlockCopy(dis.ReadBytes(num3), 0, array, 0, num3);
-			recvByteCount += 5 + num3;
-			int num5 = recvByteCount + sendByteCount;
-			strRecvByteCount = num5 / 1024 + "." + num5 % 1024 / 102 + "Kb";
+			int num3 = readKey(dis.ReadSByte()) + 128;
+			int num4 = (num3 * 256 + num2) * 256 + num;
+			Cout.LogError("SIZE = " + num4);
+			sbyte[] array = new sbyte[num4];
+			int num5 = 0;
+			byte[] src = dis.ReadBytes(num4);
+			Buffer.BlockCopy(src, 0, array, 0, num4);
+			recvByteCount += 5 + num4;
+			int num6 = recvByteCount + sendByteCount;
+			strRecvByteCount = num6 / 1024 + "." + num6 % 1024 / 102 + "Kb";
 			if (getKeyComplete)
 			{
 				for (int i = 0; i < array.Length; i++)
@@ -158,9 +178,13 @@ public class Session_ME2 : ISession
 			{
 				sbyte b = dis.ReadSByte();
 				if (getKeyComplete)
+				{
 					b = readKey(b);
+				}
 				if (b == -32 || b == -66 || b == 11 || b == -67 || b == -74 || b == -87)
+				{
 					return readMessage2(b);
+				}
 				int num;
 				if (getKeyComplete)
 				{
@@ -169,11 +193,16 @@ public class Session_ME2 : ISession
 					num = ((readKey(b2) & 0xFF) << 8) | (readKey(b3) & 0xFF);
 				}
 				else
-					num = (dis.ReadSByte() & 0xFF00) | (dis.ReadSByte() & 0xFF);
+				{
+					sbyte b4 = dis.ReadSByte();
+					sbyte b5 = dis.ReadSByte();
+					num = (b4 & 0xFF00) | (b5 & 0xFF);
+				}
 				sbyte[] array = new sbyte[num];
 				int num2 = 0;
 				int num3 = 0;
-				Buffer.BlockCopy(dis.ReadBytes(num), 0, array, 0, num);
+				byte[] src = dis.ReadBytes(num);
+				Buffer.BlockCopy(src, 0, array, 0, num);
 				recvByteCount += 5 + num;
 				int num4 = recvByteCount + sendByteCount;
 				strRecvByteCount = num4 / 1024 + "." + num4 % 1024 / 102 + "Kb";
@@ -261,7 +290,9 @@ public class Session_ME2 : ISession
 	public static Session_ME2 gI()
 	{
 		if (instance == null)
+		{
 			instance = new Session_ME2();
+		}
 		return instance;
 	}
 
@@ -322,9 +353,9 @@ public class Session_ME2 : ISession
 		dos = new BinaryWriter(dataStream, new UTF8Encoding());
 		sendThread = new Thread(sender.run);
 		sendThread.Start();
-		MessageCollector @object = new MessageCollector();
+		MessageCollector messageCollector = new MessageCollector();
 		Cout.LogError("new -----");
-		collectorThread = new Thread(@object.run);
+		collectorThread = new Thread(messageCollector.run);
 		collectorThread.Start();
 		timeConnected = currentTimeMillis();
 		connecting = false;
@@ -348,7 +379,9 @@ public class Session_ME2 : ISession
 				dos.Write(value);
 			}
 			else
+			{
 				dos.Write(m.command);
+			}
 			if (data != null)
 			{
 				int num = data.Length;
@@ -360,7 +393,9 @@ public class Session_ME2 : ISession
 					dos.Write((sbyte)num3);
 				}
 				else
+				{
 					dos.Write((ushort)num);
+				}
 				if (getKeyComplete)
 				{
 					for (int i = 0; i < data.Length; i++)
@@ -382,7 +417,9 @@ public class Session_ME2 : ISession
 					dos.Write((sbyte)num6);
 				}
 				else
+				{
 					dos.Write((ushort)0);
+				}
 				sendByteCount += 5;
 			}
 			dos.Flush();
@@ -400,7 +437,9 @@ public class Session_ME2 : ISession
 		curR = (sbyte)(num + 1);
 		sbyte result = (sbyte)((array[num] & 0xFF) ^ (b & 0xFF));
 		if (curR >= key.Length)
+		{
 			curR %= (sbyte)key.Length;
+		}
 		return result;
 	}
 
@@ -411,16 +450,22 @@ public class Session_ME2 : ISession
 		curW = (sbyte)(num + 1);
 		sbyte result = (sbyte)((array[num] & 0xFF) ^ (b & 0xFF));
 		if (curW >= key.Length)
+		{
 			curW %= (sbyte)key.Length;
+		}
 		return result;
 	}
 
 	public static void onRecieveMsg(Message msg)
 	{
 		if (Thread.CurrentThread.Name == Main.mainThreadName)
+		{
 			messageHandler.onMessage(msg);
+		}
 		else
+		{
 			recieveMsg.addElement(msg);
+		}
 	}
 
 	public static void update()
@@ -429,7 +474,9 @@ public class Session_ME2 : ISession
 		{
 			Message message = (Message)recieveMsg.elementAt(0);
 			if (Controller.isStopReadMessage)
+			{
 				break;
+			}
 			if (message == null)
 			{
 				recieveMsg.removeElementAt(0);
@@ -490,7 +537,9 @@ public class Session_ME2 : ISession
 	public static byte convertSbyteToByte(sbyte var)
 	{
 		if (var > 0)
+		{
 			return (byte)var;
+		}
 		return (byte)(var + 256);
 	}
 
@@ -500,9 +549,13 @@ public class Session_ME2 : ISession
 		for (int i = 0; i < var.Length; i++)
 		{
 			if (var[i] > 0)
+			{
 				array[i] = (byte)var[i];
+			}
 			else
+			{
 				array[i] = (byte)(var[i] + 256);
+			}
 		}
 		return array;
 	}

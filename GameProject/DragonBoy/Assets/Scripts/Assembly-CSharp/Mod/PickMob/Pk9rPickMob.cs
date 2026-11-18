@@ -115,7 +115,7 @@ namespace Mod.PickMob
         }
 
         [ChatCommand("addtm")]
-        internal static void AddOrRemoveMonsterTypeAutoAttack(sbyte type)
+        internal static void AddOrRemoveMonsterTypeAutoAttack(int type)
         {
             if (TypeMobsTanSat.Contains(type))
             {

@@ -138,24 +138,31 @@ public class myWriter
 	public void writeUTF(string value)
 	{
 		Encoding unicode = Encoding.Unicode;
-		byte[] array = Encoding.Convert(unicode, Encoding.GetEncoding(65001), unicode.GetBytes(value));
+		Encoding encoding = Encoding.GetEncoding(65001);
+		byte[] bytes = unicode.GetBytes(value);
+		byte[] array = Encoding.Convert(unicode, encoding, bytes);
 		writeShort((short)array.Length);
 		checkLenght(array.Length);
 		for (int i = 0; i < array.Length; i++)
 		{
-			writeSByteUncheck((sbyte)array[i]);
+			sbyte value2 = (sbyte)array[i];
+			writeSByteUncheck(value2);
 		}
 	}
 
 	public void write(ref sbyte[] data, int arg1, int arg2)
 	{
 		if (data == null)
+		{
 			return;
+		}
 		for (int i = 0; i < arg2; i++)
 		{
 			writeSByte(data[i + arg1]);
 			if (posWrite > buffer.Length)
+			{
 				break;
+			}
 		}
 	}
 
@@ -167,7 +174,9 @@ public class myWriter
 	public sbyte[] getData()
 	{
 		if (posWrite <= 0)
+		{
 			return null;
+		}
 		sbyte[] array = new sbyte[posWrite];
 		for (int i = 0; i < posWrite; i++)
 		{

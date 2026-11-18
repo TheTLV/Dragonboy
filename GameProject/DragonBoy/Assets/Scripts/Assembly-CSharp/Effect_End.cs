@@ -267,7 +267,9 @@ public class Effect_End
 		if (charUse.containsCaiTrang(1265))
 		{
 			if (typeEffect == 21 || typeEffect == 22 || typeEffect == 23)
+			{
 				this.charUse.cx += 10 * this.charUse.cdir;
+			}
 			else if (typeEffect == 18 || typeEffect == 19 || typeEffect == 20)
 			{
 				this.charUse.cx += -15 * this.charUse.cdir;
@@ -323,7 +325,9 @@ public class Effect_End
 	public static Image getImage(int id)
 	{
 		if (id < 0)
+		{
 			return null;
+		}
 		string path = "/e/e_" + id + ".png";
 		Image result = null;
 		try
@@ -343,7 +347,9 @@ public class Effect_End
 			int num = -1;
 			int num2 = Res.random(3);
 			if (num >= 0)
+			{
 				SoundMn.playSound(x, y, num, SoundMn.volume);
+			}
 		}
 		catch (Exception ex)
 		{
@@ -356,34 +362,7 @@ public class Effect_End
 		try
 		{
 			setSoundSkill_END(x, y, typeEffect);
-			int num = typeEffect;
-			switch (num)
-			{
-			case 16:
-			case 17:
-				set_Sub();
-				return;
-			case 18:
-			case 19:
-			case 20:
-				set_Pow();
-				return;
-			case 21:
-			case 22:
-			case 23:
-				set_Gong();
-				return;
-			case 24:
-				set_Skill_Kamex10();
-				return;
-			case 25:
-				set_Skill_Destroy();
-				return;
-			case 26:
-				set_Skill_MaFuba();
-				return;
-			}
-			switch (num)
+			switch (typeEffect)
 			{
 			case 0:
 			case 1:
@@ -393,18 +372,35 @@ public class Effect_End
 			case 3:
 				set_FireWork();
 				break;
+			case 16:
+			case 17:
+				set_Sub();
+				break;
+			case 18:
+			case 19:
+			case 20:
+				set_Pow();
+				break;
+			case 21:
+			case 22:
+			case 23:
+				set_Gong();
+				break;
+			case 24:
+				set_Skill_Kamex10();
+				break;
+			case 25:
+				set_Skill_Destroy();
+				break;
+			case 26:
+				set_Skill_MaFuba();
+				break;
 			case 9:
 				set_LINE_IN();
 				break;
 			case 10:
 			case 11:
 				set_End_Rock();
-				break;
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
 				break;
 			}
 		}
@@ -420,34 +416,7 @@ public class Effect_End
 		try
 		{
 			f++;
-			int num = typeEffect;
-			switch (num)
-			{
-			case 16:
-			case 17:
-				upd_Sub();
-				return;
-			case 18:
-			case 19:
-			case 20:
-				upd_Pow();
-				return;
-			case 21:
-			case 22:
-			case 23:
-				upd_Gong();
-				return;
-			case 24:
-				upd_Skill_Kamex10();
-				return;
-			case 25:
-				upd_Skill_Destroy();
-				return;
-			case 26:
-				upd_Skill_MaFuba();
-				return;
-			}
-			switch (num)
+			switch (typeEffect)
 			{
 			case 0:
 			case 1:
@@ -457,18 +426,35 @@ public class Effect_End
 			case 3:
 				upd_FireWork();
 				break;
+			case 16:
+			case 17:
+				upd_Sub();
+				break;
+			case 18:
+			case 19:
+			case 20:
+				upd_Pow();
+				break;
+			case 21:
+			case 22:
+			case 23:
+				upd_Gong();
+				break;
+			case 24:
+				upd_Skill_Kamex10();
+				break;
+			case 25:
+				upd_Skill_Destroy();
+				break;
+			case 26:
+				upd_Skill_MaFuba();
+				break;
 			case 9:
 				upd_LINE_IN();
 				break;
 			case 10:
 			case 11:
 				upd_End_Rock();
-				break;
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
 				break;
 			}
 		}
@@ -484,40 +470,10 @@ public class Effect_End
 		try
 		{
 			if (isRemove || f < 0)
-				return;
-			int num = typeEffect;
-			switch (num)
 			{
-			case 17:
-				pnt_Sub(g, mGraphics.VCENTER);
-				return;
-			case 16:
-				if (typeSub == 0)
-					pnt_Sub(g, mGraphics.BOTTOM | mGraphics.HCENTER);
-				else
-					pnt_Sub(g, mGraphics.VCENTER | mGraphics.HCENTER);
-				return;
-			case 18:
-			case 19:
-			case 20:
-				pnt_Pow(g, mGraphics.BOTTOM | mGraphics.HCENTER);
-				return;
-			case 21:
-			case 22:
-			case 23:
-				pnt_Gong(g, mGraphics.VCENTER | mGraphics.HCENTER);
-				return;
-			case 24:
-				pnt_Skill_Kamex10(g);
-				return;
-			case 25:
-				pnt_Skill_Destroy(g);
-				return;
-			case 26:
-				pnt_Skill_MaFuba(g);
 				return;
 			}
-			switch (num)
+			switch (typeEffect)
 			{
 			case 0:
 			case 1:
@@ -527,18 +483,44 @@ public class Effect_End
 			case 3:
 				pnt_FireWork(g);
 				break;
+			case 17:
+				pnt_Sub(g, mGraphics.VCENTER);
+				break;
+			case 16:
+				if (typeSub == 0)
+				{
+					pnt_Sub(g, mGraphics.BOTTOM | mGraphics.HCENTER);
+				}
+				else
+				{
+					pnt_Sub(g, mGraphics.VCENTER | mGraphics.HCENTER);
+				}
+				break;
+			case 18:
+			case 19:
+			case 20:
+				pnt_Pow(g, mGraphics.BOTTOM | mGraphics.HCENTER);
+				break;
+			case 21:
+			case 22:
+			case 23:
+				pnt_Gong(g, mGraphics.VCENTER | mGraphics.HCENTER);
+				break;
+			case 24:
+				pnt_Skill_Kamex10(g);
+				break;
+			case 25:
+				pnt_Skill_Destroy(g);
+				break;
+			case 26:
+				pnt_Skill_MaFuba(g);
+				break;
 			case 9:
 				pnt_LINE_IN(g);
 				break;
 			case 10:
 			case 11:
 				pnt_End_Rock(g);
-				break;
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
 				break;
 			}
 		}
@@ -593,7 +575,9 @@ public class Effect_End
 	public void updateAngleXP(int fmove)
 	{
 		if (f < fmove)
+		{
 			return;
+		}
 		if (charUse == null || target == null || f >= fRemove)
 		{
 			f = fRemove;
@@ -611,7 +595,9 @@ public class Effect_End
 		if (Res.abs(num3 - gocT_Arc) < 90 || num * num + num2 * num2 > 4096)
 		{
 			if (Res.abs(num3 - gocT_Arc) < 15)
+			{
 				gocT_Arc = num3;
+			}
 			else if ((num3 - gocT_Arc >= 0 && num3 - gocT_Arc < 180) || num3 - gocT_Arc < -180)
 			{
 				gocT_Arc = Res.fixangle(gocT_Arc + 15);
@@ -622,24 +608,32 @@ public class Effect_End
 			}
 		}
 		if (f > fRemove * 2 / 3 && va < 8192)
+		{
 			va += 3096;
+		}
 		vx1000 = va * Res.cos(gocT_Arc) >> 10;
 		vy1000 = va * Res.sin(gocT_Arc) >> 10;
 		num += vx1000;
-		x += num >> 10;
+		int num4 = num >> 10;
+		x += num4;
 		num &= 0x3FF;
 		num2 += vy1000;
-		y += num2 >> 10;
+		int num5 = num2 >> 10;
+		y += num5;
 		num2 &= 0x3FF;
 	}
 
 	public int setFrameAngle(int goc)
 	{
 		if (goc <= 15 || goc > 345)
+		{
 			return 12;
+		}
 		int num = (goc - 15) / 15 + 1;
 		if (num > 24)
+		{
 			num = 24;
+		}
 		return mpaintone_Arrow[num];
 	}
 
@@ -670,7 +664,8 @@ public class Effect_End
 			dir = 0;
 			dir_nguoc = 2;
 		}
-		frame = setFrameAngle(Res.angle(num, num2));
+		int frameAngle = Res.angle(num, num2);
+		frame = setFrameAngle(frameAngle);
 		fSpeed = frame;
 		create_Speed(num, num2);
 	}
@@ -681,17 +676,27 @@ public class Effect_End
 		int num2 = 0;
 		int num3 = Res.getDistance(dx, dy) / vMax;
 		if (num3 == 0)
+		{
 			num3 = 1;
+		}
 		num = dx / num3;
 		num2 = dy / num3;
 		if (num == 0 && dx < num3)
+		{
 			num = ((dx >= 0) ? 1 : (-1));
+		}
 		if (num2 == 0 && dy < num3)
+		{
 			num2 = ((dy >= 0) ? 1 : (-1));
+		}
 		if (Res.abs(num) > Res.abs(dx))
+		{
 			num = dx;
+		}
 		if (Res.abs(num2) > Res.abs(dy))
+		{
 			num2 = dy;
+		}
 		vx = num;
 		vy = num2;
 	}
@@ -710,16 +715,22 @@ public class Effect_End
 			vx = 0;
 		}
 		else
+		{
 			x += vx;
+		}
 		if (Res.abs(y - toY) < Res.abs(vy))
 		{
 			y = toY;
 			vy = 0;
 		}
 		else
+		{
 			y += vy;
+		}
 		if (Res.abs(x - toX) >= Res.abs(vMax) || Res.abs(y - toY) >= Res.abs(vMax) || typeEff_End < 0)
+		{
 			return;
+		}
 		if (target != null)
 		{
 			int num = target.x;
@@ -752,11 +763,15 @@ public class Effect_End
 		{
 			int num = frm.nFrame / 3;
 			if (num < 1)
+			{
 				num = 1;
+			}
 			int num2 = 0;
 			int num3 = 3;
 			if (frm.nFrame <= 6)
+			{
 				num2 = ((frm.nFrame <= 3) ? (f % num) : ((f / num3 % 2 != 0) ? 3 : 0));
+			}
 			else
 			{
 				num = 1;
@@ -764,27 +779,31 @@ public class Effect_End
 			}
 			int idx = num * mImageArrow[index] + num2;
 			if (frm.nFrame < 3)
+			{
 				idx = f / num3 % frm.nFrame;
+			}
 			if (isCountFr)
+			{
 				idx = f / num3 % frm.nFrame;
+			}
 			frm.drawFrame(idx, x, y, mXoayArrow[index], anchor, g);
 		}
 	}
 
 	internal void set_End_String(int typeEffect)
 	{
-		if (typeEffect != 0)
+		switch (typeEffect)
 		{
-			if (typeEffect != 1)
-			{
-				if (typeEffect == 2)
-					fraImgEff = new FrameImage(6);
-			}
-			else
-				fraImgEff = new FrameImage(5);
-		}
-		else
+		case 0:
 			fraImgEff = new FrameImage(4);
+			break;
+		case 1:
+			fraImgEff = new FrameImage(5);
+			break;
+		case 2:
+			fraImgEff = new FrameImage(6);
+			break;
+		}
 		fRemove = 100;
 		dy_throw = GameCanvas.h / 3 + 10;
 		vy = 10;
@@ -797,10 +816,14 @@ public class Effect_End
 		x = GameCanvas.hw;
 		y = y1000;
 		if (f > fRemove)
+		{
 			removeEff();
+		}
 		vy++;
 		if (vy > 15)
+		{
 			vy = 15;
+		}
 		if (y1000 + vy < dy_throw)
 		{
 			y1000 += vy;
@@ -811,14 +834,18 @@ public class Effect_End
 		{
 			isAddSub = true;
 			if (typeSub != -1)
+			{
 				GameScr.addEffectEnd(typeSub, 0, 0, x, y, levelPaint, 0, -1, null);
+			}
 		}
 	}
 
 	internal void pnt_End_String(mGraphics g)
 	{
 		if (fraImgEff != null)
+		{
 			fraImgEff.drawFrame(f / 5 % fraImgEff.nFrame, x, y, 0, 33, g);
+		}
 	}
 
 	internal void set_FireWork()
@@ -836,7 +863,9 @@ public class Effect_End
 				point.fRe = Res.random(10);
 				int num2 = 1;
 				if (i % 2 == 0)
+				{
 					num2 = -1;
+				}
 				point.x = x + Res.random(arrInfoEff[5][0] / 2) * num2;
 				point.y = y - Res.random(arrInfoEff[5][1] / 2);
 				point.fraImgEff = new FrameImage(7);
@@ -852,22 +881,30 @@ public class Effect_End
 			Point point = (Point)VecEffEnd.elementAt(i);
 			point.update();
 			if (point.f == point.fRe)
+			{
 				SoundMn.playSound(point.x, point.y, SoundMn.FIREWORK, SoundMn.volume);
+			}
 			if (point.f - point.fRe <= point.fraImgEff.nFrame * 3 - 1)
+			{
 				continue;
+			}
 			point.f = 0;
 			if (typeSub == 0)
 			{
 				point.fRe = Res.random(10);
 				int num = 1;
 				if (i % 2 == 0)
+				{
 					num = -1;
+				}
 				point.x = x + Res.random(arrInfoEff[5][0] / 2) * num;
 				point.y = y - Res.random(arrInfoEff[5][1] / 2);
 			}
 		}
 		if (f >= fRemove)
+		{
 			removeEff();
+		}
 	}
 
 	internal void pnt_FireWork(mGraphics g)
@@ -876,7 +913,9 @@ public class Effect_End
 		{
 			Point point = (Point)VecEffEnd.elementAt(i);
 			if (point.f - point.fRe > -1 && point.fraImgEff != null)
+			{
 				point.fraImgEff.drawFrame((point.f - point.fRe) / 3 % point.fraImgEff.nFrame, point.x, point.y, 0, 3, g);
+			}
 		}
 	}
 
@@ -895,11 +934,15 @@ public class Effect_End
 		fSpeed++;
 		w += 20;
 		if (w > vMax)
+		{
 			w = vMax;
+		}
 		x = charUse.cx + 10;
 		y = charUse.cy - 3;
 		if (dir == -1)
+		{
 			x = charUse.cx - w - 10;
+		}
 		if (!isAddSub && GameCanvas.timeNow - time >= timeRemove)
 		{
 			f = 0;
@@ -909,9 +952,13 @@ public class Effect_End
 		if (f > nFrame.Length - 1)
 		{
 			if (isAddSub)
+			{
 				removeEff();
+			}
 			else
+			{
 				f = 0;
+			}
 		}
 	}
 
@@ -923,7 +970,9 @@ public class Effect_End
 			Fill_Rect_Img(g, fra_skill[0], fra_skill[1], fra_skill[2], nFrame[f], x, y, vMax);
 			GameCanvas.resetTransGameScr(g);
 			if (dir == -1 && fra_skill[0] != null)
+			{
 				fra_skill[0].drawFrame(nFrame[f], x + w - fra_skill[0].frameWidth, y - fra_skill[0].frameHeight / 2 - 1, 2, 0, g);
+			}
 		}
 	}
 
@@ -968,7 +1017,9 @@ public class Effect_End
 			}
 		}
 		else
+		{
 			removeEff();
+		}
 	}
 
 	internal void upd_Skill_Destroy()
@@ -982,9 +1033,13 @@ public class Effect_End
 				point.isPaint = true;
 				GameScr.addEffectEnd(17, 0, typePaint, charUse.cx, charUse.cy - 3, 2, dir_nguoc, -1, null);
 				if (i == VecEffEnd.size() - 1)
+				{
 					SoundMn.playSound(point.x, point.y, SoundMn.DESTROY_1, SoundMn.volume);
+				}
 				else
+				{
 					SoundMn.playSound(point.x, point.y, SoundMn.DESTROY_0, SoundMn.volume);
+				}
 			}
 			if (point.isPaint && !point.isRemove)
 			{
@@ -992,7 +1047,9 @@ public class Effect_End
 				if (!point.isChange)
 				{
 					if (point.f < 10 && i == VecEffEnd.size() - 1 && charUse != null && !TileMap.tileTypeAt(charUse.cx - (charUse.chw + 1) * charUse.cdir, charUse.cy, (charUse.cdir != 1) ? 4 : 8))
+					{
 						charUse.cx -= charUse.cdir;
+					}
 					point.moveTo_xy(point.toX, point.toY);
 					if (point.x == point.toX)
 					{
@@ -1001,13 +1058,19 @@ public class Effect_End
 					}
 				}
 				if (point.isChange && point.f >= n_frame * point.fraImgEff_2.nFrame)
+				{
 					point.isRemove = true;
+				}
 			}
 			if (point.isRemove)
+			{
 				num++;
+			}
 		}
 		if (num == VecEffEnd.size())
+		{
 			removeEff();
+		}
 	}
 
 	internal void pnt_Skill_Destroy(mGraphics g)
@@ -1018,9 +1081,13 @@ public class Effect_End
 			if (point.isPaint && !point.isRemove)
 			{
 				if (!point.isChange)
+				{
 					point.paint_Arrow(g, point.fraImgEff, mGraphics.VCENTER | mGraphics.HCENTER, false);
+				}
 				if (point.isChange)
+				{
 					point.fraImgEff_2.drawFrame(point.f / n_frame % point.fraImgEff_2.nFrame, point.x, point.y, dir_nguoc, mGraphics.VCENTER | mGraphics.HCENTER, g);
+				}
 			}
 		}
 	}
@@ -1035,7 +1102,9 @@ public class Effect_End
 		dy = 25;
 		dy_throw = 19;
 		if (typeSub == 1)
+		{
 			dy_throw = 21;
+		}
 		else if (typeSub == 2)
 		{
 			dy_throw = 31;
@@ -1049,7 +1118,9 @@ public class Effect_End
 		angleS = (angleO = 25);
 		iDotS = 1;
 		if (listObj != null && listObj.Length > 0)
+		{
 			iDotS = listObj.Length;
+		}
 		iAngleS = 360 / iDotS;
 		xArgS = new int[iDotS];
 		yArgS = new int[iDotS];
@@ -1062,13 +1133,19 @@ public class Effect_End
 	internal void changeAngleStar()
 	{
 		if (vMax < 40)
+		{
 			vMax += 2;
+		}
 		angleS = angleO;
 		angleS -= vMax;
 		if (angleS >= 360)
+		{
 			angleS -= 360;
+		}
 		if (angleS < 0)
+		{
 			angleS = 360 + angleS;
+		}
 		angleO = angleS;
 	}
 
@@ -1077,9 +1154,13 @@ public class Effect_End
 		for (int i = 0; i < yArgS.Length; i++)
 		{
 			if (angleS >= 360)
+			{
 				angleS -= 360;
+			}
 			if (angleS < 0)
+			{
 				angleS = 360 + angleS;
+			}
 			yArgS[i] = Res.abs(rS * Res.sin(angleS) / 1024);
 			xArgS[i] = Res.abs(rS * Res.cos(angleS) / 1024);
 			if (angleS < 90)
@@ -1111,12 +1192,18 @@ public class Effect_End
 		if (stt == 0)
 		{
 			if (f == 3)
+			{
 				SoundMn.playSound(x, y, SoundMn.MAFUBA_1, SoundMn.volume);
+			}
 			frame++;
 			if (frame > nFrame.Length - 1)
+			{
 				frame = nFrame.Length - 1;
+			}
 			if (f == fMove + 4)
+			{
 				GameScr.addEffectEnd(16, 1, typePaint, x, y, 3, 0, 2945, null);
+			}
 			if (f > fMove + 4)
 			{
 				rS--;
@@ -1149,7 +1236,9 @@ public class Effect_End
 			{
 				fSpeed = nFrame_2.Length - 1;
 				if (GameCanvas.gameTick % 2 == 0)
+				{
 					vy1000++;
+				}
 				vy += vy1000;
 				if (vy >= h - fra_skill[0].frameHeight - dy + dy_throw)
 				{
@@ -1183,7 +1272,9 @@ public class Effect_End
 		{
 			frame++;
 			if (frame == 3)
+			{
 				SoundMn.playSound(x, y, SoundMn.MAFUBA_1, SoundMn.volume);
+			}
 			if (frame > nFrame.Length - 1)
 			{
 				frame = 0;
@@ -1203,7 +1294,9 @@ public class Effect_End
 		{
 			frame++;
 			if (frame > nFrame.Length - 1)
+			{
 				frame = 0;
+			}
 			if (GameCanvas.timeNow - time >= timeRemove)
 			{
 				GameScr.addEffectEnd(16, 0, typePaint, x1000, y1000, 1, 0, -1, null);
@@ -1216,9 +1309,13 @@ public class Effect_End
 	internal void pnt_Skill_MaFuba(mGraphics g)
 	{
 		if (fra_skill == null)
+		{
 			return;
+		}
 		if (nFrame != null)
+		{
 			fra_skill[0].drawFrame(nFrame[frame], x1000, y1000, 0, mGraphics.BOTTOM | mGraphics.HCENTER, g);
+		}
 		if (stt == 1 || stt == 2)
 		{
 			int anchor = mGraphics.BOTTOM | mGraphics.HCENTER;
@@ -1246,13 +1343,16 @@ public class Effect_End
 		{
 			num = num2 / body.frameWidth;
 			if (num2 % body.frameWidth > 0)
+			{
 				num++;
+			}
 			if (dir == -1)
 			{
 				for (int i = 0; i < num; i++)
 				{
 					int num3 = 0;
-					body.drawFrame(frame, (i != num - 1) ? ((!flag) ? (x + i * body.frameWidth) : (x + foot.frameWidth + body.frameWidth + i * body.frameWidth)) : ((!flag) ? (x + w - body.frameWidth) : (x + foot.frameWidth)), y - body.frameHeight / 2, 2, 0, g);
+					num3 = ((i != num - 1) ? ((!flag) ? (x + i * body.frameWidth) : (x + foot.frameWidth + body.frameWidth + i * body.frameWidth)) : ((!flag) ? (x + w - body.frameWidth) : (x + foot.frameWidth)));
+					body.drawFrame(frame, num3, y - body.frameHeight / 2, 2, 0, g);
 				}
 			}
 			else
@@ -1260,19 +1360,32 @@ public class Effect_End
 				for (int j = 0; j < num; j++)
 				{
 					int num4 = 0;
-					body.drawFrame(frame, (j != num - 1) ? ((!flag) ? (x + j * body.frameWidth) : (x + j * body.frameWidth + head.frameWidth)) : ((!flag) ? (x + w - body.frameWidth) : (x + w - (body.frameWidth + foot.frameWidth))), y - body.frameHeight / 2, 0, 0, g);
+					num4 = ((j != num - 1) ? ((!flag) ? (x + j * body.frameWidth) : (x + j * body.frameWidth + head.frameWidth)) : ((!flag) ? (x + w - body.frameWidth) : (x + w - (body.frameWidth + foot.frameWidth))));
+					body.drawFrame(frame, num4, y - body.frameHeight / 2, 0, 0, g);
 				}
 			}
 		}
 		if (dir == -1)
 		{
-			head?.drawFrame(frame, x + w - head.frameWidth, y - head.frameHeight / 2, 2, 0, g);
-			foot?.drawFrame(frame, x, y - foot.frameHeight / 2, 2, 0, g);
+			if (head != null)
+			{
+				head.drawFrame(frame, x + w - head.frameWidth, y - head.frameHeight / 2, 2, 0, g);
+			}
+			if (foot != null)
+			{
+				foot.drawFrame(frame, x, y - foot.frameHeight / 2, 2, 0, g);
+			}
 		}
 		else
 		{
-			head?.drawFrame(frame, x, y - head.frameHeight / 2, 0, 0, g);
-			foot?.drawFrame(frame, x + w - foot.frameWidth - 1, y - foot.frameHeight / 2, 0, 0, g);
+			if (head != null)
+			{
+				head.drawFrame(frame, x, y - head.frameHeight / 2, 0, 0, g);
+			}
+			if (foot != null)
+			{
+				foot.drawFrame(frame, x + w - foot.frameWidth - 1, y - foot.frameHeight / 2, 0, 0, g);
+			}
 		}
 	}
 
@@ -1319,17 +1432,25 @@ public class Effect_End
 	internal void create_Star_Line_In(int vline, int minline, int maxline, int numpoint)
 	{
 		if (f == -1)
+		{
 			VecEffEnd.removeAllElements();
+		}
 		int num = 4;
 		colorpaint = new int[num];
 		if (maxline <= minline)
+		{
 			maxline = minline + 1;
+		}
 		for (int i = 0; i < num; i++)
 		{
 			if (Res.random(2) == 0)
+			{
 				colorpaint[i] = colorStar[indexColorStar][Res.random(3)];
+			}
 			else
+			{
 				colorpaint[i] = colorStar[indexColorStar][2];
+			}
 		}
 		for (int j = 0; j < num; j++)
 		{
@@ -1337,7 +1458,9 @@ public class Effect_End
 			int num2 = 5 + 180 / num * j;
 			int num3 = 180 / num + 180 / num * j - 5;
 			if (num3 <= num2)
+			{
 				num3 = num2 + 1;
+			}
 			int num4 = Res.random(minline, maxline);
 			int num5 = Res.random(vline, vline + 3);
 			int num6 = Res.random(num2, num3);
@@ -1346,13 +1469,18 @@ public class Effect_End
 			num6 = Res.fixangle(num6 % 360);
 			line.setLine(x1000 - Res.sin(num6) * (num4 + num7), y1000 - Res.cos(num6) * (num4 + num7), x1000 - Res.sin(num6) * num7, y1000 - Res.cos(num6) * num7, Res.sin(num6) * num5, Res.cos(num6) * num5, is2Line);
 			if (numpoint > 0)
+			{
 				line.type = Res.random(numpoint);
+			}
 			VecEffEnd.addElement(line);
 			line = new Line();
-			num6 = Res.fixangle((num6 + (180 + Res.random_Am(2, 5))) % 360);
+			num6 += 180 + Res.random_Am(2, 5);
+			num6 = Res.fixangle(num6 % 360);
 			line.setLine(x1000 - Res.sin(num6) * (num4 + num7), y1000 - Res.cos(num6) * (num4 + num7), x1000 - Res.sin(num6) * num7, y1000 - Res.cos(num6) * num7, Res.sin(num6) * num5, Res.cos(num6) * num5, is2Line);
 			if (numpoint > 0)
+			{
 				line.type = Res.random(numpoint);
+			}
 			VecEffEnd.addElement(line);
 		}
 	}
@@ -1366,11 +1494,15 @@ public class Effect_End
 			{
 				int color = 0;
 				if (i / 2 < colorpaint.Length)
+				{
 					color = colorpaint[i / 2];
+				}
 				g.setColor(color);
 				g.drawLine(line.x0 / 1000, line.y0 / 1000, line.x1 / 1000, line.y1 / 1000);
 				if (line.is2Line)
+				{
 					g.drawLine(line.x0 / 1000 + 1, line.y0 / 1000, line.x1 / 1000 + 1, line.y1 / 1000);
+				}
 			}
 		}
 	}
@@ -1387,7 +1519,9 @@ public class Effect_End
 			point.x = x + Res.random_Am(0, 20);
 			point.y = y + Res.random_Am_0(7);
 			if (typeEffect == 10)
+			{
 				point.frame = Res.random(0, fraImgEff.nFrame - 2);
+			}
 			else if (typeEffect == 11)
 			{
 				point.frame = Res.random(2, fraImgEff.nFrame);
@@ -1415,7 +1549,9 @@ public class Effect_End
 			}
 		}
 		if (f >= fRemove)
+		{
 			removeEff();
+		}
 	}
 
 	internal void pnt_End_Rock(mGraphics g)
@@ -1424,18 +1560,24 @@ public class Effect_End
 		{
 			Point point = (Point)VecEffEnd.elementAt(i);
 			if (fraImgEff != null)
+			{
 				fraImgEff.drawFrame(point.frame, point.x, point.y, 0, mGraphics.VCENTER | mGraphics.HCENTER, g);
+			}
 		}
 	}
 
 	internal void updListObj_Mafuba(bool ismafuba)
 	{
 		if (listObj == null)
+		{
 			return;
+		}
 		for (int i = 0; i < listObj.Length; i++)
 		{
 			if (listObj[i] == null)
+			{
 				continue;
+			}
 			if (listObj[i].type == 0)
 			{
 				Mob mob = GameScr.findMobInMap(listObj[i].id);
@@ -1448,14 +1590,14 @@ public class Effect_End
 				}
 				continue;
 			}
-			Char @char = null;
-			@char = ((Char.myCharz().charID != listObj[i].id) ? GameScr.findCharInMap(listObj[i].id) : Char.myCharz());
-			if (@char != null)
+			Char obj = null;
+			obj = ((Char.myCharz().charID != listObj[i].id) ? GameScr.findCharInMap(listObj[i].id) : Char.myCharz());
+			if (obj != null)
 			{
-				@char.isMafuba = ismafuba;
-				@char.isHide = false;
-				@char.xMFB = xDotS[i];
-				@char.yMFB = yDotS[i];
+				obj.isMafuba = ismafuba;
+				obj.isHide = false;
+				obj.xMFB = xDotS[i];
+				obj.yMFB = yDotS[i];
 			}
 		}
 	}
@@ -1463,22 +1605,30 @@ public class Effect_End
 	internal void hideListObj_Mafuba(bool ishide)
 	{
 		if (listObj == null)
+		{
 			return;
+		}
 		for (int i = 0; i < listObj.Length; i++)
 		{
 			if (listObj[i] == null)
+			{
 				continue;
+			}
 			if (listObj[i].type == 0)
 			{
 				Mob mob = GameScr.findMobInMap(listObj[i].id);
 				if (mob != null)
+				{
 					mob.isHide = ishide;
+				}
 				continue;
 			}
-			Char @char = null;
-			@char = ((Char.myCharz().charID != listObj[i].id) ? GameScr.findCharInMap(listObj[i].id) : Char.myCharz());
-			if (@char != null)
-				@char.isHide = ishide;
+			Char obj = null;
+			obj = ((Char.myCharz().charID != listObj[i].id) ? GameScr.findCharInMap(listObj[i].id) : Char.myCharz());
+			if (obj != null)
+			{
+				obj.isHide = ishide;
+			}
 		}
 	}
 
@@ -1573,15 +1723,22 @@ public class Effect_End
 		}
 		}
 		if (array == null || array2 == null)
+		{
 			return;
+		}
 		fra_skill = new FrameImage[array.Length];
 		for (int i = 0; i < array.Length; i++)
 		{
-			FrameImage frameImage = mSystem.getFraImage("Skills_" + num + "_" + typePaint + "_" + array[i]);
+			string nameImg = "Skills_" + num + "_" + typePaint + "_" + array[i];
+			FrameImage frameImage = mSystem.getFraImage(nameImg);
 			if (frameImage == null)
+			{
 				frameImage = new FrameImage(array2[i]);
+			}
 			if (frameImage != null)
+			{
 				fra_skill[i] = frameImage;
+			}
 		}
 	}
 
@@ -1643,7 +1800,9 @@ public class Effect_End
 		if (timeRemove > 0)
 		{
 			if (GameCanvas.timeNow - time >= timeRemove)
+			{
 				removeEff();
+			}
 		}
 		else if (f >= fra_skill[0].nFrame * n_frame)
 		{
@@ -1654,7 +1813,9 @@ public class Effect_End
 	internal void pnt_Gong(mGraphics g, int anchor)
 	{
 		if (fra_skill[0] != null)
+		{
 			fra_skill[0].drawFrame(f / n_frame % fra_skill[0].nFrame, x, y, dir_nguoc, anchor, g);
+		}
 	}
 
 	internal void set_Pow()
@@ -1664,13 +1825,17 @@ public class Effect_End
 		if (typeEffect == 18)
 		{
 			if (typeSub == 0)
+			{
 				nFrame = new byte[9] { 0, 0, 0, 1, 1, 1, 2, 2, 2 };
+			}
 			else
+			{
 				nFrame = new byte[12]
 				{
 					3, 3, 3, 4, 4, 4, 5, 5, 5, 6,
 					6, 6
 				};
+			}
 		}
 	}
 
@@ -1684,12 +1849,16 @@ public class Effect_End
 		if (timeRemove > 0)
 		{
 			if (GameCanvas.timeNow - time >= timeRemove)
+			{
 				removeEff();
+			}
 		}
 		else if (nFrame != null)
 		{
 			if (f > nFrame.Length)
+			{
 				removeEff();
+			}
 		}
 		else if (f >= fra_skill[0].nFrame * n_frame)
 		{
@@ -1702,16 +1871,22 @@ public class Effect_End
 		if (fra_skill[0] != null)
 		{
 			if (nFrame != null)
+			{
 				fra_skill[0].drawFrame(nFrame[f % nFrame.Length], x, y, dir_nguoc, anchor, g);
+			}
 			else
+			{
 				fra_skill[0].drawFrame(f / n_frame % fra_skill[0].nFrame, x, y, dir_nguoc, anchor, g);
+			}
 		}
 	}
 
 	internal void set_Sub()
 	{
 		if (typeEffect == 17)
+		{
 			x += ((dir != 0) ? (-fra_skill[0].frameWidth) : 0);
+		}
 	}
 
 	internal void upd_Sub()
@@ -1719,7 +1894,9 @@ public class Effect_End
 		if (timeRemove > 0)
 		{
 			if (GameCanvas.timeNow - time >= timeRemove)
+			{
 				removeEff();
+			}
 		}
 		else if (f >= fra_skill[0].nFrame * n_frame)
 		{

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class Effect
 {
@@ -146,33 +147,25 @@ public class Effect
 		this.loop = loop;
 		tLoop = loopCount;
 		this.isStand = isStand;
-		if (getEffDataById(id) == null)
-		{
-			EffectData effectData = new EffectData
-			{
-				ID = id
-			};
-			if (id >= 42 && id <= 46)
-				id = 106;
-			string text = "/x" + mGraphics.zoomLevel + "/effectdata/" + id + "/data";
-			if (MyStream.readFile(text) != null)
-			{
-				if (id > 100 && id < 200)
-					effectData.readData2(text);
-				else
-					effectData.readData(text);
-				effectData.img = GameCanvas.loadImage("/effectdata/" + id + "/img.png");
-			}
-			else
-				Service.gI().getEffData((short)id);
-			addEffData(effectData);
-		}
-		indexFrom = -1;
-		indexTo = -1;
 		trans = -1;
-		typeEff = 4;
+		initCommon(id);
 		if (id == 78)
+		{
 			typeEff = 5;
+		}
+		else
+		{
+			typeEff = 4;
+		}
+		if (id >= 201 && id < 2000)
+		{
+			typeEff = 5;
+		}
+		Debug.LogError(id + ">>>>>>Add Effect: char:" + c.cName + "  layer:" + layer + " loop:" + loop + " loopCount:" + loopCount + " isStand:" + isStand);
+		if (!isExistNewEff(effId + string.Empty))
+		{
+			newEff.addElement(effId + string.Empty);
+		}
 	}
 
 	public Effect(int id, int x, int y, int layer, int loop, int loopCount)
@@ -183,41 +176,33 @@ public class Effect
 		this.layer = layer;
 		this.loop = loop;
 		tLoop = loopCount;
-		if (getEffDataById(id) == null)
-		{
-			EffectData effectData = new EffectData
-			{
-				ID = id
-			};
-			if (id >= 42 && id <= 46)
-				id = 106;
-			string text = "/x" + mGraphics.zoomLevel + "/effectdata/" + id + "/data";
-			if (MyStream.readFile(text) != null)
-			{
-				if (id > 100 && id < 200)
-					effectData.readData2(text);
-				else
-					effectData.readData(text);
-				effectData.img = GameCanvas.loadImage("/effectdata/" + id + "/img.png");
-			}
-			else
-				Service.gI().getEffData((short)id);
-			addEffData(effectData);
-			if (lastEff.size() > 20)
-			{
-				removeEffData(int.Parse((string)lastEff.elementAt(0)));
-				lastEff.removeElementAt(0);
-			}
-			lastEff.addElement(effId + string.Empty);
-		}
-		indexFrom = -1;
-		indexTo = -1;
+		initCommon(id);
 		if (id == 78)
+		{
 			typeEff = 5;
+		}
 		else
+		{
 			typeEff = 1;
+		}
+		Debug.LogError(id + ">>>>>>Add Effect: layer:" + layer + " loop:" + loop + " loopCount:" + loopCount);
 		if (!isExistNewEff(effId + string.Empty))
+		{
 			newEff.addElement(effId + string.Empty);
+		}
+	}
+
+	public static void GetCharEff(Char c)
+	{
+		for (int i = 0; i < 1799; i++)
+		{
+			c.removeEffChar(0, 201 + i);
+		}
+		if (c.bag >= 201 && c.bag < 2000)
+		{
+			Effect e = new Effect(c.bag, c, 2, -1, 10, 1);
+			c.addEffChar(e);
+		}
 	}
 
 	public static void removeEffData(int id)
@@ -244,17 +229,63 @@ public class Effect
 		{
 			EffectData effectData = (EffectData)vEffData.elementAt(i);
 			if (effectData.ID == id)
+			{
 				return effectData;
+			}
 		}
 		return null;
+	}
+
+	internal void initCommon(int id)
+	{
+		indexFrom = -1;
+		indexTo = -1;
+		if (getEffDataById(id) != null)
+		{
+			return;
+		}
+		EffectData effectData = new EffectData();
+		effectData.ID = id;
+		if (id >= 42 && id <= 46)
+		{
+			id = 106;
+		}
+		string text = "/x" + mGraphics.zoomLevel + "/effectdata/" + id + "/data";
+		DataInputStream dataInputStream = MyStream.readFile(text);
+		if (dataInputStream != null)
+		{
+			if (id > 100 && id < 200)
+			{
+				effectData.readData2(text);
+			}
+			else
+			{
+				effectData.readData(text);
+			}
+			effectData.img = GameCanvas.loadImage("/effectdata/" + id + "/img.png");
+		}
+		else
+		{
+			Service.gI().getEffData((short)id);
+		}
+		addEffData(effectData);
+		if (lastEff.size() > 20)
+		{
+			removeEffData(int.Parse((string)lastEff.elementAt(0)));
+			lastEff.removeElementAt(0);
+		}
+		lastEff.addElement(effId + string.Empty);
 	}
 
 	public static bool isExistNewEff(string id)
 	{
 		for (int i = 0; i < newEff.size(); i++)
 		{
-			if (((string)newEff.elementAt(i)).Equals(id))
+			string text = (string)newEff.elementAt(i);
+			if (text.Equals(id))
+			{
 				return true;
+			}
 		}
 		return false;
 	}
@@ -262,37 +293,55 @@ public class Effect
 	public bool isPaintz()
 	{
 		if (!isPaint)
+		{
 			return false;
+		}
 		return true;
 	}
 
 	public void paintUnderBackground(mGraphics g, int xLayer, int yLayer)
 	{
 		if (isPaintz() && getEffDataById(effId).img != null)
+		{
 			getEffDataById(effId).paintFrame(g, currFrame, x + xLayer, y + yLayer, trans, layer);
+		}
 	}
 
 	public void getFrameKhangia()
 	{
 		if (effId == 42)
+		{
 			currFrame = khangia1[t];
+		}
 		if (effId == 43)
+		{
 			currFrame = khangia2[t];
+		}
 		if (effId == 44)
+		{
 			currFrame = khangia3[t];
+		}
 		if (effId == 45)
+		{
 			currFrame = khangia4[t];
+		}
 		if (effId == 46)
+		{
 			currFrame = khangia5[t];
+		}
 		t++;
 		if (t > khangia1.Length - 1)
+		{
 			t = 0;
+		}
 	}
 
 	public void paint(mGraphics g)
 	{
 		if (!isPaint || getEffDataById(effId) == null || getEffDataById(effId).img == null)
+		{
 			return;
+		}
 		try
 		{
 			getEffDataById(effId).paintFrame(g, currFrame, x, y, trans, layer);
@@ -307,15 +356,23 @@ public class Effect
 		try
 		{
 			if (effId >= 42 && effId <= 46)
+			{
 				getFrameKhangia();
+			}
 			else
 			{
 				if (getEffDataById(effId) == null || getEffDataById(effId).img == null)
+				{
 					return;
+				}
 				if (typeEff == 5)
+				{
 					data = getEffDataById(effId).get(c.statusMe);
+				}
 				else
+				{
 					data = getEffDataById(effId).get();
+				}
 				if (data != null)
 				{
 					if (!isGetTime)
@@ -323,9 +380,13 @@ public class Effect
 						isGetTime = true;
 						int num = data.Length - 1;
 						if (num > 0 && typeEff != 1)
+						{
 							t = Res.random(0, num);
+						}
 						if (typeEff == 0)
+						{
 							t = Res.random(indexFrom, indexTo);
+						}
 					}
 					switch (typeEff)
 					{
@@ -333,38 +394,56 @@ public class Effect
 						x = c.cx;
 						y = c.cy;
 						if (t < data.Length)
+						{
 							t++;
+						}
 						break;
 					case 5:
 						trans = ((c.cdir != 1) ? 1 : 0);
 						if (c.cdir == 1)
+						{
 							x = c.cx - 15;
+						}
 						else
+						{
 							x = c.cx + 15;
+						}
 						if (c.isMonkey == 0)
+						{
 							y = c.cy - 25;
+						}
 						else
+						{
 							y = c.cy - 35;
+						}
 						if (t < data.Length)
+						{
 							t++;
+						}
 						break;
 					case 1:
 					case 3:
 						if (t < data.Length)
+						{
 							t++;
+						}
 						break;
 					case 0:
 						if (Res.inRect(x - 50, y - 50, 100, 100, Char.myCharz().cx, Char.myCharz().cy) && t > indexFrom && t < indexTo)
 						{
 							if (t < indexTo)
+							{
 								t = indexTo;
+							}
 							isNearPlayer = true;
 						}
 						if (!isNearPlayer)
 						{
 							t++;
 							if (t == indexTo)
+							{
 								t = indexFrom;
+							}
 						}
 						else if (t < data.Length)
 						{
@@ -373,7 +452,9 @@ public class Effect
 						break;
 					case 2:
 						if (t < data.Length)
+						{
 							t++;
+						}
 						tLoopCount++;
 						if (tLoopCount == tLoop)
 						{
@@ -383,23 +464,33 @@ public class Effect
 						break;
 					}
 					if (t == data.Length / 2 && (effId == 62 || effId == 63 || effId == 64 || effId == 65))
+					{
 						SoundMn.playSound(x, y, SoundMn.FIREWORK, SoundMn.volume);
+					}
 					if (t <= data.Length - 1)
+					{
 						currFrame = data[t];
+					}
 				}
 				if (t >= data.Length - 1)
 				{
 					if (typeEff == 0 || typeEff == 3)
+					{
 						isPaint = false;
+					}
 					if (tLoop == -1)
+					{
 						EffecMn.vEff.removeElement(this);
+					}
 					if (typeEff == 2)
 					{
 						t = 0;
 						return;
 					}
 					if (typeEff == 1 && loop == 1)
+					{
 						isPaint = false;
+					}
 					if (typeEff == 4 || typeEff == 5)
 					{
 						if (loop == -1)
@@ -414,7 +505,9 @@ public class Effect
 							loop--;
 							t = 0;
 							if (loop == 0)
+							{
 								c.removeEffChar(0, effId);
+							}
 						}
 						return;
 					}
@@ -427,7 +520,9 @@ public class Effect
 						{
 							tLoopCount = 0;
 							if (tLoop > 1)
+							{
 								trans = Res.random(0, 2);
+							}
 						}
 						return;
 					}
@@ -438,11 +533,15 @@ public class Effect
 						tLoopCount = 0;
 						loop--;
 						if (loop == 0)
+						{
 							EffecMn.vEff.removeElement(this);
+						}
 					}
 				}
 				else
+				{
 					isPaint = true;
+				}
 			}
 		}
 		catch (Exception)

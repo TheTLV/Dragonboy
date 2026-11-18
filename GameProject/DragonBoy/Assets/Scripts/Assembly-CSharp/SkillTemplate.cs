@@ -23,28 +23,36 @@ public class SkillTemplate
 	public bool isBuffToPlayer()
 	{
 		if (type == 2)
+		{
 			return true;
+		}
 		return false;
 	}
 
 	public bool isUseAlone()
 	{
 		if (type == 3)
+		{
 			return true;
+		}
 		return false;
 	}
 
 	public bool isAttackSkill()
 	{
 		if (type == 1)
+		{
 			return true;
+		}
 		return false;
 	}
 
 	public bool isSkillSpec()
 	{
 		if (type == 4)
+		{
 			return true;
+		}
 		return false;
 	}
 }

@@ -411,7 +411,7 @@ namespace Mod.PickMob
             return true;
         }
 
-        private static int GetManaUseSkill(Skill skill)
+        private static long GetManaUseSkill(Skill skill)
         {
             if (skill.template.manaUseType == 2)
                 return 1;

@@ -14,9 +14,13 @@ public class MsgDlg : Dialog
 	{
 		padLeft = 35;
 		if (GameCanvas.w <= 176)
+		{
 			padLeft = 10;
+		}
 		if (GameCanvas.w > 320)
+		{
 			padLeft = 80;
+		}
 	}
 
 	public void pleasewait()
@@ -37,7 +41,9 @@ public class MsgDlg : Dialog
 		this.info = mFont.tahoma_8b.splitFontArray(info, GameCanvas.w - (padLeft * 2 + 20));
 		h = 80;
 		if (this.info.Length >= 5)
+		{
 			h = this.info.Length * mFont.tahoma_8b.getHeight() + 20;
+		}
 	}
 
 	public void setInfo(string info, Command left, Command center, Command right)
@@ -48,7 +54,9 @@ public class MsgDlg : Dialog
 		base.right = right;
 		h = 80;
 		if (this.info.Length >= 5)
+		{
 			h = this.info.Length * mFont.tahoma_8b.getHeight() + 20;
+		}
 		if (GameCanvas.isTouch)
 		{
 			if (left != null)
@@ -101,6 +109,8 @@ public class MsgDlg : Dialog
 	{
 		base.update();
 		if (time != -1 && mSystem.currentTimeMillis() > time)
+		{
 			GameCanvas.endDlg();
+		}
 	}
 }

@@ -158,6 +158,20 @@ public class mFont
 
 	internal string pathImage;
 
+	public static sbyte cl__white;
+
+	public static sbyte cl__yellow;
+
+	public static sbyte cl__yellowSmall;
+
+	public static sbyte cl_dark = 0;
+
+	public static sbyte cl_green = 1;
+
+	public static sbyte cl__blue = 2;
+
+	public static sbyte cl_red = 3;
+
 	public mFont(string strFont, string pathImage, string pathData, int space)
 	{
 		try
@@ -188,9 +202,9 @@ public class mFont
 				{
 					dataInputStream.close();
 				}
-				catch (Exception ex)
+				catch (Exception ex2)
 				{
-					ex.StackTrace.ToString();
+					ex2.StackTrace.ToString();
 				}
 			}
 		}
@@ -218,7 +232,8 @@ public class mFont
 			text = "staccato";
 		}
 		this.id = id;
-		myFont = (Font)Resources.Load("FontSys/x" + mGraphics.zoomLevel + "/" + text);
+		text = "FontSys/x" + mGraphics.zoomLevel + "/" + text;
+		myFont = (Font)Resources.Load(text);
 		if (id < 25)
 		{
 			color1 = setColorFont(id);
@@ -322,7 +337,9 @@ public class mFont
 		tahoma_7b_greenSmall = tahoma_7b_green;
 		yAddFont = 1;
 		if (mGraphics.zoomLevel == 1)
+		{
 			yAddFont = -3;
+		}
 	}
 
 	public void setHeight(int height)
@@ -337,12 +354,13 @@ public class mFont
 		int num3 = (rgb >> 16) & 0xFF;
 		float b = (float)num / 256f;
 		float g = (float)num2 / 256f;
-		return new Color((float)num3 / 256f, g, b);
+		float r = (float)num3 / 256f;
+		return new Color(r, g, b);
 	}
 
 	public Color bigColor(int id)
 	{
-		return (new Color[7]
+		Color[] array = new Color[7]
 		{
 			Color.red,
 			Color.yellow,
@@ -351,7 +369,8 @@ public class mFont
 			setColor(40404),
 			Color.red,
 			Color.black
-		})[id - 25];
+		};
+		return array[id - 25];
 	}
 
 	public void setColorByID(int ID)
@@ -364,7 +383,9 @@ public class mFont
 	{
 		sbyte b = id;
 		if (idFont > 0)
+		{
 			b = idFont;
+		}
 		x--;
 		if (id > 24)
 		{
@@ -391,7 +412,9 @@ public class mFont
 			color2 = bigColor(id);
 		}
 		else
+		{
 			setColorByID(b);
+		}
 		_drawString(g, st, x, y - yAdd, align);
 	}
 
@@ -405,12 +428,26 @@ public class mFont
 		if (mGraphics.zoomLevel == 1)
 		{
 			int length = st.Length;
-			int num = ((align == 0) ? x : ((align != 1) ? (x - (getWidth(st) >> 1)) : (x - getWidth(st))));
+			int num;
+			switch (align)
+			{
+			case 0:
+				num = x;
+				break;
+			case 1:
+				num = x - getWidth(st);
+				break;
+			default:
+				num = x - (getWidth(st) >> 1);
+				break;
+			}
 			for (int i = 0; i < length; i++)
 			{
 				int num2 = strFont.IndexOf(st[i] + string.Empty);
 				if (num2 == -1)
+				{
 					num2 = 0;
+				}
 				if (num2 > -1)
 				{
 					int x2 = fImages[num2][0];
@@ -428,23 +465,33 @@ public class mFont
 			}
 		}
 		else
+		{
 			setTypePaint(g, st, x, y, align, 0);
+		}
 	}
 
 	public void drawStringBorder(mGraphics g, string st, int x, int y, int align)
 	{
 		if (mGraphics.zoomLevel == 1)
+		{
 			drawString(g, st, x, y, align);
+		}
 		else
+		{
 			setTypePaint(g, st, x, y, align, 0);
+		}
 	}
 
 	public void drawStringBorder(mGraphics g, string st, int x, int y, int align, mFont font2)
 	{
 		if (mGraphics.zoomLevel == 1)
+		{
 			drawString(g, st, x, y, align, font2);
+		}
 		else
+		{
 			drawStringBd(g, st, x, y, align, font2);
+		}
 	}
 
 	public void drawStringBd(mGraphics g, string st, int x, int y, int align, mFont font)
@@ -465,12 +512,26 @@ public class mFont
 		if (mGraphics.zoomLevel == 1)
 		{
 			int length = st.Length;
-			int num = ((align == 0) ? x : ((align != 1) ? (x - (getWidth(st) >> 1)) : (x - getWidth(st))));
+			int num;
+			switch (align)
+			{
+			case 0:
+				num = x;
+				break;
+			case 1:
+				num = x - getWidth(st);
+				break;
+			default:
+				num = x - (getWidth(st) >> 1);
+				break;
+			}
 			for (int i = 0; i < length; i++)
 			{
 				int num2 = strFont.IndexOf(st[i]);
 				if (num2 == -1)
+				{
 					num2 = 0;
+				}
 				if (num2 > -1)
 				{
 					int x2 = fImages[num2][0];
@@ -521,13 +582,17 @@ public class mFont
 					num--;
 				}
 				if (num < 0)
+				{
 					num = text.Length - 1;
+				}
 				myVector.addElement(text.Substring(0, num));
 				i = i - (text.Length - num) + 1;
 				text = string.Empty;
 			}
 			if (i == src.Length - 1 && !text.Trim().Equals(string.Empty))
+			{
 				myVector.addElement(text);
+			}
 		}
 		return myVector;
 	}
@@ -586,7 +651,9 @@ public class mFont
 					if (src[num] != '\n')
 					{
 						if (num < length - 1)
+						{
 							continue;
+						}
 						num = length - 1;
 					}
 				}
@@ -598,21 +665,31 @@ public class mFont
 						num--;
 					}
 					if (num == i)
+					{
 						num = num2;
+					}
 				}
 				string text2 = src.Substring(i, num + 1 - i);
 				if (text2[0] == '\n')
+				{
 					text2 = text2.Substring(1, text2.Length - 1);
+				}
 				if (text2[text2.Length - 1] == '\n')
+				{
 					text2 = text2.Substring(0, text2.Length - 1);
+				}
 				arrayList.Add(text2);
 				if (num == length - 1)
+				{
 					break;
+				}
 				for (i = num + 1; i != length - 1 && src[i] == ' '; i++)
 				{
 				}
 				if (i == length - 1)
+				{
 					break;
+				}
 				num = i;
 				text = string.Empty;
 			}
@@ -641,7 +718,9 @@ public class mFont
 		for (int i = 0; i < strSource.Length; i++)
 		{
 			if ((string.Empty + strSource[i]).Equals(str))
+			{
 				return true;
+			}
 		}
 		return false;
 	}
@@ -655,7 +734,9 @@ public class mFont
 			{
 				int num2 = strFont.IndexOf(s[i]);
 				if (num2 == -1)
+				{
 					num2 = 0;
+				}
 				num += fImages[num2][2] + space;
 			}
 			return num;
@@ -686,9 +767,13 @@ public class mFont
 	public int getHeight()
 	{
 		if (mGraphics.zoomLevel == 1)
+		{
 			return height;
+		}
 		if (height > 0)
+		{
 			return height / mGraphics.zoomLevel;
+		}
 		GUIStyle gUIStyle = new GUIStyle();
 		gUIStyle.font = myFont;
 		try
@@ -741,7 +826,8 @@ public class mFont
 		int num2 = _text.IndexOf(_searchStr, startIndex);
 		while (num2 != -1)
 		{
-			num2 = _text.IndexOf(_searchStr, num2 + length);
+			startIndex = num2 + length;
+			num2 = _text.IndexOf(_searchStr, startIndex);
 			num++;
 		}
 		string[] array = new string[num + 1];
@@ -762,10 +848,35 @@ public class mFont
 	public void reloadImage()
 	{
 		if (mGraphics.zoomLevel == 1)
+		{
 			imgFont = GameCanvas.loadImage(pathImage);
+		}
 	}
 
 	public void freeImage()
 	{
+	}
+
+	public static mFont GetFont(sbyte colorCode)
+	{
+		switch (colorCode)
+		{
+		case 0:
+			return tahoma_7b_dark;
+		case 1:
+			return tahoma_7b_green;
+		case 2:
+			return tahoma_7b_blue;
+		case 3:
+			return tahoma_7_red;
+		case 4:
+			return tahoma_7_green;
+		case 5:
+			return tahoma_7_blue;
+		case 7:
+			return tahoma_7b_red;
+		default:
+			return tahoma_7;
+		}
 	}
 }

@@ -17,18 +17,38 @@ public class Rms
 
 	internal const int MAXTIME = 500;
 
+	public static string RMS_ResVersion = "ResVersion";
+
+	public static string RMS_clienttype = "clienttype";
+
+	public static string RMS_lastZoomlevel = "lastZoomlevel";
+
+	public static string RMS_userAo = "userAo";
+
+	public static string RMS_acc = "acc";
+
+	public static string RMS_pass = "pass";
+
+	public static string RMS_check = "check";
+
 	public static void saveRMS(string filename, sbyte[] data)
 	{
 		if (Thread.CurrentThread.Name == Main.mainThreadName)
+		{
 			__saveRMS(filename, data);
+		}
 		else
+		{
 			_saveRMS(filename, data);
+		}
 	}
 
 	public static sbyte[] loadRMS(string filename)
 	{
 		if (Thread.CurrentThread.Name == Main.mainThreadName)
+		{
 			return __loadRMS(filename);
+		}
 		return _loadRMS(filename);
 	}
 
@@ -36,7 +56,9 @@ public class Rms
 	{
 		sbyte[] array = loadRMS(fileName);
 		if (array == null)
+		{
 			return null;
+		}
 		DataInputStream dataInputStream = new DataInputStream(array);
 		try
 		{
@@ -57,9 +79,13 @@ public class Rms
 		for (int i = 0; i < var.Length; i++)
 		{
 			if (var[i] > 0)
+			{
 				array[i] = (byte)var[i];
+			}
 			else
+			{
 				array[i] = (byte)(var[i] + 256);
+			}
 		}
 		return array;
 	}
@@ -94,10 +120,14 @@ public class Rms
 		{
 			Thread.Sleep(5);
 			if (status == 0)
+			{
 				break;
+			}
 		}
 		if (i == 500)
+		{
 			Debug.LogError("TOO LONG TO SAVE RMS " + filename);
+		}
 	}
 
 	internal static sbyte[] _loadRMS(string filename)
@@ -115,10 +145,14 @@ public class Rms
 		{
 			Thread.Sleep(5);
 			if (status == 0)
+			{
 				break;
+			}
 		}
 		if (i == 500)
+		{
 			Debug.LogError("TOO LONG TO LOAD RMS " + filename);
+		}
 		return data;
 	}
 
@@ -149,6 +183,10 @@ public class Rms
 		try
 		{
 			saveRMS(file, new sbyte[1] { (sbyte)x });
+			if (file == ServerListScreen.RMS_svselect)
+			{
+				Debug.LogError(">>>>>>>>Save saveRMSInt: " + file + "  index:" + x);
+			}
 		}
 		catch (Exception)
 		{
@@ -156,7 +194,7 @@ public class Rms
 	}
 
     [MethodImpl(MethodImplOptions.NoOptimization)]
-    public static string GetiPhoneDocumentsPath()
+	public static string GetiPhoneDocumentsPath()
 	{
 		return Application.persistentDataPath;
 	}
@@ -192,9 +230,12 @@ public class Rms
 	{
 		Cout.LogError3("clean rms");
 		FileInfo[] files = new DirectoryInfo(GetiPhoneDocumentsPath() + "/").GetFiles();
-		for (int i = 0; i < files.Length; i++)
+		foreach (FileInfo fileInfo in files)
 		{
-			files[i].Delete();
+			if (!(fileInfo.Name == GameMidlet.VERSION) && !(fileInfo.Name == ServerListScreen.RMS_svselect) && !(fileInfo.Name == RMS_acc) && !(fileInfo.Name == RMS_pass) && !(fileInfo.Name == RMS_check))
+			{
+				fileInfo.Delete();
+			}
 		}
 	}
 
@@ -211,7 +252,8 @@ public class Rms
 
 	public static string ByteArrayToString(byte[] ba)
 	{
-		return BitConverter.ToString(ba).Replace("-", string.Empty);
+		string text = BitConverter.ToString(ba);
+		return text.Replace("-", string.Empty);
 	}
 
 	public static byte[] StringToByteArray(string hex)
@@ -258,7 +300,9 @@ public class Rms
 	{
 		string text = loadRMSString("NRIPlink");
 		if (text == null)
+		{
 			return null;
+		}
 		return text;
 	}
 }

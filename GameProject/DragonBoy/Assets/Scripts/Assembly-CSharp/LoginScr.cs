@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LoginScr : mScreen, IActionListener
 {
-    public TField tfUser;
+	public TField tfUser;
 
 	public TField tfPass;
 
@@ -32,6 +32,8 @@ public class LoginScr : mScreen, IActionListener
 	public Command cmdMenu;
 
 	public Command cmdBackFromRegister;
+
+	public Command cmdBack;
 
 	public string listFAQ = string.Empty;
 
@@ -134,20 +136,28 @@ public class LoginScr : mScreen, IActionListener
 		yLog = GameCanvas.hh - 30;
 		TileMap.bgID = (sbyte)(mSystem.currentTimeMillis() % 9);
 		if (TileMap.bgID == 5 || TileMap.bgID == 6)
+		{
 			TileMap.bgID = 4;
+		}
 		GameScr.loadCamera(true, -1, -1);
 		GameScr.cmx = 100;
 		GameScr.cmy = 200;
 		Main.closeKeyBoard();
 		if (GameCanvas.h > 200)
+		{
 			defYL = GameCanvas.hh - 80;
+		}
 		else
+		{
 			defYL = GameCanvas.hh - 65;
+		}
 		resetLogo();
 		wC = ((GameCanvas.w < 200) ? 140 : 160);
 		yt = GameCanvas.hh - mScreen.ITEM_HEIGHT - 5;
 		if (GameCanvas.h <= 160)
+		{
 			yt = 20;
+		}
 		tfUser = new TField();
 		tfUser.y = GameCanvas.hh - mScreen.ITEM_HEIGHT - 9;
 		tfUser.width = wC;
@@ -162,29 +172,37 @@ public class LoginScr : mScreen, IActionListener
 		tfPass.height = mScreen.ITEM_HEIGHT + 2;
 		yt += 35;
 		isCheck = true;
-		int num = Rms.loadRMSInt("check");
-		if (num == 1)
-			isCheck = true;
-		else if (num == 2)
+		switch (Rms.loadRMSInt(Rms.RMS_check))
 		{
+		case 1:
+			isCheck = true;
+			break;
+		case 2:
 			isCheck = false;
+			break;
 		}
-		tfUser.setText(Rms.loadRMSString("acc"));
-		tfPass.setText(Rms.loadRMSString("pass"));
+		tfUser.setText(Rms.loadRMSString(Rms.RMS_acc));
+		tfPass.setText(Rms.loadRMSString(Rms.RMS_pass));
 		if (cmdCallHotline == null)
 		{
 			cmdCallHotline = new Command("Gọi hotline", this, 13, null);
 			cmdCallHotline.x = GameCanvas.w - 75;
 			if (mSystem.clientType == 1 && !GameCanvas.isTouch)
+			{
 				cmdCallHotline.y = GameCanvas.h - 20;
+			}
 			else
-				cmdCallHotline.y = 2 + 6;
+			{
+				int num = 2;
+				cmdCallHotline.y = num + 6;
+			}
 		}
 		focus = 0;
 		cmdLogin = new Command((GameCanvas.w <= 200) ? mResources.login2 : mResources.login, GameCanvas.instance, 888393, null);
 		cmdCheck = new Command(mResources.remember, this, 2001, null);
 		cmdRes = new Command(mResources.register, this, 2002, null);
 		cmdBackFromRegister = new Command(mResources.CANCEL, this, 10021, null);
+		cmdBack = new Command(mResources.BACK, this, 101, null);
 		left = (cmdMenu = new Command(mResources.MENU, this, 2003, null));
 		freeAreaHeight = tfUser.y - 2 * tfUser.height;
 		if (GameCanvas.isTouch)
@@ -200,6 +218,8 @@ public class LoginScr : mScreen, IActionListener
 			cmdBackFromRegister.y = yLog + 110;
 			cmdRes.x = GameCanvas.w / 2 - 84;
 			cmdRes.y = cmdMenu.y;
+			cmdBack.x = 2;
+			cmdBack.y = GameCanvas.h - mScreen.cmdH;
 		}
 		wP = 170;
 		hP = ((!isRes) ? 100 : 110);
@@ -208,7 +228,10 @@ public class LoginScr : mScreen, IActionListener
 		int num2 = 4;
 		int num3 = num2 * 32 + 23 + 33;
 		if (num3 >= GameCanvas.w)
-			num3 = (num2 - 1) * 32 + 23 + 33;
+		{
+			num2--;
+			num3 = num2 * 32 + 23 + 33;
+		}
 		xLog = GameCanvas.w / 2 - num3 / 2;
 		yLog = GameCanvas.hh - 30;
 		lY = ((GameCanvas.w < 200) ? (tfUser.y - 30) : (yLog - 30));
@@ -229,9 +252,11 @@ public class LoginScr : mScreen, IActionListener
 		try
 		{
 			if (isTryGetIPFromWap)
+			{
 				return;
+			}
 			Command command = new Command();
-			command.actionChat = delegate(string str)
+			ActionChat actionChat = delegate(string str)
 			{
 				try
 				{
@@ -254,6 +279,7 @@ public class LoginScr : mScreen, IActionListener
 				{
 				}
 			};
+			command.actionChat = actionChat;
 			Net.connectHTTP(ServerListScreen.linkGetHost, command);
 		}
 		catch (Exception)
@@ -268,19 +294,26 @@ public class LoginScr : mScreen, IActionListener
 		tfUser.isFocus = true;
 		tfPass.isFocus = false;
 		if (GameCanvas.isTouch)
+		{
 			tfUser.isFocus = false;
+		}
 		GameCanvas.loadBG(0);
-        base.switchToMe();
+		left = new Command(mResources.BACK, this, 101, null);
+		base.switchToMe();
 	}
 
 	public void setUserPass()
 	{
-		string text = Rms.loadRMSString("acc");
+		string text = Rms.loadRMSString(Rms.RMS_acc);
 		if (text != null && !text.Equals(string.Empty))
+		{
 			tfUser.setText(text);
-		string text2 = Rms.loadRMSString("pass");
+		}
+		string text2 = Rms.loadRMSString(Rms.RMS_pass);
 		if (text2 != null && !text2.Equals(string.Empty))
+		{
 			tfPass.setText(text2);
+		}
 	}
 
 	public void updateTfWhenOpenKb()
@@ -292,11 +325,15 @@ public class LoginScr : mScreen, IActionListener
 		MyVector myVector = new MyVector();
 		myVector.addElement(new Command(mResources.registerNewAcc, this, 2004, null));
 		if (!isLogin2)
+		{
 			myVector.addElement(new Command(mResources.selectServer, this, 1004, null));
+		}
 		myVector.addElement(new Command(mResources.forgetPass, this, 1003, null));
 		myVector.addElement(new Command(mResources.website, this, 1005, null));
 		if (Main.isPC)
+		{
 			myVector.addElement(new Command(mResources.EXIT, GameCanvas.instance, 8885, null));
+		}
 		GameCanvas.menu.startAt(myVector, 0);
 	}
 
@@ -323,27 +360,39 @@ public class LoginScr : mScreen, IActionListener
 		if (mResources.language == 2)
 		{
 			if (tfUser.getText().IndexOf("@") == -1 || tfUser.getText().IndexOf(".") == -1)
+			{
 				text = mResources.emailInvalid;
+			}
 			num = 0;
 		}
 		else
+		{
 			try
 			{
 				long num2 = long.Parse(tfUser.getText());
 				if (tfUser.getText().Length < 8 || tfUser.getText().Length > 12 || (!tfUser.getText().StartsWith("0") && !tfUser.getText().StartsWith("84")))
+				{
 					text = mResources.phoneInvalid;
+				}
 				num = 1;
 			}
 			catch (Exception)
 			{
 				if (tfUser.getText().IndexOf("@") == -1 || tfUser.getText().IndexOf(".") == -1)
+				{
 					text = mResources.emailInvalid;
+				}
 				num = 0;
 			}
+		}
 		if (text != null)
+		{
 			GameCanvas.startOKDlg(text);
+		}
 		else
+		{
 			GameCanvas.msgdlg.setInfo(mResources.plsCheckAcc + ((num != 1) ? (mResources.email + ": ") : (mResources.phone + ": ")) + tfUser.getText() + "\n" + mResources.password + ": " + tfPass.getText(), new Command(mResources.ACCEPT, this, 4000, null), null, new Command(mResources.NO, GameCanvas.instance, 8882, null));
+		}
 		GameCanvas.currentDialog = GameCanvas.msgdlg;
 	}
 
@@ -354,9 +403,9 @@ public class LoginScr : mScreen, IActionListener
 		GameCanvas.connect();
 		GameCanvas.startWaitDlg(mResources.REGISTERING);
 		passRe = tfPass.getText();
-		Service.gI().requestRegister(user, tfPass.getText(), Rms.loadRMSString("userAo" + ServerListScreen.ipSelect), Rms.loadRMSString("passAo" + ServerListScreen.ipSelect), GameMidlet.VERSION);
-		Rms.saveRMSString("acc", user);
-		Rms.saveRMSString("pass", tfPass.getText());
+		Service.gI().requestRegister(user, tfPass.getText(), Rms.loadRMSString(Rms.RMS_userAo + ServerListScreen.ipSelect), Rms.loadRMSString("passAo" + ServerListScreen.ipSelect), GameMidlet.VERSION);
+		Rms.saveRMSString(Rms.RMS_acc, user);
+		Rms.saveRMSString(Rms.RMS_pass, tfPass.getText());
 		t = 20;
 		isRegistering = true;
 	}
@@ -364,7 +413,8 @@ public class LoginScr : mScreen, IActionListener
 	public void doViewFAQ()
 	{
 		if (!listFAQ.Equals(string.Empty) || !listFAQ.Equals(string.Empty))
-			;
+		{
+		}
 		if (!Session_ME.connected)
 		{
 			isFAQ = true;
@@ -377,13 +427,17 @@ public class LoginScr : mScreen, IActionListener
 	{
 		MyVector myVector = new MyVector();
 		if (isLocal)
+		{
 			myVector.addElement(new Command("Server LOCAL", this, 20004, null));
+		}
 		myVector.addElement(new Command("Server Bokken", this, 20001, null));
 		myVector.addElement(new Command("Server Shuriken", this, 20002, null));
 		myVector.addElement(new Command("Server Tessen (mới)", this, 20003, null));
 		GameCanvas.menu.startAt(myVector, 0);
 		if (loadIndexServer() != -1 && !GameCanvas.isTouch)
+		{
 			GameCanvas.menu.menuSelectedItem = loadIndexServer();
+		}
 	}
 
 	protected void saveIndexServer(int index)
@@ -398,11 +452,13 @@ public class LoginScr : mScreen, IActionListener
 
 	public void doLogin()
 	{
-		string text = Rms.loadRMSString("acc");
-		string text2 = Rms.loadRMSString("pass");
+		string text = Rms.loadRMSString(Rms.RMS_acc);
+		string text2 = Rms.loadRMSString(Rms.RMS_pass);
 		if (text != null && !text.Equals(string.Empty))
+		{
 			isLogin2 = false;
-		else if (Rms.loadRMSString("userAo" + ServerListScreen.ipSelect) != null && !Rms.loadRMSString("userAo" + ServerListScreen.ipSelect).Equals(string.Empty))
+		}
+		else if (Rms.loadRMSString(Rms.RMS_userAo + ServerListScreen.ipSelect) != null && !Rms.loadRMSString(Rms.RMS_userAo + ServerListScreen.ipSelect).Equals(string.Empty))
 		{
 			isLogin2 = true;
 		}
@@ -412,31 +468,44 @@ public class LoginScr : mScreen, IActionListener
 		}
 		if ((text == null || text.Equals(string.Empty)) && isLogin2)
 		{
-			text = Rms.loadRMSString("userAo" + ServerListScreen.ipSelect);
+			text = Rms.loadRMSString(Rms.RMS_userAo + ServerListScreen.ipSelect);
 			text2 = "a";
 		}
 		if (text == null || text2 == null || GameMidlet.VERSION == null || text.Equals(string.Empty))
+		{
 			return;
+		}
 		if (text2.Equals(string.Empty))
 		{
 			focus = 1;
 			tfUser.isFocus = false;
 			tfPass.isFocus = true;
 			if (!GameCanvas.isTouch)
+			{
 				right = tfPass.cmdClear;
+			}
 			return;
 		}
 		if (!Session_ME.gI().isConnected())
+		{
 			GameCanvas.connect();
-		Res.outz("ccccccc " + text + " " + text2 + " " + GameMidlet.VERSION + " " + (sbyte)(isLogin2 ? 1 : 0));
+		}
 		Service.gI().login(text, text2, GameMidlet.VERSION, (sbyte)(isLogin2 ? 1 : 0));
+		Res.outz(Controller.isEXTRA_LINK + " = Controller.isEXTRA_LINK " + text + " " + text2 + " " + GameMidlet.VERSION + " " + (sbyte)(isLogin2 ? 1 : 0));
+		Rms.saveRMSInt(ServerListScreen.RMS_svselect, ServerListScreen.ipSelect);
 		if (Session_ME.connected)
+		{
 			GameCanvas.startWaitDlg();
+		}
 		else
-			GameCanvas.startOKDlg(mResources.maychutathoacmatsong);
+		{
+			GameCanvas.startOK(mResources.maychutathoacmatsong + " [0]", 8884, null);
+		}
 		focus = 0;
 		if (!isLogin2)
+		{
 			actRegisterLeft();
+		}
 		GameCanvas.timeBreakLoading = mSystem.currentTimeMillis() + 30000;
 	}
 
@@ -444,32 +513,20 @@ public class LoginScr : mScreen, IActionListener
 	{
 		if (isCheck)
 		{
-			Rms.saveRMSInt("check", 1);
-			Rms.saveRMSString("acc", tfUser.getText().ToLower().Trim());
-			Rms.saveRMSString("pass", tfPass.getText().ToLower().Trim());
+			Rms.saveRMSInt(Rms.RMS_check, 1);
+			Rms.saveRMSString(Rms.RMS_acc, tfUser.getText().ToLower().Trim());
+			Rms.saveRMSString(Rms.RMS_pass, tfPass.getText().ToLower().Trim());
 		}
 		else
 		{
-			Rms.saveRMSInt("check", 2);
-			Rms.saveRMSString("acc", string.Empty);
-			Rms.saveRMSString("pass", string.Empty);
+			Rms.saveRMSInt(Rms.RMS_check, 2);
+			Rms.saveRMSString(Rms.RMS_acc, string.Empty);
+			Rms.saveRMSString(Rms.RMS_pass, string.Empty);
 		}
 	}
 
 	public override void update()
 	{
-		if (Main.isWindowsPhone && isRegistering)
-		{
-			if (t < 0)
-			{
-				GameCanvas.endDlg();
-				Session_ME.gI().close();
-				GameCanvas.serverScreen.switchToMe();
-				isRegistering = false;
-			}
-			else
-				t--;
-		}
 		if (timeLogin > 0)
 		{
 			GameCanvas.startWaitDlg();
@@ -478,7 +535,9 @@ public class LoginScr : mScreen, IActionListener
 			{
 				timeLogin--;
 				if (timeLogin == 0)
+				{
 					GameCanvas.loginScr.doLogin();
+				}
 				lastTimeLogin = currTimeLogin;
 			}
 		}
@@ -499,10 +558,13 @@ public class LoginScr : mScreen, IActionListener
 			tfPass.update();
 		}
 		if (TouchScreenKeyboard.visible)
+		{
 			mGraphics.addYWhenOpenKeyBoard = 50;
+		}
 		for (int i = 0; i < Effect2.vEffect2.size(); i++)
 		{
-			((Effect2)Effect2.vEffect2.elementAt(i)).update();
+			Effect2 effect = (Effect2)Effect2.vEffect2.elementAt(i);
+			effect.update();
 		}
 		if (isUpdateAll && !isUpdateData && !isUpdateItem && !isUpdateMap && !isUpdateSkill)
 		{
@@ -512,9 +574,13 @@ public class LoginScr : mScreen, IActionListener
 		}
 		GameScr.cmx++;
 		if (GameScr.cmx > GameCanvas.w * 3 + 100)
+		{
 			GameScr.cmx = 100;
+		}
 		if (ChatPopup.currChatPopup != null)
+		{
 			return;
+		}
 		GameCanvas.debug("LGU1", 0);
 		GameCanvas.debug("LGU2", 0);
 		GameCanvas.debug("LGU3", 0);
@@ -526,7 +592,9 @@ public class LoginScr : mScreen, IActionListener
 			ylogo += dir * g;
 			g += dir * v;
 			if (g <= 0)
+			{
 				dir *= -1;
+			}
 			if (ylogo > 0)
 			{
 				dir *= -1;
@@ -535,7 +603,9 @@ public class LoginScr : mScreen, IActionListener
 		}
 		GameCanvas.debug("LGU6", 0);
 		if (tipid >= 0 && GameCanvas.gameTick % 100 == 0)
+		{
 			doChangeTip();
+		}
 		if (isLogin2 && !isRes)
 		{
 			tfUser.isPaintCarret = false;
@@ -562,6 +632,10 @@ public class LoginScr : mScreen, IActionListener
 				center = cmdOK;
 				left = cmdFogetPass;
 			}
+			if (cmdBack != null && cmdBack.isPointerPressInside())
+			{
+				cmdBack.performAction();
+			}
 		}
 		else if (isRes)
 		{
@@ -578,7 +652,9 @@ public class LoginScr : mScreen, IActionListener
 			string text = tfUser.getText().ToLower().Trim();
 			string text2 = tfPass.getText().ToLower().Trim();
 			if (!text.Equals(string.Empty) && !text2.Equals(string.Empty))
+			{
 				doLogin();
+			}
 			Main.isMiniApp = true;
 		}
 		updateTfWhenOpenKb();
@@ -588,21 +664,29 @@ public class LoginScr : mScreen, IActionListener
 	{
 		tipid++;
 		if (tipid >= mResources.tips.Length)
+		{
 			tipid = 0;
+		}
 		if (GameCanvas.currentDialog == GameCanvas.msgdlg && GameCanvas.msgdlg.isWait)
+		{
 			GameCanvas.msgdlg.setInfo(mResources.tips[tipid]);
+		}
 	}
 
 	public void updateLogo()
 	{
 		if (defYL != yL)
+		{
 			yL += defYL - yL >> 1;
+		}
 	}
 
 	public override void keyPress(int keyCode)
 	{
 		if (tfUser.isFocus)
+		{
 			tfUser.keyPressed(keyCode);
+		}
 		else if (tfPass.isFocus)
 		{
 			tfPass.keyPressed(keyCode);
@@ -622,26 +706,35 @@ public class LoginScr : mScreen, IActionListener
 		GameCanvas.debug("PLG2", 2);
 		int num = tfUser.y - 50;
 		if (GameCanvas.h <= 220)
+		{
 			num += 5;
+		}
 		mFont.tahoma_7_white.drawString(g, "v" + GameMidlet.VERSION, GameCanvas.w - 2, 17, 1, mFont.tahoma_7_grey);
 		if (mSystem.clientType == 1 && !GameCanvas.isTouch)
+		{
 			mFont.tahoma_7_white.drawString(g, ServerListScreen.linkweb, GameCanvas.w - 2, GameCanvas.h - 15, 1, mFont.tahoma_7_grey);
+		}
 		else
+		{
 			mFont.tahoma_7_white.drawString(g, ServerListScreen.linkweb, GameCanvas.w - 2, 2, 1, mFont.tahoma_7_grey);
-		if (ChatPopup.currChatPopup != null || ChatPopup.serverChatPopUp != null)
-			return;
+		}
 		if (GameCanvas.currentDialog == null)
 		{
 			int h = 105;
 			int w = ((GameCanvas.w < 200) ? 160 : 180);
 			PopUp.paintPopUp(g, xLog, yLog - 10, w, h, -1, true);
 			if (GameCanvas.h > 160 && imgTitle != null)
+			{
 				g.drawImage(imgTitle, GameCanvas.hw, num, 3);
+			}
 			GameCanvas.debug("PLG4", 1);
 			int num2 = 4;
 			int num3 = num2 * 32 + 23 + 33;
 			if (num3 >= GameCanvas.w)
-				num3 = (num2 - 1) * 32 + 23 + 33;
+			{
+				num2--;
+				num3 = num2 * 32 + 23 + 33;
+			}
 			xLog = GameCanvas.w / 2 - num3 / 2;
 			tfUser.x = xLog + 10;
 			tfUser.y = yLog + 20;
@@ -651,7 +744,9 @@ public class LoginScr : mScreen, IActionListener
 			tfPass.paint(g);
 			int num4 = 0;
 			if (GameCanvas.w >= 176)
+			{
 				num4 = 50;
+			}
 			else
 			{
 				mFont.tahoma_7b_green2.drawString(g, mResources.acc + ":", tfUser.x - 35, tfUser.y + 7, 0);
@@ -661,6 +756,7 @@ public class LoginScr : mScreen, IActionListener
 			}
 		}
 		base.paint(g);
+		cmdBack.paint(g);
 	}
 
 	public override void updateKey()
@@ -668,7 +764,9 @@ public class LoginScr : mScreen, IActionListener
 		if (GameCanvas.isTouch)
 		{
 			if (cmdCallHotline != null && cmdCallHotline.isPointerPressInside())
+			{
 				cmdCallHotline.performAction();
+			}
 		}
 		else if (mSystem.clientType == 1 && GameCanvas.keyPressed[13])
 		{
@@ -676,25 +774,35 @@ public class LoginScr : mScreen, IActionListener
 			cmdCallHotline.performAction();
 		}
 		if (isContinueToLogin)
+		{
 			return;
+		}
 		if (!GameCanvas.isTouch)
 		{
 			if (tfUser.isFocus)
+			{
 				right = tfUser.cmdClear;
+			}
 			else
+			{
 				right = tfPass.cmdClear;
+			}
 		}
 		if (GameCanvas.keyPressed[(!Main.isPC) ? 2 : 21])
 		{
 			focus--;
 			if (focus < 0)
+			{
 				focus = 1;
+			}
 		}
 		else if (GameCanvas.keyPressed[(!Main.isPC) ? 8 : 22] || GameCanvas.keyPressed[16])
 		{
 			focus++;
 			if (focus > 1)
+			{
 				focus = 0;
+			}
 		}
 		if (GameCanvas.keyPressed[(!Main.isPC) ? 2 : 21] || GameCanvas.keyPressed[(!Main.isPC) ? 8 : 22] || GameCanvas.keyPressed[16])
 		{
@@ -744,14 +852,18 @@ public class LoginScr : mScreen, IActionListener
 		if (GameCanvas.isPointerJustRelease && (!isLogin2 || isRes))
 		{
 			if (GameCanvas.isPointerHoldIn(tfUser.x, tfUser.y, tfUser.width, tfUser.height))
+			{
 				focus = 0;
+			}
 			else if (GameCanvas.isPointerHoldIn(tfPass.x, tfPass.y, tfPass.width, tfPass.height))
 			{
 				focus = 1;
 			}
 		}
 		if (Main.isPC && GameCanvas.keyPressed[(!Main.isPC) ? 5 : 25] && right != null)
+		{
 			right.performAction();
+		}
 		base.updateKey();
 		GameCanvas.clearKeyPressed();
 	}
@@ -763,8 +875,32 @@ public class LoginScr : mScreen, IActionListener
 
 	public void perform(int idAction, object p)
 	{
+		Debug.LogError(">>>>Loginscr perform: " + idAction);
 		switch (idAction)
 		{
+		case 101:
+			GameCanvas.serverScreen.switchToMe();
+			break;
+		case 13:
+			switch (mSystem.clientType)
+			{
+			case 1:
+				mSystem.callHotlineJava();
+				break;
+			case 3:
+			case 5:
+				mSystem.callHotlineIphone();
+				break;
+			case 6:
+				mSystem.callHotlineWindowsPhone();
+				break;
+			case 4:
+				mSystem.callHotlinePC();
+				break;
+			case 2:
+				break;
+			}
+			break;
 		case 1000:
 			try
 			{
@@ -774,116 +910,93 @@ public class LoginScr : mScreen, IActionListener
 			{
 			}
 			GameCanvas.endDlg();
-			return;
+			break;
 		case 1001:
 			GameCanvas.endDlg();
 			isRes = false;
-			return;
+			break;
 		case 1002:
 		{
 			GameCanvas.startWaitDlg();
-			string text = Rms.loadRMSString("userAo" + ServerListScreen.ipSelect);
+			string text = Rms.loadRMSString(Rms.RMS_userAo + ServerListScreen.ipSelect);
 			if (text == null || text.Equals(string.Empty))
 			{
 				Service.gI().login2(string.Empty);
-				return;
+				break;
 			}
 			GameCanvas.loginScr.isLogin2 = true;
 			GameCanvas.connect();
 			Service.gI().setClientType();
 			Service.gI().login(text, string.Empty, GameMidlet.VERSION, 1);
-			return;
+			break;
 		}
 		case 1004:
 			ServerListScreen.doUpdateServer();
 			GameCanvas.serverScreen.switchToMe();
-			return;
+			break;
+		case 10021:
+			actRegisterLeft();
+			break;
 		case 1003:
 			GameCanvas.startOKDlg(mResources.goToWebForPassword);
-			return;
+			break;
 		case 1005:
 			try
 			{
 				GameMidlet.instance.platformRequest("http://ngocrongonline.com");
-				return;
+				break;
 			}
 			catch (Exception)
 			{
-				return;
+				break;
 			}
-		}
-		switch (idAction)
-		{
-		case 2000:
-			return;
-		case 2001:
-			if (isCheck)
-				isCheck = false;
-			else
-				isCheck = true;
-			return;
-		case 2002:
-			doRegister();
-			return;
-		case 2003:
-			doMenu();
-			return;
-		case 2004:
-			actRegister();
-			return;
-		case 2008:
-			Rms.saveRMSString("acc", tfUser.getText().Trim());
-			Rms.saveRMSString("pass", tfPass.getText().Trim());
-			if (ServerListScreen.loadScreen)
-				GameCanvas.serverScreen.switchToMe();
-			else
-				GameCanvas.serverScreen.show2();
-			return;
-		}
-		if (idAction != 10041)
-		{
-			if (idAction != 10042)
-			{
-				if (idAction != 13)
-				{
-					if (idAction != 4000)
-					{
-						if (idAction == 10021)
-							actRegisterLeft();
-					}
-					else
-						doRegister(tfUser.getText());
-					return;
-				}
-				switch (mSystem.clientType)
-				{
-				case 1:
-					mSystem.callHotlineJava();
-					break;
-				case 3:
-				case 5:
-					mSystem.callHotlineIphone();
-					break;
-				case 6:
-					mSystem.callHotlineWindowsPhone();
-					break;
-				case 4:
-					mSystem.callHotlinePC();
-					break;
-				case 2:
-					break;
-				}
-			}
-			else
-			{
-				Rms.saveRMSInt("lowGraphic", 1);
-				GameCanvas.startOK(mResources.plsRestartGame, 8885, null);
-			}
-		}
-		else
-		{
+		case 10041:
 			Rms.saveRMSInt("lowGraphic", 0);
 			GameCanvas.startOK(mResources.plsRestartGame, 8885, null);
+			break;
+		case 10042:
+			Rms.saveRMSInt("lowGraphic", 1);
+			GameCanvas.startOK(mResources.plsRestartGame, 8885, null);
+			break;
+		case 2001:
+			if (isCheck)
+			{
+				isCheck = false;
+			}
+			else
+			{
+				isCheck = true;
+			}
+			break;
+		case 2002:
+			doRegister();
+			break;
+		case 2003:
+			doMenu();
+			break;
+		case 2004:
+			actRegister();
+			break;
+		case 2008:
+			Rms.saveRMSString(Rms.RMS_acc, tfUser.getText().Trim());
+			Rms.saveRMSString(Rms.RMS_pass, tfPass.getText().Trim());
+			if (ServerListScreen.isNewUI)
+			{
+				Controller.isEXTRA_LINK = false;
+				GameCanvas.serverScreen.Login_New();
+			}
+			else if (ServerListScreen.loadScreen)
+			{
+				GameCanvas.serverScreen.switchToMe();
+			}
+			else
+			{
+				GameCanvas.serverScreen.show2();
+			}
+			break;
+		case 4000:
+			doRegister(tfUser.getText());
+			break;
 		}
 	}
 
@@ -918,8 +1031,12 @@ public class LoginScr : mScreen, IActionListener
 			return;
 		}
 		if (Main.isWindowsPhone)
+		{
 			GameMidlet.isBackWindowsPhone = true;
+		}
 		GameCanvas.instance.resetToLoginScr = false;
-		GameCanvas.instance.doResetToLoginScr(GameCanvas.loginScr);
+		ServerListScreen.isAutoLogin = false;
+		ServerScr.isShowSv_HaveChar = false;
+		GameCanvas.instance.doResetToLoginScr(GameCanvas.serverScreen);
 	}
 }

@@ -58,18 +58,26 @@ public class ListNew
 		this.maxSize = maxSize;
 		cmxLim = limX;
 		if (isLim0 && cmxLim < 0)
+		{
 			cmxLim = 0;
+		}
 	}
 
 	public void setMaxCamera(int limX)
 	{
 		if (limX < 0)
+		{
 			limX = 0;
+		}
 		cmxLim = limX;
 		if (cmx > cmxLim)
+		{
 			cmx = cmxLim;
+		}
 		if (cmtoX > cmxLim)
+		{
 			cmtoX = cmxLim;
+		}
 	}
 
 	public void updatePos(int x, int y, int maxW, int maxH)
@@ -88,7 +96,9 @@ public class ListNew
 			flag = true;
 			value--;
 			if (value < 0)
+			{
 				value = maxSize - 1;
+			}
 			GameCanvas.clearKeyPressed();
 		}
 		else if (GameCanvas.keyPressed[8])
@@ -96,18 +106,26 @@ public class ListNew
 			flag = true;
 			value++;
 			if (value > maxSize - 1)
+			{
 				value = maxSize - 1;
+			}
 			GameCanvas.clearKeyPressed();
 		}
 		if (flag)
 		{
 			cmtoX = (value + 1) * itemH - maxH / 2;
 			if (cmtoX > cmxLim)
+			{
 				cmtoX = cmxLim;
+			}
 			if (cmtoX < 0)
+			{
 				cmtoX = 0;
+			}
 			if (value == maxSize - 1 || value == 0)
+			{
 				cmx = cmtoX;
+			}
 		}
 		update_Pos_UP_DOWN();
 	}
@@ -115,7 +133,9 @@ public class ListNew
 	public void update_Pos_UP_DOWN()
 	{
 		if (cmxLim <= 0)
+		{
 			return;
+		}
 		if (GameCanvas.isPointerDown)
 		{
 			if (!pointerIsDowning && GameCanvas.isPointer(x, y, maxW, maxH))
@@ -133,10 +153,14 @@ public class ListNew
 			{
 				pointerDownTime++;
 				if (pointerDownTime > 5 && pointerDownFirstX == GameCanvas.py && !isDownWhenRunning)
+				{
 					pointerDownFirstX = -1000;
+				}
 				int num = GameCanvas.py - pointerDownLastX[0];
 				if (num != 0 && value != -1)
+				{
 					value = -1;
+				}
 				for (int num2 = pointerDownLastX.Length - 1; num2 > 0; num2--)
 				{
 					pointerDownLastX[num2] = pointerDownLastX[num2 - 1];
@@ -144,11 +168,17 @@ public class ListNew
 				pointerDownLastX[0] = GameCanvas.py;
 				cmtoX -= num;
 				if (cmtoX < 0)
+				{
 					cmtoX = 0;
+				}
 				if (cmtoX > cmxLim)
+				{
 					cmtoX = cmxLim;
+				}
 				if (cmx < 0 || cmx > cmxLim)
+				{
 					num /= 2;
+				}
 				cmx -= num;
 			}
 		}
@@ -170,7 +200,9 @@ public class ListNew
 			else if (value == -1 && !isDownWhenRunning)
 			{
 				if (cmx < 0)
+				{
 					cmtoX = 0;
+				}
 				else if (cmx > cmxLim)
 				{
 					cmtoX = cmxLim;
@@ -178,7 +210,8 @@ public class ListNew
 				else
 				{
 					int num3 = GameCanvas.py - pointerDownLastX[0] + (pointerDownLastX[0] - pointerDownLastX[1]) + (pointerDownLastX[1] - pointerDownLastX[2]);
-					cmRun = -((num3 > 10) ? 10 : ((num3 < -10) ? (-10) : 0)) * 100;
+					num3 = ((num3 > 10) ? 10 : ((num3 < -10) ? (-10) : 0));
+					cmRun = -num3 * 100;
 				}
 			}
 			pointerIsDowning = false;
@@ -186,9 +219,13 @@ public class ListNew
 			GameCanvas.isPointerClick = false;
 		}
 		if (cmx <= 0)
+		{
 			cmx = 0;
+		}
 		if (cmx >= cmxLim)
+		{
 			cmx = cmxLim;
+		}
 	}
 
 	public void updatePos_LEFT_RIGHT()
@@ -210,10 +247,14 @@ public class ListNew
 			{
 				pointerDownTime++;
 				if (pointerDownTime > 5 && pointerDownFirstX == GameCanvas.px && !isDownWhenRunning)
+				{
 					pointerDownFirstX = -1000;
+				}
 				int num = GameCanvas.px - pointerDownLastX[0];
 				if (num != 0 && value != -1)
+				{
 					value = -1;
+				}
 				for (int num2 = pointerDownLastX.Length - 1; num2 > 0; num2--)
 				{
 					pointerDownLastX[num2] = pointerDownLastX[num2 - 1];
@@ -221,16 +262,24 @@ public class ListNew
 				pointerDownLastX[0] = GameCanvas.px;
 				cmtoX -= num;
 				if (cmtoX < 0)
+				{
 					cmtoX = 0;
+				}
 				if (cmtoX > cmxLim)
+				{
 					cmtoX = cmxLim;
+				}
 				if (cmx < 0 || cmx > cmxLim)
+				{
 					num /= 2;
+				}
 				cmx -= num;
 			}
 		}
 		if (!GameCanvas.isPointerClick || !pointerIsDowning)
+		{
 			return;
+		}
 		int i2 = GameCanvas.px - pointerDownLastX[0];
 		GameCanvas.isPointerClick = false;
 		if (Res.abs(i2) < 20 && Res.abs(GameCanvas.px - pointerDownFirstX) < 20 && !isDownWhenRunning && GameCanvas.isPointerSelect)
@@ -247,7 +296,9 @@ public class ListNew
 		else if (value == -1 && !isDownWhenRunning)
 		{
 			if (cmx < 0)
+			{
 				cmtoX = 0;
+			}
 			else if (cmx > cmxLim)
 			{
 				cmtoX = cmxLim;
@@ -255,7 +306,8 @@ public class ListNew
 			else
 			{
 				int num3 = GameCanvas.px - pointerDownLastX[0] + (pointerDownLastX[0] - pointerDownLastX[1]) + (pointerDownLastX[1] - pointerDownLastX[2]);
-				cmRun = -((num3 > 10) ? 10 : ((num3 < -10) ? (-10) : 0)) * 100;
+				num3 = ((num3 > 10) ? 10 : ((num3 < -10) ? (-10) : 0));
+				cmRun = -num3 * 100;
 			}
 		}
 		pointerIsDowning = false;
@@ -269,7 +321,9 @@ public class ListNew
 		{
 			cmtoX += cmRun / 100;
 			if (cmtoX < 0)
+			{
 				cmtoX = 0;
+			}
 			else if (cmtoX > cmxLim)
 			{
 				cmtoX = cmxLim;
@@ -280,7 +334,9 @@ public class ListNew
 			}
 			cmRun = cmRun * 9 / 10;
 			if (cmRun < 100 && cmRun > -100)
+			{
 				cmRun = 0;
+			}
 		}
 		if (cmx != cmtoX && !pointerIsDowning)
 		{
@@ -300,9 +356,13 @@ public class ListNew
 	public void setToX(int value)
 	{
 		if (value < 0)
+		{
 			value = 0;
+		}
 		if (value > cmxLim)
+		{
 			value = cmxLim;
+		}
 		cmtoX = value;
 	}
 

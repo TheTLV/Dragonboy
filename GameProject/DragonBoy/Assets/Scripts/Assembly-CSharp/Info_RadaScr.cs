@@ -81,12 +81,12 @@ public class Info_RadaScr
 
 	public static Char SetCharInfo(int head, int body, int leg, int bag)
 	{
-		Char @char = new Char();
-		@char.head = head;
-		@char.body = body;
-		@char.leg = leg;
-		@char.bag = bag;
-		return @char;
+		Char obj = new Char();
+		obj.head = head;
+		obj.body = body;
+		obj.leg = leg;
+		obj.bag = bag;
+		return obj;
 	}
 
 	public static Info_RadaScr GetInfo(MyVector vec, int id)
@@ -97,7 +97,9 @@ public class Info_RadaScr
 			{
 				Info_RadaScr info_RadaScr = (Info_RadaScr)vec.elementAt(i);
 				if (info_RadaScr != null && info_RadaScr.id == id)
+				{
 					return info_RadaScr;
+				}
 			}
 		}
 		return null;
@@ -107,13 +109,17 @@ public class Info_RadaScr
 	{
 		count++;
 		if (count > f.Length - 1)
+		{
 			count = 0;
+		}
 		if (typeMonster == 0)
 		{
 			if (Mob.arrMobTemplate[mobInfo.templateId] != null)
 			{
 				if (Mob.arrMobTemplate[mobInfo.templateId].data != null)
+				{
 					Mob.arrMobTemplate[mobInfo.templateId].data.paintFrame(g, f[count], x, y, 0, 0);
+				}
 				else if (timeRequest - GameCanvas.timeNow < 0)
 				{
 					timeRequest = GameCanvas.timeNow + 1500;
@@ -131,7 +137,9 @@ public class Info_RadaScr
 	{
 		cp = new ChatPopup();
 		string empty = string.Empty;
-		string text = string.Concat(string.Empty + "\n|6|" + info, "\n--");
+		string empty2 = string.Empty;
+		empty2 = empty2 + "\n|6|" + info;
+		empty2 += "\n--";
 		if (itemOption != null)
 		{
 			int num = 0;
@@ -141,7 +149,8 @@ public class Info_RadaScr
 				int num2 = 0;
 				for (int i = 0; i < itemOption.Length; i++)
 				{
-					if (!itemOption[i].getOptionString().Equals(string.Empty) && num == itemOption[i].activeCard)
+					empty = itemOption[i].getOptionString();
+					if (!empty.Equals(string.Empty) && num == itemOption[i].activeCard)
 					{
 						num2++;
 						break;
@@ -153,37 +162,47 @@ public class Info_RadaScr
 					break;
 				}
 				if (num == 0)
-					text = text + "\n|6|2|--" + mResources.unlock + "--";
+				{
+					empty2 = empty2 + "\n|6|2|--" + mResources.unlock + "--";
+				}
 				else
 				{
-					string text2 = text;
-					text = text2 + "\n|6|2|--" + mResources.equip + " Lv." + num + "--";
+					string text = empty2;
+					empty2 = text + "\n|6|2|--" + mResources.equip + " Lv." + num + "--";
 				}
 				for (int j = 0; j < itemOption.Length; j++)
 				{
 					empty = itemOption[j].getOptionString();
 					if (empty.Equals(string.Empty) || num != itemOption[j].activeCard)
+					{
 						continue;
-					string text3 = "1";
+					}
+					string text2 = "1";
 					if (level == 0)
-						text3 = "2";
+					{
+						text2 = "2";
+					}
 					else if (itemOption[j].activeCard != 0)
 					{
 						if (isUse == 0)
-							text3 = "2";
+						{
+							text2 = "2";
+						}
 						else if (level < itemOption[j].activeCard)
 						{
-							text3 = "2";
+							text2 = "2";
 						}
 					}
-					string text2 = text;
-					text = text2 + "\n|" + text3 + "|1|" + empty;
+					string text = empty2;
+					empty2 = text + "\n|" + text2 + "|1|" + empty;
 				}
 				if (num2 != 0)
+				{
 					num++;
+				}
 			}
 		}
-		popUpDetailInit(cp, text);
+		popUpDetailInit(cp, empty2);
 	}
 
 	public void popUpDetailInit(ChatPopup cp, string chat)
@@ -198,7 +217,9 @@ public class Info_RadaScr
 		cp.strY = 10;
 		cp.lim = cp.ch - RadarScr.hText;
 		if (cp.lim < 0)
+		{
 			cp.lim = 0;
+		}
 	}
 
 	public void SetEff()
@@ -226,9 +247,13 @@ public class Info_RadaScr
 		{
 			Position position = (Position)eff.elementAt(i);
 			if (position == null)
+			{
 				continue;
+			}
 			if (position.w < position.v)
+			{
 				position.w++;
+			}
 			if (position.w >= position.v)
 			{
 				position.anchor = GameCanvas.gameTick / 3 % (RadarScr.fraEff.nFrame + 1);
@@ -238,7 +263,9 @@ public class Info_RadaScr
 					i--;
 				}
 				else
+				{
 					RadarScr.fraEff.drawFrame(position.anchor, x + position.x, y + position.y, 0, 3, g);
+				}
 			}
 		}
 	}

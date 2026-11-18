@@ -25,20 +25,18 @@ public class myReader
 
 	public myReader(string filename)
 	{
-		buffer = mSystem.convertToSbyte(((TextAsset)Resources.Load(filename, typeof(TextAsset))).bytes);
+		TextAsset textAsset = (TextAsset)Resources.Load(filename, typeof(TextAsset));
+		buffer = mSystem.convertToSbyte(textAsset.bytes);
 	}
 
 	public sbyte readSByte()
 	{
 		if (posRead < buffer.Length)
+		{
 			return buffer[posRead++];
+		}
 		posRead = buffer.Length;
 		throw new Exception(" loi doc sbyte eof ");
-	}
-
-	public sbyte readsbyte()
-	{
-		return readSByte();
 	}
 
 	public sbyte readByte()
@@ -66,7 +64,8 @@ public class myReader
 		short num = 0;
 		for (int i = 0; i < 2; i++)
 		{
-			num = (short)((short)(num << 8) | (short)(0xFF & buffer[posRead++]));
+			num <<= 8;
+			num |= (short)(0xFF & buffer[posRead++]);
 		}
 		return num;
 	}
@@ -76,7 +75,8 @@ public class myReader
 		ushort num = 0;
 		for (int i = 0; i < 2; i++)
 		{
-			num = (ushort)((ushort)(num << 8) | (ushort)(0xFFu & (uint)buffer[posRead++]));
+			num <<= 8;
+			num |= (ushort)(0xFF & buffer[posRead++]);
 		}
 		return num;
 	}
@@ -86,7 +86,8 @@ public class myReader
 		int num = 0;
 		for (int i = 0; i < 4; i++)
 		{
-			num = (num << 8) | (0xFF & buffer[posRead++]);
+			num <<= 8;
+			num |= 0xFF & buffer[posRead++];
 		}
 		return num;
 	}
@@ -96,19 +97,20 @@ public class myReader
 		long num = 0L;
 		for (int i = 0; i < 8; i++)
 		{
-			num = (num << 8) | (0xFF & buffer[posRead++]);
+			num <<= 8;
+			num |= 0xFF & buffer[posRead++];
 		}
 		return num;
 	}
 
 	public bool readBool()
 	{
-		return readSByte() > 0;
+		return (readSByte() > 0) ? true : false;
 	}
 
 	public bool readBoolean()
 	{
-		return readSByte() > 0;
+		return (readSByte() > 0) ? true : false;
 	}
 
 	public string readString()
@@ -119,7 +121,8 @@ public class myReader
 		{
 			array[i] = convertSbyteToByte(readSByte());
 		}
-		return new UTF8Encoding().GetString(array);
+		UTF8Encoding uTF8Encoding = new UTF8Encoding();
+		return uTF8Encoding.GetString(array);
 	}
 
 	public string readStringUTF()
@@ -130,7 +133,8 @@ public class myReader
 		{
 			array[i] = convertSbyteToByte(readSByte());
 		}
-		return new UTF8Encoding().GetString(array);
+		UTF8Encoding uTF8Encoding = new UTF8Encoding();
+		return uTF8Encoding.GetString(array);
 	}
 
 	public string readUTF()
@@ -141,20 +145,26 @@ public class myReader
 	public int read()
 	{
 		if (posRead < buffer.Length)
+		{
 			return readSByte();
+		}
 		return -1;
 	}
 
 	public int read(ref sbyte[] data)
 	{
 		if (data == null)
+		{
 			return 0;
+		}
 		int num = 0;
 		for (int i = 0; i < data.Length; i++)
 		{
 			data[i] = readSByte();
 			if (posRead > buffer.Length)
+			{
 				return -1;
+			}
 			num++;
 		}
 		return num;
@@ -179,7 +189,9 @@ public class myReader
 	public static byte convertSbyteToByte(sbyte var)
 	{
 		if (var > 0)
+		{
 			return (byte)var;
+		}
 		return (byte)(var + 256);
 	}
 
@@ -189,9 +201,13 @@ public class myReader
 		for (int i = 0; i < var.Length; i++)
 		{
 			if (var[i] > 0)
+			{
 				array[i] = (byte)var[i];
+			}
 			else
+			{
 				array[i] = (byte)(var[i] + 256);
+			}
 		}
 		return array;
 	}
@@ -209,12 +225,16 @@ public class myReader
 	public void read(ref sbyte[] data, int arg1, int arg2)
 	{
 		if (data == null)
+		{
 			return;
+		}
 		for (int i = 0; i < arg2; i++)
 		{
 			data[i + arg1] = readSByte();
 			if (posRead > buffer.Length)
+			{
 				break;
+			}
 		}
 	}
 }

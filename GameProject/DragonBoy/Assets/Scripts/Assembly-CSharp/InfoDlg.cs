@@ -58,11 +58,13 @@ public class InfoDlg
 
 	public static void update()
 	{
-		if (delay > 0)
+		if (isShow && delay > 0)
 		{
 			delay--;
-			if (delay == 0)
+			if (delay <= 0)
+			{
 				hide();
+			}
 		}
 	}
 

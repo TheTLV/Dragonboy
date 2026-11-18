@@ -40,6 +40,7 @@ public class T1 : mResources
 		mResources.maychutathoacmatsong = "Máy chủ tắt hoặc mất sóng";
 		mResources.cauhinhthap = "Cấu hình thấp";
 		mResources.cauhinhcao = "Cấu hình cao";
+		mResources.cauhinhthuong = "Cấu hình thường";
 		mResources.taidulieu = "Tải dữ liệu";
 		mResources.xoadulieu = "Xóa dữ liệu";
 		mResources.deletaDataNote = "Bạn cần xóa trong trường hợp có lỗi tải dữ liệu. Khi xóa xong, bạn phải tải lại toàn bộ để có thể chơi.";
@@ -63,6 +64,7 @@ public class T1 : mResources
 		mResources.note = "Bạn sẽ mất tài khoản đang chơi và không thể khôi phục được nếu đổi tài khoản khác, bạn có đồng ý không ?";
 		mResources.REGISTOPROTECT = "Đăng kí để bảo vệ tài khoản";
 		mResources.finishBomong = "Bạn phải hoàn thành nhiệm vụ tìm ngọc 6 sao mới có thể nạp tiền";
+		mResources.charger = "Diễn đàn và Nạp Ngọc";
 		mResources.charger = "Nạp tiền";
 		mResources.notYetSell = "Chưa có vật phẩm rao bán";
 		mResources.getUp = "Kéo lên để cập nhật thêm";
@@ -159,7 +161,9 @@ public class T1 : mResources
 		};
 		mResources.MENUGENDER = new string[3] { "Trái đất", "Namếc", "Xayda" };
 		if (mSystem.clientType == 7)
+		{
 			mResources.MENUGENDER = new string[3] { "Rồng đất", "Rồng xanh", "Rồng đỏ" };
+		}
 		mResources.CHAR_ORDER = new string[10] { "Thách đấu", "Luyện tập", "Cừu sát", "Kết bạn", "Mời vào bang", "Phục hồi", "Xem thông tin", "Chat riêng", "Mời vào tộc", "Chặn xin vào tộc" };
 		mResources.mainTab1 = new string[4][]
 		{
@@ -307,7 +311,7 @@ public class T1 : mResources
 		mResources.go_to_quest = "Hãy đến vị trí chớp nháy trên bản đồ để làm nhiệm vụ";
 		mResources.from_earth = "Dành cho Trái Đất\n";
 		mResources.from_namec = "Dành cho Namếc\n";
-		mResources.from_sayda = "Dành cho Sayda\n";
+		mResources.from_sayda = "Dành cho Xayda\n";
 		mResources.expire = "Hạn dùng";
 		mResources.pow_request = "Sức mạnh yêu cầu";
 		mResources.your_pow = "Sức mạnh của bạn";
@@ -461,12 +465,14 @@ public class T1 : mResources
 		mResources.can_buy_from_Uron1 = "Khi có ";
 		mResources.can_buy_from_Uron2 = " tiềm năng, bạn sẽ được nâng cấp miễn phí ";
 		mResources.can_buy_from_Uron3 = ". Ngoài ra bạn có thể mua Bí Kíp từ Urôn để học nhanh";
+		mResources.critdame = "ST Crit";
+		mResources.giamsatthuong = "Giảm ST";
 		mResources.HP = "HP";
 		mResources.KI = "KI";
 		mResources.hit_point = "Sức đánh";
 		mResources.armor = "Giáp";
 		mResources.vitality = "Thể lực";
-		mResources.critical = "Chí mạng";
+		mResources.critical = "Crit";
 		mResources.cap_do = "Cấp độ";
 		mResources.KI_consume = "KI tiêu hao: ";
 		mResources.cooldown = "Hồi chiêu";
@@ -487,12 +493,14 @@ public class T1 : mResources
 			new string[3] { "Cađic", "Rađic", "Kakalot" }
 		};
 		if (mSystem.clientType == 7)
+		{
 			mResources.hairStyleName = new string[3][]
 			{
 				new string[3] { "Hango", "Linkhi", "Chayam" },
 				new string[3] { "Deden", "Cololo", "Mika" },
 				new string[3] { "Tageve", "Ditra", "Rotkaka" }
 			};
+		}
 		mResources.hp_ki_full = "HP và KI đã đầy, không cần dùng đậu thần";
 		mResources.quest_place = "Địa điểm nhiệm vụ";
 		mResources.no_mission = "Không có nhiệm vụ";

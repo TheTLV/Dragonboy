@@ -113,9 +113,12 @@ public class CrackBallScr : mScreen
 		ySkill = GameCanvas.h - 41;
 		xSkill[1] = GameCanvas.w - 40;
 		xSkill[2] = (xSkill[0] + xSkill[1]) / 2;
-		fraImgKame = new FrameImage(GameCanvas.loadImage("/e/e_1.png"), 30, 30);
-		fraImgKame_1 = new FrameImage(GameCanvas.loadImage("/e/e_0.png"), 68, 65);
-		fraImgKame_2 = new FrameImage(GameCanvas.loadImage("/e/e_2.png"), 66, 70);
+		Image img = GameCanvas.loadImage("/e/e_1.png");
+		fraImgKame = new FrameImage(img, 30, 30);
+		Image img2 = GameCanvas.loadImage("/e/e_0.png");
+		fraImgKame_1 = new FrameImage(img2, 68, 65);
+		Image img3 = GameCanvas.loadImage("/e/e_2.png");
+		fraImgKame_2 = new FrameImage(img3, 66, 70);
 		imgReplay = GameCanvas.loadImage("/e/nut2.png");
 		imgX = GameCanvas.loadImage("/e/nut3.png");
 		wP = 230;
@@ -127,7 +130,9 @@ public class CrackBallScr : mScreen
 	public static CrackBallScr gI()
 	{
 		if (instance == null)
+		{
 			instance = new CrackBallScr();
+		}
 		return instance;
 	}
 
@@ -178,7 +183,9 @@ public class CrackBallScr : mScreen
 	{
 		rO = GameCanvas.hh / 3 + 10;
 		if (rO > 50)
+		{
 			rO = 50;
+		}
 		xO = 360;
 		GameScr.cmx = GameScr.cmxLim / 2;
 		yO = GameScr.cmy + GameCanvas.hh / 3 + 30;
@@ -195,7 +202,9 @@ public class CrackBallScr : mScreen
 	internal void setDotPosition()
 	{
 		if (GameCanvas.lowGraphic)
+		{
 			return;
+		}
 		for (int i = 0; i < yArg.Length; i++)
 		{
 			yArg[i] = Res.abs(rO * Res.sin(angle) / 1024);
@@ -241,44 +250,61 @@ public class CrackBallScr : mScreen
 				{
 					listBall[i].count += 2;
 					if (listBall[i].count >= iDot)
+					{
 						listBall[i].count = 0;
+					}
 					listBall[i].x = xDot[listBall[i].count];
 					listBall[i].y = yDot[listBall[i].count];
 				}
 				return;
 			}
 			if (step == 0)
+			{
 				step = 1;
+			}
 			if (step == 1)
 			{
 				for (int j = 0; j < listBall.Length; j++)
 				{
 					if (listBall[j].yTo == -999 || listBall[j].isDone)
+					{
 						continue;
+					}
 					if (listBall[j].y < listBall[j].yTo)
 					{
 						if (listBall[j].vy < 0)
+						{
 							listBall[j].vy = 0;
+						}
 						if (listBall[j].y + listBall[j].vy > listBall[j].yTo)
+						{
 							listBall[j].y = listBall[j].yTo;
+						}
 						else
+						{
 							listBall[j].y += listBall[j].vy;
+						}
 						listBall[j].vy++;
 					}
 					else
 					{
 						if (listBall[j].vy > 0)
+						{
 							listBall[j].vy = 0;
+						}
 						listBall[j].y += listBall[j].vy;
 						listBall[j].vy--;
 					}
 					if (listBall[j].y == listBall[j].yTo)
 					{
-						EffecMn.addEff(new Effect(19, listBall[j].x - 5, listBall[j].y + 25, 2, 1, -1));
+						Effect me = new Effect(19, listBall[j].x - 5, listBall[j].y + 25, 2, 1, -1);
+						EffecMn.addEff(me);
 						SoundMn.gI().charFall();
 						listBall[j].isDone = true;
 						if (!isCanSkill)
+						{
 							isCanSkill = true;
+						}
 					}
 				}
 			}
@@ -287,18 +313,24 @@ public class CrackBallScr : mScreen
 				for (int k = 0; k < listBall.Length; k++)
 				{
 					if (listBall[k].isDone)
+					{
 						continue;
+					}
 					if (listBall[k].y > -10)
 					{
 						if (listBall[k].vy > 0)
+						{
 							listBall[k].vy = 0;
+						}
 						listBall[k].y += listBall[k].vy;
 						listBall[k].vy--;
 						listBall[k].x += listBall[k].vx * listBall[k].dir;
 						listBall[k].vx -= 3;
 					}
 					if (listBall[k].y == -10)
+					{
 						listBall[k].isPaint = false;
+					}
 				}
 				countFr++;
 				if (countFr > fr.Length - 1)
@@ -315,13 +347,17 @@ public class CrackBallScr : mScreen
 				Char.myCharz().cf = fr[countFr];
 				countKame++;
 				if (countKame > 5)
+				{
 					countKame = 0;
+				}
 				frame = nFrame[countKame];
 			}
 			if (step == 3)
 			{
 				if (countKame <= 5)
+				{
 					countKame = 5;
+				}
 				countKame++;
 				if (countKame > nFrame.Length - 1)
 				{
@@ -346,43 +382,63 @@ public class CrackBallScr : mScreen
 				for (int m = 0; m < listBall.Length; m++)
 				{
 					if (listBall[m].isPaint)
+					{
 						listBall[m].xTo = Char.myCharz().cx;
+					}
 				}
 				step = 5;
 			}
 			if (step != 5)
+			{
 				return;
+			}
 			vp++;
 			if (yP < GameCanvas.hh / 3)
 			{
 				if (yP + vp > GameCanvas.hh / 3)
+				{
 					yP = GameCanvas.hh / 3;
+				}
 				else
+				{
 					yP += vp;
+				}
 			}
 			for (int n = 0; n < listBall.Length; n++)
 			{
 				if (!listBall[n].isPaint)
+				{
 					continue;
+				}
 				if (listBall[n].x < listBall[n].xTo)
 				{
 					if (listBall[n].vx < 0)
+					{
 						listBall[n].vx = 0;
+					}
 					if (listBall[n].x + listBall[n].vx > listBall[n].xTo)
+					{
 						listBall[n].x = listBall[n].xTo;
+					}
 					else
+					{
 						listBall[n].x += listBall[n].vx;
+					}
 					listBall[n].vx++;
 				}
 				else
 				{
 					if (listBall[n].vx > 0)
+					{
 						listBall[n].vx = 0;
+					}
 					listBall[n].x += listBall[n].vx;
 					listBall[n].vx--;
 				}
 				if (listBall[n].x == listBall[n].xTo)
+				{
 					listBall[n].isPaint = false;
+				}
 			}
 		}
 		catch (Exception)
@@ -393,16 +449,22 @@ public class CrackBallScr : mScreen
 	public override void updateKey()
 	{
 		if (InfoDlg.isLock)
+		{
 			return;
+		}
 		if (GameCanvas.isTouch && !ChatTextField.gI().isShow && !GameCanvas.menu.showMenu)
+		{
 			updateKeyTouchControl();
+		}
 		if (isAutoCrackBall && !GameCanvas.keyPressed[0])
 		{
 			GameCanvas.clearKeyHold();
 			GameCanvas.clearKeyPressed();
 		}
 		if (GameCanvas.keyPressed[0])
+		{
 			doClickSkill(2);
+		}
 		for (int i = 1; i < 8; i++)
 		{
 			if (GameCanvas.keyPressed[i])
@@ -431,17 +493,23 @@ public class CrackBallScr : mScreen
 			for (int i = 0; i < listBall.Length; i++)
 			{
 				if (GameCanvas.isPointerHoldIn(listBall[i].x - 20 - GameScr.cmx, listBall[i].y - 10 - GameScr.cmy, 30, 30) && GameCanvas.isPointerClick && GameCanvas.isPointerJustRelease)
+				{
 					doClickBall(i);
+				}
 			}
 		}
 		if (!GameCanvas.isPointerClick)
+		{
 			return;
+		}
 		for (int j = 0; j < xSkill.Length; j++)
 		{
 			if (GameCanvas.isPointerHoldIn(xSkill[j], ySkill, 36, 36) && GameCanvas.isPointerClick && GameCanvas.isPointerJustRelease)
 			{
 				if (isAutoCrackBall && j != 2)
+				{
 					break;
+				}
 				doClickSkill(j);
 			}
 		}
@@ -473,9 +541,13 @@ public class CrackBallScr : mScreen
 		{
 			isAutoCrackBall = !isAutoCrackBall;
 			if (isAutoCrackBall)
+			{
 				startAutoCrackBall();
+			}
 			else
+			{
 				isCallStop = true;
+			}
 		}
 		else if (index == 0)
 		{
@@ -497,7 +569,9 @@ public class CrackBallScr : mScreen
 		else
 		{
 			if (isAutoCrackBall)
+			{
 				stopAutoCrackBall();
+			}
 			GameScr.gI().isRongThanXuatHien = false;
 			GameScr.gI().switchToMe();
 		}
@@ -513,12 +587,16 @@ public class CrackBallScr : mScreen
 			for (int i = 0; i < listBall.Length; i++)
 			{
 				if (listBall[i].isPaint && listBall[i].y > listBall[i].yTo - 20)
+				{
 					g.drawImage(TileMap.bong, listBall[i].x, listBall[i].yTo + 7, mGraphics.VCENTER | mGraphics.HCENTER);
+				}
 			}
 			for (int j = 0; j < listBall.Length; j++)
 			{
 				if (listBall[j].isPaint)
+				{
 					SmallImage.drawSmallImage(g, listBall[j].idImg, listBall[j].x, listBall[j].y, 0, mGraphics.VCENTER | mGraphics.HCENTER);
+				}
 			}
 			if (isKame)
 			{
@@ -557,7 +635,9 @@ public class CrackBallScr : mScreen
 				g.setColor(11837316);
 				g.fillRect(num7, num5, num6, 15);
 				if (typePrice == 0)
+				{
 					g.drawImage(Panel.imgXu, num7 + 21, num5 + 8, 3);
+				}
 				else
 				{
 					g.drawImage(Panel.imgLuongKhoa, num7 + 21, num5 + 7, 3);
@@ -569,14 +649,22 @@ public class CrackBallScr : mScreen
 			}
 			g.drawImage(GameScr.imgSkill, xSkill[0], ySkill, 0);
 			if (indexSkillSelect == 0)
+			{
 				g.drawImage(GameScr.imgSkill2, xSkill[0], ySkill, 0);
+			}
 			if (step < 3)
+			{
 				SmallImage.drawSmallImage(g, 540, xSkill[0] + 14, ySkill + 14, 0, StaticObj.VCENTER_HCENTER);
+			}
 			else
+			{
 				g.drawImage(imgReplay, xSkill[0] + 14 - 10, ySkill + 14 - 10, 0);
+			}
 			g.drawImage(GameScr.imgSkill, xSkill[1], ySkill, 0);
 			if (indexSkillSelect == 1)
+			{
 				g.drawImage(GameScr.imgSkill2, xSkill[1], ySkill, 0);
+			}
 			g.drawImage(imgX, xSkill[1] + 14 - 10, ySkill + 14 - 10, 0);
 			if (step > 3)
 			{
@@ -588,9 +676,13 @@ public class CrackBallScr : mScreen
 				}
 			}
 			if (isAutoCrackBall)
+			{
 				g.drawImage(GameScr.imgSkill2, (xSkill[0] + xSkill[1]) / 2, ySkill, 0);
+			}
 			else
+			{
 				g.drawImage(GameScr.imgSkill, (xSkill[0] + xSkill[1]) / 2, ySkill, 0);
+			}
 			SmallImage.drawSmallImage(g, 4387, (xSkill[0] + xSkill[1]) / 2 + 14, ySkill + 14, 0, StaticObj.VCENTER_HCENTER);
 		}
 		catch (Exception)
@@ -617,10 +709,14 @@ public class CrackBallScr : mScreen
 		for (int i = 0; i < listBall.Length; i++)
 		{
 			if (listBall[i].isDone)
+			{
 				b++;
+			}
 		}
 		if (b > numTicket)
+		{
 			b = (byte)numTicket;
+		}
 		return b;
 	}
 
@@ -630,11 +726,15 @@ public class CrackBallScr : mScreen
 		for (int i = 0; i < listBall.Length; i++)
 		{
 			if (listBall[i].isDone)
+			{
 				b++;
+			}
 		}
 		b -= checkTicket();
 		if (b <= 0)
+		{
 			b = 0;
+		}
 		return b;
 	}
 
@@ -670,7 +770,8 @@ public class CrackBallScr : mScreen
 
 	public void startAutoCrackBall()
 	{
-		new Thread(AutoCrackBall).Start();
+		Thread thread = new Thread(AutoCrackBall);
+		thread.Start();
 	}
 
 	public void stopAutoCrackBall()

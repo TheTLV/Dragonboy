@@ -102,8 +102,8 @@ namespace Mod
 
         static string formatHP(Char ch)
         {
-            int hp = ch.cHP;
-            int hpFull = ch.cHPFull;
+            long hp = ch.cHP;
+            long hpFull = ch.cHPFull;
             float ratio = hp / (float)hpFull;
             Color color = new Color(Mathf.Clamp(2 - ratio * 2, 0, 1), Mathf.Clamp(ratio * 2, 0, 1), 0);
             string hexColor = $"#{(int)(color.r * 255):x2}{(int)(color.g * 255):x2}{(int)(color.b * 255):x2}{(int)(color.a * 255):x2}";
@@ -206,8 +206,8 @@ namespace Mod
                     int length = Utils.getWidth(charDescriptions[i - start + offset].Value, charDescriptions[i - start + offset].Key);
                     g.setColor(Color.white);
                     g.fillRect(GameCanvas.w - (x + offsetX) - length - offsetPaint + 1, y + distanceBetweenLines * (i - start + offset) + 7, length - 2, 1);
-                    int hp = ch.cHP;
-                    int hpFull = ch.cHPFull;
+                    long hp = ch.cHP;
+                    long hpFull = ch.cHPFull;
                     float ratio = hp / (float)hpFull;
                     Color color = new Color(Mathf.Clamp(2 - ratio * 2, 0, 1), Mathf.Clamp(ratio * 2, 0, 1), 0);
                     g.setColor(color);

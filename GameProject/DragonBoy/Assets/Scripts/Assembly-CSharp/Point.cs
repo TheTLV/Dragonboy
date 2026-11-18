@@ -167,7 +167,9 @@ public class Point
 		{
 			int num = 0;
 			if (isSmall && f >= fSmall)
+			{
 				num = 1;
+			}
 			FraEffInMap[color].drawFrame(frame / 2 + num, x, y, dis, 3, g);
 		}
 	}
@@ -179,19 +181,27 @@ public class Point
 		{
 			frame++;
 			if (frame / 2 >= maxframe)
+			{
 				frame = 0;
+			}
 		}
 		if (f >= fRe)
+		{
 			isRemove = true;
+		}
 	}
 
 	public int setFrameAngle(int goc)
 	{
 		if (goc <= 15 || goc > 345)
+		{
 			return 12;
+		}
 		int num = (goc - 15) / 15 + 1;
 		if (num > 24)
+		{
 			num = 24;
+		}
 		return mpaintone_Arrow[num];
 	}
 
@@ -217,22 +227,33 @@ public class Point
 
 	public void create_Speed(int dx, int dy)
 	{
-		frame = setFrameAngle(Res.angle(dx, dy));
+		int frameAngle = Res.angle(dx, dy);
+		frame = setFrameAngle(frameAngle);
 		int num = 0;
 		int num2 = 0;
 		int num3 = Res.getDistance(dx, dy) / vMax;
 		if (num3 == 0)
+		{
 			num3 = 1;
+		}
 		num = dx / num3;
 		num2 = dy / num3;
 		if (num == 0 && dx < num3)
+		{
 			num = ((dx >= 0) ? 1 : (-1));
+		}
 		if (num2 == 0 && dy < num3)
+		{
 			num2 = ((dy >= 0) ? 1 : (-1));
+		}
 		if (Res.abs(num) > Res.abs(dx))
+		{
 			num = dx;
+		}
 		if (Res.abs(num2) > Res.abs(dy))
+		{
 			num2 = dy;
+		}
 		vx = num;
 		vy = num2;
 	}
@@ -242,7 +263,10 @@ public class Point
 		int num = toX - x;
 		int dy = toY - y;
 		if (num > 1)
-			frame = setFrameAngle(Res.angle(num, dy));
+		{
+			int frameAngle = Res.angle(num, dy);
+			frame = setFrameAngle(frameAngle);
+		}
 		if (Res.abs(vx) > 0)
 		{
 			if (Res.abs(x - toX) < Res.abs(vx))
@@ -251,7 +275,9 @@ public class Point
 				vx = 0;
 			}
 			else
+			{
 				x += vx;
+			}
 		}
 		else
 		{
@@ -266,7 +292,9 @@ public class Point
 				vy = 0;
 			}
 			else
+			{
 				y += vy;
+			}
 		}
 		else
 		{
@@ -281,15 +309,21 @@ public class Point
 		{
 			int num = frm.nFrame / 3;
 			if (num < 1)
+			{
 				num = 1;
+			}
 			int num2 = 0;
 			int num3 = 3;
 			num2 = ((frm.nFrame <= 3) ? (f % num) : ((f / num3 % 2 != 0) ? 3 : 0));
 			int idx = num * mImageArrow[frame] + num2;
 			if (frm.nFrame < 3)
+			{
 				idx = f / num3 % frm.nFrame;
+			}
 			if (isCountFr)
+			{
 				idx = f / num3 % frm.nFrame;
+			}
 			frm.drawFrame(idx, x, y, mXoayArrow[frame], anchor, g);
 		}
 	}

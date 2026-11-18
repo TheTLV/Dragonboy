@@ -12,17 +12,23 @@ internal class Net
 		{
 			string str = string.Empty;
 			if (www.error == null || www.error.Equals(string.Empty))
+			{
 				str = www.text;
+			}
 			www = null;
 			if (h != null)
+			{
 				h.perform(str);
+			}
 		}
 	}
 
 	public static void connectHTTP(string link, Command h)
 	{
 		if (www != null)
+		{
 			Cout.LogError("GET HTTP BUSY");
+		}
 		www = new WWW(link);
 		Net.h = h;
 	}
@@ -31,6 +37,8 @@ internal class Net
 	{
 		Net.h = h;
 		if (link != null)
+		{
 			h.perform(link);
+		}
 	}
 }

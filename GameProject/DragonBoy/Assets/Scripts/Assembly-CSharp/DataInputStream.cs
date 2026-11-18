@@ -18,7 +18,8 @@ public class DataInputStream
 
 	public DataInputStream(string filename)
 	{
-		r = new myReader(ArrayCast.cast(((TextAsset)Resources.Load(filename, typeof(TextAsset))).bytes));
+		TextAsset textAsset = (TextAsset)Resources.Load(filename, typeof(TextAsset));
+		r = new myReader(ArrayCast.cast(textAsset.bytes));
 	}
 
 	public DataInputStream(sbyte[] data)
@@ -49,7 +50,9 @@ public class DataInputStream
 			{
 				Thread.Sleep(5);
 				if (status == 0)
+				{
 					break;
+				}
 			}
 			if (status != 0)
 			{
@@ -65,7 +68,9 @@ public class DataInputStream
 		{
 			Thread.Sleep(5);
 			if (status == 0)
+			{
 				break;
+			}
 		}
 		if (j == 500)
 		{

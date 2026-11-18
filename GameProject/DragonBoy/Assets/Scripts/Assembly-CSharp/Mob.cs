@@ -7,7 +7,7 @@ public class Mob : IMapObject
     public int countDie;
     public long lastTimeDie;
 
-    public const sbyte TYPE_DUNG = 0;
+	public const sbyte TYPE_DUNG = 0;
 
 	public const sbyte TYPE_DI = 1;
 
@@ -61,9 +61,11 @@ public class Mob : IMapObject
 
 	public int holdEffID;
 
-	public int hp;
+	public long hp;
 
-	public int maxHp;
+	public long maxHp;
+
+	public long hpInjure;
 
 	public int x;
 
@@ -92,8 +94,6 @@ public class Mob : IMapObject
 	public int w;
 
 	public int h;
-
-	public int hpInjure;
 
 	public int charIndex;
 
@@ -131,9 +131,9 @@ public class Mob : IMapObject
 
 	public Char cFocus;
 
-	public int dame;
+	public long dame;
 
-	public int dameMp;
+	public long dameMp;
 
 	public int sys;
 
@@ -251,7 +251,7 @@ public class Mob : IMapObject
 	{
 	}
 
-	public Mob(int mobId, bool isDisable, bool isDontMove, bool isFire, bool isIce, bool isWind, int templateId, int sys, int hp, sbyte level, int maxp, short pointx, short pointy, sbyte status, sbyte levelBoss)
+	public Mob(int mobId, bool isDisable, bool isDontMove, bool isFire, bool isIce, bool isWind, int templateId, int sys, long hp, sbyte level, long maxp, short pointx, short pointy, sbyte status, sbyte levelBoss)
 	{
 		this.isDisable = isDisable;
 		this.isDontMove = isDontMove;
@@ -272,11 +272,12 @@ public class Mob : IMapObject
 			getData();
 		}
 		if (!isExistNewMob(templateId + string.Empty))
+		{
 			newMob.addElement(templateId + string.Empty);
+		}
 		maxHp = maxp;
 		this.levelBoss = levelBoss;
 		updateHp_bar();
-		per_tem = (int)((long)hp * 100L / maxHp);
 		isDie = false;
 		xSd = pointx;
 		ySd = pointy;
@@ -377,13 +378,16 @@ public class Mob : IMapObject
 		{
 			arrMobTemplate[templateId].data = new EffectData();
 			string text = "/Mob/" + templateId;
-			if (MyStream.readFile(text) != null)
+			DataInputStream dataInputStream = MyStream.readFile(text);
+			if (dataInputStream != null)
 			{
 				arrMobTemplate[templateId].data.readData(text + "/data");
 				arrMobTemplate[templateId].data.img = GameCanvas.loadImage(text + "/img.png");
 			}
 			else
+			{
 				Service.gI().requestModTemplate(templateId);
+			}
 			if (lastMob.size() > 15)
 			{
 				arrMobTemplate[int.Parse((string)lastMob.elementAt(0))].data = null;
@@ -413,8 +417,11 @@ public class Mob : IMapObject
 	{
 		for (int i = 0; i < newMob.size(); i++)
 		{
-			if (((string)newMob.elementAt(i)).Equals(id))
+			string text = (string)newMob.elementAt(i);
+			if (text.Equals(id))
+			{
 				return true;
+			}
 		}
 		return false;
 	}
@@ -425,21 +432,29 @@ public class Mob : IMapObject
 		for (int i = 0; i < arrMobTemplate.Length; i++)
 		{
 			if (arrMobTemplate[i].data != null)
+			{
 				num++;
+			}
 		}
 		if (num < 10)
+		{
 			return;
+		}
 		for (int j = 0; j < arrMobTemplate.Length; j++)
 		{
 			if (arrMobTemplate[j].data != null && num > 5)
+			{
 				arrMobTemplate[j].data = null;
+			}
 		}
 	}
 
 	public void checkFrameTick(int[] array)
 	{
 		if (tick > array.Length - 1)
+		{
 			tick = 0;
+		}
 		frame = array[tick];
 		tick++;
 	}
@@ -450,9 +465,13 @@ public class Mob : IMapObject
 		xSd = x;
 		wCount = 0;
 		if (ySd <= 0 || TileMap.tileTypeAt(xSd, ySd, 2))
+		{
 			return;
+		}
 		if (TileMap.tileTypeAt(xSd / num, ySd / num) == 0)
+		{
 			isOutMap = true;
+		}
 		else if (TileMap.tileTypeAt(xSd / num, ySd / num) != 0 && !TileMap.tileTypeAt(xSd, ySd, 2))
 		{
 			xSd = x;
@@ -466,7 +485,9 @@ public class Mob : IMapObject
 			if (TileMap.tileTypeAt(xSd, ySd, 2))
 			{
 				if (ySd % 24 != 0)
+				{
 					ySd -= ySd % 24;
+				}
 				break;
 			}
 		}
@@ -476,7 +497,9 @@ public class Mob : IMapObject
 	{
 		int num = TileMap.size;
 		if (TileMap.tileTypeAt(xSd + num / 2, ySd + 1, 4))
+		{
 			g.setClip(xSd / num * num, (ySd - 30) / num * num, num, 100);
+		}
 		else if (TileMap.tileTypeAt((xSd - num / 2) / num, (ySd + 1) / num) == 0)
 		{
 			g.setClip(xSd / num * num, (ySd - 30) / num * num, 100, 100);
@@ -496,51 +519,71 @@ public class Mob : IMapObject
 	public void updateSuperEff()
 	{
 		if (typeSuperEff == 0 && GameCanvas.gameTick % 25 == 0)
+		{
 			ServerEffect.addServerEffect(114, this, 1);
+		}
 		if (typeSuperEff == 1 && GameCanvas.gameTick % 4 == 0)
+		{
 			ServerEffect.addServerEffect(132, this, 1);
+		}
 		if (typeSuperEff == 2 && GameCanvas.gameTick % 7 == 0)
+		{
 			ServerEffect.addServerEffect(131, this, 1);
+		}
 	}
 
 	public virtual void update()
 	{
 		if (isMafuba)
+		{
 			return;
+		}
 		GetFrame();
 		if (blindEff && GameCanvas.gameTick % 5 == 0)
+		{
 			ServerEffect.addServerEffect(113, x, y, 1);
+		}
 		if (sleepEff && GameCanvas.gameTick % 10 == 0)
+		{
 			EffecMn.addEff(new Effect(41, x, y, 3, 1, 1));
+		}
 		if (!GameCanvas.lowGraphic && status != 1 && status != 0 && !GameCanvas.lowGraphic && GameCanvas.gameTick % (15 + mobId * 2) == 0)
 		{
 			for (int i = 0; i < GameScr.vCharInMap.size(); i++)
 			{
-				Char @char = (Char)GameScr.vCharInMap.elementAt(i);
-				if (@char != null && @char.isFlyAndCharge && @char.cf == 32)
+				Char obj = (Char)GameScr.vCharInMap.elementAt(i);
+				if (obj != null && obj.isFlyAndCharge && obj.cf == 32)
 				{
-					Char char2 = new Char();
-					char2.cx = @char.cx;
-					char2.cy = @char.cy - @char.ch;
-					if (@char.cgender == 0)
-						MonsterDart.addMonsterDart(x + dir * w, y, checkIsBoss(), -100, -100, char2, 25);
+					Char obj2 = new Char();
+					obj2.cx = obj.cx;
+					obj2.cy = obj.cy - obj.ch;
+					if (obj.cgender == 0)
+					{
+						MonsterDart.addMonsterDart(x + dir * w, y, checkIsBoss(), -100L, -100L, obj2, 25);
+					}
 				}
 			}
 			if (Char.myCharz().isFlyAndCharge && Char.myCharz().cf == 32)
 			{
-				Char char3 = new Char();
-				char3.cx = Char.myCharz().cx;
-				char3.cy = Char.myCharz().cy - Char.myCharz().ch;
+				Char obj3 = new Char();
+				obj3.cx = Char.myCharz().cx;
+				obj3.cy = Char.myCharz().cy - Char.myCharz().ch;
 				if (Char.myCharz().cgender == 0)
-					MonsterDart.addMonsterDart(x + dir * w, y, checkIsBoss(), -100, -100, char3, 25);
+				{
+					MonsterDart.addMonsterDart(x + dir * w, y, checkIsBoss(), -100L, -100L, obj3, 25);
+				}
 			}
 		}
 		if (holdEffID != 0 && GameCanvas.gameTick % 5 == 0)
+		{
 			EffecMn.addEff(new Effect(holdEffID, x, y + 24, 3, 5, 1));
+		}
 		if (isFreez)
 		{
 			if (GameCanvas.gameTick % 5 == 0)
+			{
 				ServerEffect.addServerEffect(113, x, y, 1);
+			}
 			long num = mSystem.currentTimeMillis();
 			if (num - last >= 1000)
 			{
@@ -553,7 +596,9 @@ public class Mob : IMapObject
 				}
 			}
 			if (isTypeNewMod())
+			{
 				frame = hurt[GameCanvas.gameTick % hurt.Length];
+			}
 			else if (isNewModStand())
 			{
 				frame = attack1[GameCanvas.gameTick % attack1.Length];
@@ -561,16 +606,24 @@ public class Mob : IMapObject
 			else if (isNewMod())
 			{
 				if (GameCanvas.gameTick % 20 > 5)
+				{
 					frame = 11;
+				}
 				else
+				{
 					frame = 10;
+				}
 			}
 			else if (isSpecial())
 			{
 				if (GameCanvas.gameTick % 20 > 5)
+				{
 					frame = 1;
+				}
 				else
+				{
 					frame = 15;
+				}
 			}
 			else if (GameCanvas.gameTick % 20 > 5)
 			{
@@ -582,15 +635,23 @@ public class Mob : IMapObject
 			}
 		}
 		if (!isUpdate())
+		{
 			return;
+		}
 		if (isShadown)
+		{
 			updateShadown();
+		}
 		if (vMobMove == null && arrMobTemplate[templateId].rangeMove != 0)
+		{
 			return;
+		}
 		if (status != 3 && isBusyAttackSomeOne)
 		{
 			if (cFocus != null)
+			{
 				cFocus.doInjure(dame, dameMp, false, true);
+			}
 			else if (mobToAttack != null)
 			{
 				mobToAttack.setInjure();
@@ -598,7 +659,9 @@ public class Mob : IMapObject
 			isBusyAttackSomeOne = false;
 		}
 		if (levelBoss > 0)
+		{
 			updateSuperEff();
+		}
 		switch (status)
 		{
 		case 1:
@@ -611,7 +674,9 @@ public class Mob : IMapObject
 			if (GameCanvas.gameTick % 2 == 0)
 			{
 				if (p2 > 1)
+				{
 					p2--;
+				}
 				else if (p2 < -1)
 				{
 					p2++;
@@ -619,7 +684,9 @@ public class Mob : IMapObject
 			}
 			x += p2;
 			if (isTypeNewMod())
+			{
 				frame = hurt[GameCanvas.gameTick % hurt.Length];
+			}
 			else if (isNewModStand())
 			{
 				frame = attack1[GameCanvas.gameTick % attack1.Length];
@@ -644,7 +711,9 @@ public class Mob : IMapObject
 					for (int j = 0; j < GameScr.vMob.size(); j++)
 					{
 						if (((Mob)GameScr.vMob.elementAt(j)).mobId == mobId)
+						{
 							GameScr.vMob.removeElementAt(j);
+						}
 					}
 				}
 				p1 = 0;
@@ -659,15 +728,21 @@ public class Mob : IMapObject
 			{
 				p1 = ((p1 <= 4) ? (-p1) : (-4));
 				if (p3 == 0)
+				{
 					p3 = 16;
+				}
 			}
 			else
+			{
 				p1++;
+			}
 			if (p3 > 0)
 			{
 				p3--;
 				if (p3 == 0)
+				{
 					isDie = true;
+				}
 			}
 			break;
 		case 2:
@@ -692,11 +767,15 @@ public class Mob : IMapObject
 			break;
 		case 3:
 			if (holdEffID == 0 && !blindEff && !sleepEff && !isFreez)
+			{
 				updateMobAttack();
+			}
 			break;
 		case 5:
 			if (holdEffID != 0 || blindEff || sleepEff)
+			{
 				break;
+			}
 			if (isFreez)
 			{
 				if (arrMobTemplate[templateId].type == 4)
@@ -741,7 +820,9 @@ public class Mob : IMapObject
 			timeStatus = 4;
 			status = 7;
 			if (getTemplate().type != 0 && Res.abs(x - xFirst) < 30)
+			{
 				x -= 10 * dir;
+			}
 		}
 	}
 
@@ -751,7 +832,9 @@ public class Mob : IMapObject
 		{
 			Mob mob = (Mob)GameScr.vMob.elementAt(i);
 			if (mob is BigBoss)
+			{
 				return (BigBoss)mob;
+			}
 		}
 		return null;
 	}
@@ -762,7 +845,9 @@ public class Mob : IMapObject
 		{
 			Mob mob = (Mob)GameScr.vMob.elementAt(i);
 			if (mob is BigBoss2)
+			{
 				return (BigBoss2)mob;
+			}
 		}
 		return null;
 	}
@@ -773,7 +858,9 @@ public class Mob : IMapObject
 		{
 			Mob mob = (Mob)GameScr.vMob.elementAt(i);
 			if (mob is BachTuoc)
+			{
 				return (BachTuoc)mob;
+			}
 		}
 		return null;
 	}
@@ -782,7 +869,9 @@ public class Mob : IMapObject
 	{
 		Mob mob = (Mob)GameScr.vMob.elementAt(idBoss);
 		if (mob is NewBoss)
+		{
 			return (NewBoss)mob;
+		}
 		return null;
 	}
 
@@ -812,15 +901,21 @@ public class Mob : IMapObject
 		int cx = cFocus.cx;
 		int cy = cFocus.cy;
 		if (Res.abs(cx - x) < w * 2 && Res.abs(cy - y) < h * 2)
+		{
 			p3 = 0;
+		}
 		else
+		{
 			p3 = 1;
+		}
 	}
 
 	internal bool isSpecial()
 	{
 		if ((templateId >= 58 && templateId <= 65) || templateId == 67 || templateId == 68)
+		{
 			return true;
+		}
 		return false;
 	}
 
@@ -832,7 +927,9 @@ public class Mob : IMapObject
 	internal bool isNewMod()
 	{
 		if (templateId >= 73 && !isNewModStand())
+		{
 			return true;
+		}
 		return false;
 	}
 
@@ -841,7 +938,9 @@ public class Mob : IMapObject
 		if (!isBusyAttackSomeOne && GameCanvas.gameTick % 4 == 0)
 		{
 			if (isTypeNewMod())
+			{
 				frame = hurt[GameCanvas.gameTick % hurt.Length];
+			}
 			else if (isNewModStand())
 			{
 				frame = attack1[GameCanvas.gameTick % attack1.Length];
@@ -849,16 +948,24 @@ public class Mob : IMapObject
 			else if (isNewMod())
 			{
 				if (frame != 10)
+				{
 					frame = 10;
+				}
 				else
+				{
 					frame = 11;
+				}
 			}
 			else if (isSpecial())
 			{
 				if (frame != 1)
+				{
 					frame = 1;
+				}
 				else
+				{
 					frame = 15;
+				}
 			}
 			else if (frame != 10)
 			{
@@ -886,7 +993,9 @@ public class Mob : IMapObject
 				{
 					dir = -injureBy.cdir;
 					if (Res.abs(x - injureBy.cx) < 24)
+					{
 						status = 2;
+					}
 				}
 				p1 = (p2 = (p3 = 0));
 				timeStatus = 0;
@@ -897,7 +1006,9 @@ public class Mob : IMapObject
 		{
 			int num = -injureBy.cdir << 1;
 			if (x > xFirst - arrMobTemplate[templateId].rangeMove && x < xFirst + arrMobTemplate[templateId].rangeMove)
+			{
 				x -= num;
+			}
 		}
 	}
 
@@ -912,28 +1023,40 @@ public class Mob : IMapObject
 		case 3:
 			p1++;
 			if (p1 > 10 + mobId % 10 && (cFocus == null || Res.abs(cFocus.cx - x) > 80) && (mobToAttack == null || Res.abs(mobToAttack.x - x) > 80))
+			{
 				status = 5;
+			}
 			break;
 		case 4:
 		case 5:
 			p1++;
 			if (p1 > mobId % 3 && (cFocus == null || Res.abs(cFocus.cx - x) > 80) && (mobToAttack == null || Res.abs(mobToAttack.x - x) > 80))
+			{
 				status = 5;
+			}
 			break;
 		}
 		if (cFocus != null && GameCanvas.gameTick % (10 + p1 % 20) == 0)
 		{
 			if (cFocus.cx > x)
+			{
 				dir = 1;
+			}
 			else
+			{
 				dir = -1;
+			}
 		}
 		else if (mobToAttack != null && GameCanvas.gameTick % (10 + p1 % 20) == 0)
 		{
 			if (mobToAttack.x > x)
+			{
 				dir = 1;
+			}
 			else
+			{
 				dir = -1;
+			}
 		}
 		if (forceWait > 0)
 		{
@@ -949,7 +1072,9 @@ public class Mob : IMapObject
 		{
 			checkFrameTick(array);
 			if (x >= GameScr.cmx && x <= GameScr.cmx + GameCanvas.w && p3 == 0 && GameCanvas.gameTick % 2 == 0)
+			{
 				SoundMn.gI().charPunch(false, 0.05f);
+			}
 		}
 		if (p1 == 0)
 		{
@@ -960,12 +1085,18 @@ public class Mob : IMapObject
 			if (!isNewMod())
 			{
 				if (x > xFirst + arrMobTemplate[templateId].rangeMove)
+				{
 					p1 = 1;
+				}
 				if (x < xFirst - arrMobTemplate[templateId].rangeMove)
+				{
 					p1 = 1;
+				}
 			}
 			if ((arrMobTemplate[templateId].type == 4 || arrMobTemplate[templateId].type == 5) && !isDontMove)
+			{
 				y += (num2 - y) / 20;
+			}
 			p2++;
 			if (p2 > array.Length - 1 || p1 == 1)
 			{
@@ -973,22 +1104,28 @@ public class Mob : IMapObject
 				if (p3 == 0)
 				{
 					if (cFocus != null)
+					{
 						cFocus.doInjure(dame, dameMp, false, true);
+					}
 					else
+					{
 						mobToAttack.setInjure();
+					}
 					isBusyAttackSomeOne = false;
 				}
 				else
 				{
 					if (cFocus != null)
+					{
 						MonsterDart.addMonsterDart(x + dir * w, y, checkIsBoss(), dame, dameMp, cFocus, getTemplate().dartType);
+					}
 					else
 					{
-						Char @char = new Char();
-						@char.cx = mobToAttack.x;
-						@char.cy = mobToAttack.y;
-						@char.charID = -100;
-						MonsterDart.addMonsterDart(x + dir * w, y, checkIsBoss(), dame, dameMp, @char, getTemplate().dartType);
+						Char obj = new Char();
+						obj.cx = mobToAttack.x;
+						obj.cy = mobToAttack.y;
+						obj.charID = -100;
+						MonsterDart.addMonsterDart(x + dir * w, y, checkIsBoss(), dame, dameMp, obj, getTemplate().dartType);
 					}
 					isBusyAttackSomeOne = false;
 				}
@@ -998,7 +1135,8 @@ public class Mob : IMapObject
 		else if (p1 == 1)
 		{
 			if (arrMobTemplate[templateId].type == 0 || isDontMove || isIce || !isWind)
-				;
+			{
+			}
 			if (tick == array.Length)
 			{
 				status = 2;
@@ -1010,9 +1148,13 @@ public class Mob : IMapObject
 		if (tick == 5 && cFocus != null && cFocus.charID == Char.myCharz().charID)
 		{
 			if (templateId == 88 && p3 != 0)
+			{
 				GameScr.shock_scr = 2;
+			}
 			if (templateId == 89)
+			{
 				GameScr.shock_scr = 2;
+			}
 		}
 	}
 
@@ -1030,7 +1172,9 @@ public class Mob : IMapObject
 			}
 			num = 1;
 			if (isIce)
+			{
 				return;
+			}
 			if (isDontMove || isWind)
 			{
 				checkFrameTick(stand);
@@ -1040,9 +1184,13 @@ public class Mob : IMapObject
 			{
 			case 0:
 				if (isNewModStand())
+				{
 					frame = stand[GameCanvas.gameTick % stand.Length];
+				}
 				else
+				{
 					frame = 0;
+				}
 				num = 2;
 				break;
 			case 1:
@@ -1050,23 +1198,27 @@ public class Mob : IMapObject
 			case 3:
 			{
 				num = 3;
-				sbyte b2 = arrMobTemplate[templateId].speed;
-				if (b2 == 1)
+				sbyte b = arrMobTemplate[templateId].speed;
+				if (b == 1)
 				{
 					if (GameCanvas.gameTick % 2 == 1)
+					{
 						break;
+					}
 				}
-				else if (b2 > 2)
+				else if (b > 2)
 				{
-					b2 += (sbyte)(mobId % 2);
+					b += (sbyte)(mobId % 2);
 				}
 				else if (GameCanvas.gameTick % 2 == 1)
 				{
-					b2--;
+					b--;
 				}
-				x += b2 * dir;
+				x += b * dir;
 				if (x > xFirst + arrMobTemplate[templateId].rangeMove)
+				{
 					dir = -1;
+				}
 				else if (x < xFirst - arrMobTemplate[templateId].rangeMove)
 				{
 					dir = 1;
@@ -1075,7 +1227,9 @@ public class Mob : IMapObject
 				{
 					dir = ((x <= Char.myCharz().cx) ? 1 : (-1));
 					if (Res.abs(x - Char.myCharz().cx) < 20)
+					{
 						x -= dir * 10;
+					}
 					status = 2;
 					forceWait = 20;
 				}
@@ -1085,11 +1239,14 @@ public class Mob : IMapObject
 			case 4:
 			{
 				num = 4;
-				sbyte b3 = (sbyte)(arrMobTemplate[templateId].speed + (sbyte)(mobId % 2));
-				x += b3 * dir;
+				sbyte speed2 = arrMobTemplate[templateId].speed;
+				speed2 += (sbyte)(mobId % 2);
+				x += speed2 * dir;
 				if (GameCanvas.gameTick % 10 > 2)
-					y += b3 * dirV;
-				b3 += (sbyte)((GameCanvas.gameTick + mobId) % 2);
+				{
+					y += speed2 * dirV;
+				}
+				speed2 += (sbyte)((GameCanvas.gameTick + mobId) % 2);
 				if (x > xFirst + arrMobTemplate[templateId].rangeMove)
 				{
 					dir = -1;
@@ -1105,7 +1262,9 @@ public class Mob : IMapObject
 					p1 = 0;
 				}
 				if (y > yFirst + 24)
+				{
 					dirV = -1;
+				}
 				else if (y < yFirst - (20 + GameCanvas.gameTick % 10))
 				{
 					dirV = 1;
@@ -1116,11 +1275,14 @@ public class Mob : IMapObject
 			case 5:
 			{
 				num = 5;
-				sbyte b = (sbyte)(arrMobTemplate[templateId].speed + (sbyte)(mobId % 2));
-				x += b * dir;
-				b += (sbyte)((GameCanvas.gameTick + mobId) % 2);
+				sbyte speed = arrMobTemplate[templateId].speed;
+				speed += (sbyte)(mobId % 2);
+				x += speed * dir;
+				speed += (sbyte)((GameCanvas.gameTick + mobId) % 2);
 				if (GameCanvas.gameTick % 10 > 2)
-					y += b * dirV;
+				{
+					y += speed * dirV;
+				}
 				if (x > xFirst + arrMobTemplate[templateId].rangeMove)
 				{
 					dir = -1;
@@ -1136,7 +1298,9 @@ public class Mob : IMapObject
 					p1 = 0;
 				}
 				if (y > yFirst + 24)
+				{
 					dirV = -1;
+				}
 				else if (y < yFirst - (20 + GameCanvas.gameTick % 10))
 				{
 					dirV = 1;
@@ -1151,7 +1315,9 @@ public class Mob : IMapObject
 						dirV = -1;
 					}
 					else
+					{
 						dirV = -1;
+					}
 				}
 				break;
 			}
@@ -1171,50 +1337,78 @@ public class Mob : IMapObject
 	public bool isPaint()
 	{
 		if (x < GameScr.cmx)
+		{
 			return false;
+		}
 		if (x > GameScr.cmx + GameScr.gW)
+		{
 			return false;
+		}
 		if (y < GameScr.cmy)
+		{
 			return false;
+		}
 		if (y > GameScr.cmy + GameScr.gH + 30)
+		{
 			return false;
+		}
 		if (arrMobTemplate[templateId] == null)
+		{
 			return false;
+		}
 		if (arrMobTemplate[templateId].data == null)
+		{
 			return false;
+		}
 		if (arrMobTemplate[templateId].data.img == null)
+		{
 			return false;
+		}
 		if (status == 0)
+		{
 			return false;
+		}
 		return true;
 	}
 
 	public bool isUpdate()
 	{
 		if (arrMobTemplate[templateId] == null)
+		{
 			return false;
+		}
 		if (arrMobTemplate[templateId].data == null)
+		{
 			return false;
+		}
 		if (status == 0)
+		{
 			return false;
+		}
 		return true;
 	}
 
 	public bool checkIsBoss()
 	{
 		if (isBoss || levelBoss > 0)
+		{
 			return true;
+		}
 		return false;
 	}
 
 	public void updateHp_bar()
 	{
-		len = (int)((long)hp * 100L / maxHp * w_hp_bar) / 100;
-		per = (int)((long)hp * 100L / maxHp);
+		len = (int)(hp * 100 / maxHp * w_hp_bar) / 100;
+		per = (int)(hp * 100 / maxHp);
 		if (per == 100)
+		{
 			per_tem = per;
+		}
 		if (per >= 100)
+		{
 			per_tem = per;
+		}
 		offset = 0;
 		if (per < 30)
 		{
@@ -1236,27 +1430,43 @@ public class Mob : IMapObject
 	public virtual void paint(mGraphics g)
 	{
 		if (isHide)
+		{
 			return;
+		}
 		if (isMafuba)
 		{
 			if (!changBody)
+			{
 				arrMobTemplate[templateId].data.paintFrame(g, frame, xMFB, yMFB, (dir != 1) ? 1 : 0, 2);
+			}
 			else
+			{
 				SmallImage.drawSmallImage(g, smallBody, xMFB, yMFB, (dir != 1) ? 2 : 0, mGraphics.BOTTOM | mGraphics.HCENTER);
+			}
 			return;
 		}
 		if (isShadown && status != 0)
+		{
 			paintShadow(g);
+		}
 		if (!isPaint() || (status == 1 && p3 > 0 && GameCanvas.gameTick % 3 == 0))
+		{
 			return;
+		}
 		g.translate(0, GameCanvas.transY);
 		if (!changBody)
+		{
 			arrMobTemplate[templateId].data.paintFrame(g, frame, x, y + fy, (dir != 1) ? 1 : 0, 2);
+		}
 		else
+		{
 			SmallImage.drawSmallImage(g, smallBody, x, y + fy - 9, (dir != 1) ? 2 : 0, mGraphics.BOTTOM | mGraphics.HCENTER);
+		}
 		g.translate(0, -GameCanvas.transY);
 		if (Char.myCharz().mobFocus == null || !Char.myCharz().mobFocus.Equals(this) || status == 1 || hp <= 0 || imgHPtem == null)
+		{
 			return;
+		}
 		int imageWidth = mGraphics.getImageWidth(imgHPtem);
 		int imageHeight = mGraphics.getImageHeight(imgHPtem);
 		int num = imageWidth * per / 100;
@@ -1265,11 +1475,17 @@ public class Mob : IMapObject
 		{
 			num2 = imageWidth * (per_tem -= ((GameCanvas.gameTick % 6 <= 3) ? offset : offset++)) / 100;
 			if (per_tem <= 0)
+			{
 				per_tem = 0;
+			}
 			if (per_tem < per)
+			{
 				per_tem = per;
+			}
 			if (offset >= 3)
+			{
 				offset = 3;
+			}
 		}
 		g.drawImage(GameScr.imgHP_tm_xam, x - (imageWidth >> 1), y - h - 5, mGraphics.TOP | mGraphics.LEFT);
 		g.setColor(16777215);
@@ -1283,11 +1499,11 @@ public class Mob : IMapObject
 	}
 
     [MethodImpl(MethodImplOptions.NoOptimization)]
-    public void startDie()
+	public void startDie()
 	{
-		hp = 0;
+		hp = 0L;
 		injureThenDie = true;
-		hp = 0;
+		hp = 0L;
 		status = 1;
 		Res.outz("MOB DIEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe");
 		p1 = -3;
@@ -1310,13 +1526,19 @@ public class Mob : IMapObject
 		if (Res.abs(num - x) < w * 2 && Res.abs(num2 - y) < h * 2)
 		{
 			if (x < num)
+			{
 				x = num - w;
+			}
 			else
+			{
 				x = num + w;
+			}
 			p3 = 0;
 		}
 		else
+		{
 			p3 = 1;
+		}
 	}
 
 	public int getX()
@@ -1357,7 +1579,9 @@ public class Mob : IMapObject
 	public void removeHoldEff()
 	{
 		if (holdEffID != 0)
+		{
 			holdEffID = 0;
+		}
 	}
 
 	public void removeBlindEff()
@@ -1388,7 +1612,9 @@ public class Mob : IMapObject
 	internal bool isTypeNewMod()
 	{
 		if (arrMobTemplate[templateId].data != null && arrMobTemplate[templateId].data.typeData == 2)
+		{
 			return true;
+		}
 		return false;
 	}
 }

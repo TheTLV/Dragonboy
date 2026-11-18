@@ -35,7 +35,9 @@ public class PopUpYesNo : IActionListener
 		last = mSystem.currentTimeMillis();
 		dem = this.info[0].Length / 3;
 		if (dem < 15)
+		{
 			dem = 15;
+		}
 		TextInfo.reset();
 	}
 
@@ -82,7 +84,9 @@ public class PopUpYesNo : IActionListener
 				dem--;
 			}
 			if (dem == 0)
+			{
 				GameScr.gI().popUpYesNo = null;
+			}
 		}
 	}
 

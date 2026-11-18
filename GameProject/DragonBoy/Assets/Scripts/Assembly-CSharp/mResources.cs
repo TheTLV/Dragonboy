@@ -966,6 +966,10 @@ public class mResources
 
 	public static string can_buy_from_Uron3 = string.Empty;
 
+	public static string critdame = string.Empty;
+
+	public static string giamsatthuong = string.Empty;
+
 	public static string HP = string.Empty;
 
 	public static string KI = string.Empty;
@@ -1156,30 +1160,23 @@ public class mResources
 	public static void loadLanguague(sbyte newLanguage)
 	{
 		language = newLanguage;
-		sbyte b = language;
-		if (b != 0)
+		switch (language)
 		{
-			if (b != 1)
-			{
-				if (b == 2)
-				{
-					LoginScr.imgTitle = GameCanvas.loadImage("/mainImage/logo1E.png");
-					T3.load();
-					ServerListScreen.linkweb = "http://dragonball.indonaga.com";
-				}
-			}
-			else
-			{
-				LoginScr.imgTitle = GameCanvas.loadImage("/mainImage/logo1E.png");
-				T2.load();
-				ServerListScreen.linkweb = "http://world.teamobi.com";
-			}
-		}
-		else
-		{
+		case 0:
 			LoginScr.imgTitle = GameCanvas.loadImage("/mainImage/logo1.png");
 			T1.load();
 			ServerListScreen.linkweb = "http://ngocrongonline.com";
+			break;
+		case 1:
+			LoginScr.imgTitle = GameCanvas.loadImage("/mainImage/logo1E.png");
+			T2.load();
+			ServerListScreen.linkweb = "http://world.teamobi.com";
+			break;
+		case 2:
+			LoginScr.imgTitle = GameCanvas.loadImage("/mainImage/logo1E.png");
+			T3.load();
+			ServerListScreen.linkweb = "http://dragonball.indonaga.com";
+			break;
 		}
 	}
 

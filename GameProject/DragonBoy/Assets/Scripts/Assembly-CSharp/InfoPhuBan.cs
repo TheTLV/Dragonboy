@@ -46,7 +46,9 @@ public class InfoPhuBan
 		timeStart = GameCanvas.timeNow;
 		this.maxPoint = maxPoint;
 		if (this.maxPoint <= 0)
+		{
 			this.maxPoint = 1;
+		}
 		pointTeam1 = 0;
 		pointTeam2 = 0;
 		owner = 0;

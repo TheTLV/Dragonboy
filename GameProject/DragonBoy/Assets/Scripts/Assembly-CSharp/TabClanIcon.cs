@@ -72,14 +72,20 @@ public class TabClanIcon : IActionListener
 			x = GameCanvas.w / 2 - w / 2;
 			y = GameCanvas.h / 2 - h / 2;
 			if (GameCanvas.h < 240)
+			{
 				y -= 10;
+			}
 		}
 		cmx = x;
 		cmtoX = 0;
 		if (!isRequest)
+		{
 			nItem = ClanImage.vClanImage.size();
+		}
 		else
+		{
 			nItem = vItems.size();
+		}
 		if (GameCanvas.isTouch)
 		{
 			left.x = x;
@@ -94,7 +100,9 @@ public class TabClanIcon : IActionListener
 	public void show(bool isGetName)
 	{
 		if (Char.myCharz().clan != null)
+		{
 			isUpdate = true;
+		}
 		isShow = true;
 		this.isGetName = isGetName;
 		init();
@@ -127,12 +135,16 @@ public class TabClanIcon : IActionListener
 		{
 			ClanImage clanImage = (ClanImage)ClanImage.vClanImage.elementAt(lastSelect);
 			if (clanImage.idImage != null)
+			{
 				Char.myCharz().paintBag(g, clanImage.idImage, GameCanvas.w / 2, y + 45, 1, false);
+			}
 		}
 		Char.myCharz().paintCharBody(g, GameCanvas.w / 2, y + 45, 1, Char.myCharz().cf, false);
 		g.setClip(x, y + disStart, w, h - disStart - 10);
 		if (scrMain != null)
+		{
 			g.translate(0, -scrMain.cmy);
+		}
 		for (int i = 0; i < nItem; i++)
 		{
 			int num = x + 10;
@@ -142,17 +154,25 @@ public class TabClanIcon : IActionListener
 				ClanImage clanImage2 = (ClanImage)ClanImage.vClanImage.elementAt(i);
 				mFont mFont2 = mFont.tahoma_7_grey;
 				if (i == lastSelect)
+				{
 					mFont2 = mFont.tahoma_7_blue;
+				}
 				if (clanImage2.name != null)
+				{
 					mFont2.drawString(g, clanImage2.name, num + 20, num2, 0);
+				}
 				if (clanImage2.xu > 0)
+				{
 					mFont2.drawString(g, clanImage2.xu + " " + mResources.XU, num + w - 20, num2, mFont.RIGHT);
+				}
 				else if (clanImage2.luong > 0)
 				{
 					mFont2.drawString(g, clanImage2.luong + " " + mResources.LUONG, num + w - 20, num2, mFont.RIGHT);
 				}
 				if (clanImage2.idImage != null)
+				{
 					SmallImage.drawSmallImage(g, clanImage2.idImage[0], num, num2, 0, 0);
+				}
 			}
 		}
 		g.translate(0, -g.getTranslateY());
@@ -163,15 +183,21 @@ public class TabClanIcon : IActionListener
 	public void paint(mGraphics g)
 	{
 		if (!isRequest)
+		{
 			paintIcon(g);
+		}
 		else
+		{
 			paintPeans(g);
+		}
 	}
 
 	public void update()
 	{
 		if (scrMain != null)
+		{
 			scrMain.updatecm();
+		}
 		if (cmx != cmtoX)
 		{
 			cmvx = cmtoX - cmx << 2;
@@ -180,23 +206,35 @@ public class TabClanIcon : IActionListener
 			cmdx &= 15;
 		}
 		if (Math2.abs(cmtoX - cmx) < 10)
+		{
 			cmx = cmtoX;
+		}
 		if (cmx >= x + w - 10 && cmtoX >= x + w - 10)
+		{
 			isShow = false;
+		}
 	}
 
 	public void updateKey()
 	{
 		if (left != null && (GameCanvas.keyPressed[12] || mScreen.getCmdPointerLast(left)))
+		{
 			left.performAction();
+		}
 		if (right != null && (GameCanvas.keyPressed[13] || mScreen.getCmdPointerLast(right)))
+		{
 			right.performAction();
+		}
 		if (center != null && (GameCanvas.keyPressed[(!Main.isPC) ? 5 : 25] || mScreen.getCmdPointerLast(center)))
+		{
 			center.performAction();
+		}
 		if (!isGetName)
 		{
 			if (scrMain == null)
+			{
 				return;
+			}
 			if (GameCanvas.isTouch)
 			{
 				scrMain.updateKey();
@@ -207,7 +245,9 @@ public class TabClanIcon : IActionListener
 				GameCanvas.keyPressed[(!Main.isPC) ? 2 : 21] = false;
 				select--;
 				if (select < 0)
+				{
 					select = nItem - 1;
+				}
 				scrMain.moveTo(select * scrMain.ITEM_SIZE);
 			}
 			if (GameCanvas.keyPressed[(!Main.isPC) ? 8 : 22])
@@ -215,11 +255,15 @@ public class TabClanIcon : IActionListener
 				GameCanvas.keyPressed[(!Main.isPC) ? 8 : 22] = false;
 				select++;
 				if (select > nItem - 1)
+				{
 					select = 0;
+				}
 				scrMain.moveTo(select * scrMain.ITEM_SIZE);
 			}
 			if (select != -1)
+			{
 				lastSelect = select;
+			}
 		}
 		GameCanvas.clearKeyHold();
 		GameCanvas.clearKeyPressed();
@@ -228,18 +272,26 @@ public class TabClanIcon : IActionListener
 	public void perform(int idAction, object p)
 	{
 		if (idAction == 2)
+		{
 			hide();
+		}
 		if (idAction != 1 || isGetName)
+		{
 			return;
+		}
 		if (!isRequest)
 		{
 			if (lastSelect >= 0)
 			{
 				hide();
 				if (Char.myCharz().clan == null)
-					Service.gI().getClan(2, (sbyte)((ClanImage)ClanImage.vClanImage.elementAt(lastSelect)).ID, text);
+				{
+					Service.gI().getClan(2, ((ClanImage)ClanImage.vClanImage.elementAt(lastSelect)).ID, text);
+				}
 				else
-					Service.gI().getClan(4, (sbyte)((ClanImage)ClanImage.vClanImage.elementAt(lastSelect)).ID, string.Empty);
+				{
+					Service.gI().getClan(4, ((ClanImage)ClanImage.vClanImage.elementAt(lastSelect)).ID, string.Empty);
+				}
 			}
 		}
 		else if (lastSelect >= 0)

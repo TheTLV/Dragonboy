@@ -65,7 +65,9 @@ public class Arrowpaint
 		int num3 = 5;
 		int num4 = 4;
 		if (num + num2 < 60)
+		{
 			num4 = 3;
+		}
 		else if (num + num2 < 30)
 		{
 			num4 = 2;
@@ -73,7 +75,9 @@ public class Arrowpaint
 		if (ax != axTo)
 		{
 			if (num > 0 && num < num3)
+			{
 				ax = axTo;
+			}
 			else if (num < 0 && num > -num3)
 			{
 				ax = axTo;
@@ -89,7 +93,9 @@ public class Arrowpaint
 		if (ay != ayTo)
 		{
 			if (num2 > 0 && num2 < num3)
+			{
 				ay = ayTo;
+			}
 			else if (num2 < 0 && num2 > -num3)
 			{
 				ay = ayTo;
@@ -121,9 +127,13 @@ public class Arrowpaint
 			num8 = ayTo + charBelong.charFocus.ch / 4;
 		}
 		if (life > 0)
+		{
 			life--;
+		}
 		if (life == 0 || (ax >= num5 && ax <= num7 && ay >= num6 && ay <= num8))
+		{
 			endMe();
+		}
 	}
 
 	internal void endMe()
@@ -132,13 +142,17 @@ public class Arrowpaint
 		ax = (ay = (axTo = (ayTo = (avx = (avy = (adx = (ady = 0)))))));
 		charBelong.setAttack();
 		if (charBelong.me)
+		{
 			charBelong.saveLoadPreviousSkill();
+		}
 	}
 
 	public void paint(mGraphics g)
 	{
-		int num = findDirIndexFromAngle(Res.angle(axTo - ax, -(ayTo - ay)));
-		SmallImage.drawSmallImage(g, imgId[FRAME[num]], ax, ay, TRANSFORM[num], mGraphics.VCENTER | mGraphics.HCENTER);
+		int dx = axTo - ax;
+		int num = ayTo - ay;
+		int num2 = findDirIndexFromAngle(Res.angle(dx, -num));
+		SmallImage.drawSmallImage(g, imgId[FRAME[num2]], ax, ay, TRANSFORM[num2], mGraphics.VCENTER | mGraphics.HCENTER);
 	}
 
 	public static int findDirIndexFromAngle(int angle)
@@ -148,7 +162,9 @@ public class Arrowpaint
 			if (angle >= ARROWINDEX[i] && angle <= ARROWINDEX[i + 1])
 			{
 				if (i >= 16)
+				{
 					return 0;
+				}
 				return i;
 			}
 		}

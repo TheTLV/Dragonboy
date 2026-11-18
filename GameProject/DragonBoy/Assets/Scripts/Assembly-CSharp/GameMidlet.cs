@@ -14,9 +14,9 @@ public class GameMidlet
 
 	public static int LANGUAGE;
 
-	public static string VERSION = "2.4.0";
+	public static string VERSION = "2.5.0";
 
-	public static int intVERSION = 240;
+	public static int intVERSION = 250;
 
 	public static GameCanvas gameCanvas;
 
@@ -44,15 +44,10 @@ public class GameMidlet
 		SplashScr.loadImg();
 		SplashScr.loadSplashScr();
 		GameCanvas.currentScreen = new SplashScr();
-    }
+	}
 
-    public void exit()
+	public void exit()
 	{
-		if (Main.typeClient == 6)
-		{
-			mSystem.exitWP();
-			return;
-		}
 		GameCanvas.bRun = false;
 		mSystem.gcc();
 		notifyDestroyed();

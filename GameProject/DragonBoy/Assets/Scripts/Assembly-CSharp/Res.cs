@@ -47,9 +47,13 @@ public class Res
 		{
 			cosz[i] = sinz[90 - i];
 			if (cosz[i] == 0)
+			{
 				tanz[i] = int.MaxValue;
+			}
 			else
+			{
 				tanz[i] = (sinz[i] << 10) / cosz[i];
+			}
 		}
 	}
 
@@ -57,11 +61,17 @@ public class Res
 	{
 		a = fixangle(a);
 		if (a >= 0 && a < 90)
+		{
 			return sinz[a];
+		}
 		if (a >= 90 && a < 180)
+		{
 			return sinz[180 - a];
+		}
 		if (a >= 180 && a < 270)
+		{
 			return -sinz[a - 180];
+		}
 		return -sinz[360 - a];
 	}
 
@@ -69,11 +79,17 @@ public class Res
 	{
 		a = fixangle(a);
 		if (a >= 0 && a < 90)
+		{
 			return cosz[a];
+		}
 		if (a >= 90 && a < 180)
+		{
 			return -cosz[180 - a];
+		}
 		if (a >= 180 && a < 270)
+		{
 			return -cosz[a - 180];
+		}
 		return cosz[360 - a];
 	}
 
@@ -81,11 +97,17 @@ public class Res
 	{
 		a = fixangle(a);
 		if (a >= 0 && a < 90)
+		{
 			return tanz[a];
+		}
 		if (a >= 90 && a < 180)
+		{
 			return -tanz[180 - a];
+		}
 		if (a >= 180 && a < 270)
+		{
 			return tanz[a - 180];
+		}
 		return -tanz[360 - a];
 	}
 
@@ -94,7 +116,9 @@ public class Res
 		for (int i = 0; i <= 90; i++)
 		{
 			if (tanz[i] >= a)
+			{
 				return i;
+			}
 		}
 		return 0;
 	}
@@ -104,25 +128,38 @@ public class Res
 		int num;
 		if (dx != 0)
 		{
-			num = atan(Math2.abs((dy << 10) / dx));
+			int a = Math2.abs((dy << 10) / dx);
+			num = atan(a);
 			if (dy >= 0 && dx < 0)
+			{
 				num = 180 - num;
+			}
 			if (dy < 0 && dx < 0)
+			{
 				num = 180 + num;
+			}
 			if (dy < 0 && dx >= 0)
+			{
 				num = 360 - num;
+			}
 		}
 		else
+		{
 			num = ((dy <= 0) ? 270 : 90);
+		}
 		return num;
 	}
 
 	public static int fixangle(int angle)
 	{
 		if (angle >= 360)
+		{
 			angle -= 360;
+		}
 		if (angle < 0)
+		{
 			angle += 360;
+		}
 		return angle;
 	}
 
@@ -134,19 +171,25 @@ public class Res
 	public static void outz(string s)
 	{
 		if (mSystem.isTest)
+		{
 			Debug.Log(s);
+		}
 	}
 
 	public static void outz(string s, int logIndex)
 	{
 		if (mSystem.isTest)
+		{
 			Debug.Log(LOG_CAT[logIndex] + s);
+		}
 	}
 
 	public static void err(string s)
 	{
 		if (mSystem.isTest)
+		{
 			Debug.LogError(s);
+		}
 	}
 
 	public static void outz2(string s)
@@ -188,7 +231,9 @@ public class Res
 	public static int random(int a, int b)
 	{
 		if (a == b)
+		{
 			return a;
+		}
 		return a + r.nextInt(b - a);
 	}
 
@@ -201,7 +246,9 @@ public class Res
 	{
 		int num = a + r.nextInt(b - a);
 		if (random(2) == 0)
+		{
 			num = -num;
+		}
 		return num;
 	}
 
@@ -219,7 +266,9 @@ public class Res
 		int num = 0;
 		num = currentTimeMillis * 16 / 1000;
 		if (currentTimeMillis * 16 % 1000 >= 5)
+		{
 			num++;
+		}
 		return num;
 	}
 
@@ -236,7 +285,9 @@ public class Res
 	public static int sqrt(int a)
 	{
 		if (a <= 0)
+		{
 			return 0;
+		}
 		int num = (a + 1) / 2;
 		int num2;
 		do
@@ -268,7 +319,9 @@ public class Res
 		int num = original.IndexOf(separator);
 		string[] array;
 		if (num >= 0)
+		{
 			array = split(original.Substring(num + separator.Length), separator, count + 1);
+		}
 		else
 		{
 			array = new string[count + 1];
@@ -326,7 +379,9 @@ public class Res
 			if (num >= 10)
 			{
 				if (num % 10 == 0)
+				{
 					num /= 10;
+				}
 				string text = empty;
 				return text + "," + num + empty2;
 			}
@@ -346,7 +401,9 @@ public class Res
 			if (num2 >= 10)
 			{
 				if (num2 % 10 == 0)
+				{
 					num2 /= 10;
+				}
 				string text = empty;
 				return text + "," + num2 + empty2;
 			}
@@ -366,7 +423,9 @@ public class Res
 			if (num3 >= 10)
 			{
 				if (num3 % 10 == 0)
+				{
 					num3 /= 10;
+				}
 				string text = empty;
 				return text + "," + num3 + empty2;
 			}
